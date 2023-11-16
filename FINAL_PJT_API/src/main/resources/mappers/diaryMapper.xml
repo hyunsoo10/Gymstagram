@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.pjt.model.dao.DiaryDao">
+	<resultMap type="Diary" id="diaryMap">
+		<result column="diary_id" property="diaryId"/>
+		<result column="user_id" property="userId"/>
+		<result column="create_date" property="createDate"/>
+		<result column="original_image" property="originalImage"/>
+		<result column="save_image" property="saveImage"/>
+		<result column="view_count" property="viewCount"/>
+		<result column="like_count" property="likeCount"/>
+	</resultMap>
+	<resultMap type="Comment" id="commentMap">
+		<result column="comment_id" property="commentId"/>
+		<result column="diary_id" property="diaryId"/>
+		<result column="user_id" property="userId"/>
+		<result column="write_date" property="writeDate"/>
+		<result column="update_date" property="updateDate"/>
+		<result column="is_deleted" property="isDeleted"/>
+		<result column="parent_comment" property="parentComment"/>
+		<result column="content" property="content"/>
+	</resultMap>
+	
+	<!-- 전체 다이어리 조회 -->
+	<select id="selectAllDiary" parameterType="SearchCondition" resultMap="diaryMap">
+		SELECT * FROM diary
+		<if test="key!='none'">
+			WHERE ${key} LIKE CONCAT('%' #{word} '%')
+		</if>
+		<if test="orderBy!='none'">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>
+	</select>
+	
+	<!-- 다이어리 1개 상세 조회 -->
+	<select id="selectOneDiary" parameterType="int" resultMap="diaryMap">
+		SELECT * FROM diary
+			WHERE diary_id = #{diaryId}
+	</select>
+	
+	<!-- my diary 조회 -->
+	<select id="selectMyDiary" parameterType="String" resultMap="diaryMap">
+		SELECT * FROM diary
+			WHERE user_id = #{userId}
+	</select>
+	
+	<!-- weekly 다이어리 조회 -->
+	<select id="selectMyWeeklyDiary" parameterType="String" resultMap="diaryMap">
+	SELECT * FROM diary
+		WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )
+	    AND user_id = #{userId}
+	    GROUP BY create_date
+	    ORDER BY create_date;
+	</select>
+	<!-- 다이어리 등록 -->
+	<insert id="insertDiary" parameterType="Diary">
+		INSERT INTO diary (user_id, original_image, save_image, title, content, view_count, like_count)
+		VALUE (#{userId}, #{originalImage}, #{saveImage},  #{title}, #{content}, #{viewCount}, #{likeCount})
+	</insert>
+	
+	<!-- 다이어리 수정 -->
+	<update id="updateDiary" parameterType="Diary">
+		UPDATE diary
+			SET user_id = #{userId}, image = #{image}, title = #{title}, content = #{content}, view_count = #{viewCount}, like_count = #{likeCount}
+			WHERE diary_id = #{diaryId}
+	</update>
+	
+	<!-- 다이어리 삭제 -->
+	<delete id="deleteDiary" parameterType="int">
+		DELETE FROM diary
+			WHERE diary_id = #{diaryId}
+	</delete>
+	
+	<!--  댓글 등록 -->
+	<insert id="insertComment" parameterType="Comment">
+		INSERT INTO comment (diary_id, user_id, parent_comment, content)
+			VALUE (#{diaryId}, #{userId}, #{parentComment}, #{content})
+	</insert>
+
+	<!-- Diary의 댓글 조회 -->	
+	<select id="selectDiaryComments" parameterType="int" resultMap="commentMap">
+		SELECT * FROM comment
+			WHERE diary_id = #{diaryId}
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="Comment">
+		UPDATE comment
+			SET content = #{content}, is_deleted = #{isDeleted}, parent_comment = #{parentComment},
+			update_date = #{updateDate}
+			WHERE comment_id = #{commentId}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM comment
+			WHERE comment_id = #{commentId}
+	</delete>
+	
+</mapper>
