@@ -100,4 +100,9 @@
 			WHERE comment_id = #{commentId}
 	</delete>
 	
+	<!-- 전체 댓글 조회 -->	
+	<select id="selectAllComment" resultMap="commentMap">
+		SELECT * FROM comment
+	</select>
+	
 </mapper>

@@ -71,4 +71,9 @@ public class DiaryServiceImpl implements DiaryService{
 		return diaryDao.deleteComment(commentId);
 	}
 
+	@Override
+	public List<Comment>  getAllComment() {
+		return diaryDao.selectAllComment();
+	}
+
 }

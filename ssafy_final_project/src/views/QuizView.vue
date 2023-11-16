@@ -234,9 +234,9 @@ function setResult() {
 </script>
 
 <style>
-* {
+/* * {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-}
+} */
 
 .avty-test {
     margin: 20px;
@@ -254,7 +254,7 @@ function setResult() {
 
 #qna {
     height: 600px;
-    padding : 100px 0;
+    padding: 100px 0;
 }
 
 

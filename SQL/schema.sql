@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `user`(
   `user_name` CHAR(5) CHARACTER SET utf8mb4 NOT NULL,
   `nickname` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
   `register_date` DATE NOT NULL DEFAULT (current_date),
-  `profile_image` BLOB,
+  `profile_image` VARCHAR(150),
   `activate` BOOLEAN NOT NULL DEFAULT true,
   `permission` INT NOT NULL DEFAULT 0,
   `avty_code` INT NOT NULL DEFAULT 0,

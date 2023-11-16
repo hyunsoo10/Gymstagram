@@ -41,6 +41,9 @@ public interface DiaryDao {
 	
 	//댓글 삭제
 	int deleteComment(int commentId);
+	
+	//전체 댓글조회
+	List<Comment> selectAllComment();
 
 	
 }

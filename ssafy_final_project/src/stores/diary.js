@@ -6,28 +6,48 @@ import { useRouter } from "vue-router";
 export const useDiaryStore = defineStore('diary', () => {
     const REST_DIARY_API = `http://localhost:8080/diary-api/diary`
 
-    const allDiary= ref([])
-    const weeklyDiary= ref([])
+    const allDiary = ref([])
+    const weeklyDiary = ref([])
+    const comments = ref([])
     const router = useRouter();
 
     const loginUser = ref(null)
 
-    const getAllDiary = function() {
+    const getAllDiary = function () {
         axios({
-            url : REST_DIARY_API,
+            url: REST_DIARY_API,
             method: 'GET',
         })
-        .then((res) => {
-            allDiary.value = res.data
-        })
+            .then((res) => {
+                allDiary.value = res.data
+            })
     }
-    const getWeeklyDiary = function(userId) {
+    const getWeeklyDiary = function (userId) {
         axios({
-            url : `${REST_DIARY_API}/weekly/${userId}`,
+            url: `${REST_DIARY_API}/weekly/${userId}`,
             method: 'GET',
         })
         .then((res) => {
             weeklyDiary.value = res.data
+        })
+}
+
+    const getDiaryComments = function(diaryId){
+        axios({
+            url: `${REST_DIARY_API}/comment/${diaryId}`,
+            method: 'GET',
+        })
+        .then((res) => {
+            comments.value = res.data
+        })
+    }
+    const getAllComments = function(){
+        axios({
+            url: `${REST_DIARY_API}/comment/`,
+            method: 'GET',
+        })
+        .then((res) => {
+            comments.value = res.data
         })
     }
     // onMounted(() => {
@@ -46,7 +66,7 @@ export const useDiaryStore = defineStore('diary', () => {
     //         console.log(user)
     //         //db에서 해당하는 id의 회원 찾아오기
     //         let dbUser = res.data;
-      
+
     //         if(dbUser) {
     //             if(user.password === dbUser.userPassword){
     //                 user.value = dbUser;
@@ -67,5 +87,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return {getAllDiary, allDiary, weeklyDiary, getWeeklyDiary}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments}
 })
