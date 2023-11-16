@@ -72,8 +72,9 @@ main {
 }
 
 .login-form {
+    width: 80%;
     margin: 0 50px;
-    padding: 30px 100px;
+    padding: 30px 50px;
     border: 1px solid grey;
     border-radius: 20px;
     text-align: center;

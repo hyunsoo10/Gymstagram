@@ -2,7 +2,7 @@
     <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h2>회원 정보 입력</h2>
+                <h2>회원 정보 수정</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
@@ -47,13 +47,13 @@
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
-                        <img :src="imageUploaded" style="width: 500px; margin-top: 10px" />
+                        <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
                         <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
                             aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
-                            <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
+                            <button type="button" class="btn btn-secondary" @click="regist($event)">수정하기</button>
                         </div>
                         <br>
                     </div>
@@ -141,7 +141,7 @@ const regist = function (event) {
     } else {
         formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
     }
-   
+
     axios
         .post("http://localhost:8080/user-api/user", formData, {
             headers: {
@@ -166,11 +166,11 @@ ui {
 
 main {
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .regist-form {
-    margin: 0 50px;
+    margin: 0 50px 50px;
     padding: 30px 50px;
     width: 700px;
     border: 1px solid grey;
@@ -184,6 +184,7 @@ main {
     text-align: start;
     width: 140px;
 }
+
 .form-content input {
     width: 350px;
     height: 35px;
@@ -207,15 +208,17 @@ main {
 }
 
 button {
-    width: 150px;
+    width: 120px;
     margin: 10px;
     background: #8EAEEC;
     border: 1px #8EAEEC;
+    font-size: 15px;
 }
 
 body {
     background-color: aliceblue;
 }
+
 
 .input-desc {
     color: rgb(235, 43, 18);

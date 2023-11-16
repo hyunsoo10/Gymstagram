@@ -7,7 +7,7 @@
     <v-card width=60%>
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
         <v-tab :value="1">My Weekly Diary</v-tab>
-        <v-tab :value="2">My Diary</v-tab>
+        <v-tab :value="2">My Total Diary</v-tab>
         <v-tab :value="3">Diary Create</v-tab>
       </v-tabs>
       <v-window v-model="tab">
@@ -18,7 +18,7 @@
               <MyWeeklyDiary v-for="diary in diaryStore.weeklyDiary" :key="diary.diaryId" :diary="diary" />
             </template>
             <template v-if="n == 2">
-              <h1>My Diary</h1>
+              <h1>My Total Diary</h1>
               <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" />
             </template>
             <template v-if="n == 3">
@@ -85,6 +85,7 @@ div {
 
 #my-page {
   display: flex;
+  width: 80%;
 }
 
 #diary-box {
