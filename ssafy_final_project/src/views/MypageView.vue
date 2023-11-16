@@ -1,7 +1,7 @@
 <template>
   <div id="my-page">
     <div class="profile-box">
-      <Profile />
+      <Profile :total-cnt="totalCnt" :weekly-cnt="weeklyCnt"/>
       <AVTY />
     </div>
     <v-card width=60%>
@@ -51,6 +51,7 @@ import MyWeeklyDiary from '@/components/diary/MyWeeklyDiary.vue'
 
 const diaryStore = useDiaryStore();
 const userStore = useUserStore();
+let totalCnt = 0;
 
 //전체 다이어리 중에 my diary만 가져오기
 //diary 목록 중에 login한 user의 id와 같은 diary들만 filter
@@ -59,6 +60,11 @@ const myDiary = computed(() => {
     return diary.userId == userStore.loginUser.userId
   })
 })
+
+for(let diary in myDiary) {
+  totalCnt++;
+}
+
 const loginUser = ref({});
 
 const tab = ref(null)
@@ -67,7 +73,6 @@ onMounted(() => {
   loginUser.value = userStore.loginUser
 
   diaryStore.getWeeklyDiary(loginUser.value.userId);
-  console.log(loginUser.value)
 })
 
 </script>
