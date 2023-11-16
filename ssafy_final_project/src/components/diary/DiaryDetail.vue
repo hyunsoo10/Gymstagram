@@ -67,24 +67,35 @@
             <v-row>
                 <v-col cols="12">
                 <v-text-field
-                    :v-model="message"
+                    v-model="message"
                     :append-icon="'mdi-send'"
                     variant="filled"
-                    clear-icon="mdi-close-circle"
                     clearable
                     label="your comment"
                     type="text"
-                    @click:append="sendMessage"
-                    @keypress.enter="sendMessage"
+                    @click:append="createComment"
                 ></v-text-field>
                 </v-col>
             </v-row>
             </v-container>
         </v-form>
+          
+      <!-- <v-card-actions>
+        <v-btn
+          color="deep-purple-lighten-2"
+          variant="text"
+          @click="createComment"
+        >
+        댓글 등록
+        </v-btn>
+      </v-card-actions> -->
       <template v-if="diaryComment.length>0">
         <div v-for="comment in diaryComment" class="comment-box">
             <div class="comment-line">
                 {{comment.userId}} : {{ comment.content }}
+                <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button>
+        <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateReview" >수정완료</button>
+        <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteReview(comment.commentId)">삭제</button>
             </div>
         </div>
       </template>
@@ -103,29 +114,25 @@
           <v-chip>9:00PM</v-chip>
         </v-chip-group> -->
       </div>
-  
-      <v-card-actions>
-        <!-- <v-btn
-          color="deep-purple-lighten-2"
-          variant="text"
-          @click="createComment"
-        >
-        댓글 등록
-        </v-btn> -->
-      </v-card-actions>
+
     </v-card>
   </template>
 
 <script setup>
 import {ref, onMounted, onUpdated, computed} from 'vue'
 import { useDiaryStore } from '@/stores/diary'
+import { useUserStore } from '@/stores/user'
 
 const diaryStore = useDiaryStore();
+const userStore = useUserStore();
 
+const message = ref("")
 const props = defineProps({
   diary: Object,
   comments : Object
 })
+
+const updateToggle = ref(false)
 
 const diaryComment = computed(()=>{
     return diaryStore.comments.filter((comment) =>{
@@ -133,20 +140,46 @@ const diaryComment = computed(()=>{
     })
 })
 
-const sendMessage = function(){
-    console.log("클릭")
-}
-
-
 
 // onMounted(() => {
 //     diaryStore.getDiaryComments(props.diary.diaryId)
 //     console.log(diaryStore.comments)
 //     comment.value = diaryStore.comments
 // })
+//(1, 'ssafy', '와 운동 진짜 열심히 하셨네요', 0),
+// diary_id, user_id, parent_comment, content
+const newComment = ref({
+    diaryId: "",
+    userId: "",
+    parent_comment: 0,
+    content: ""
+})
 
-const createComment = function(comment){
-    console.log(comment.value)
+//댓글 작성
+const createComment = function(){
+    newComment.value.diaryId = props.diary.diaryId
+    newComment.value.userId = userStore.loginUser.userId
+    newComment.value.content = message.value
+    diaryStore.createComment(newComment.value)
+    message.value = ""
+    // console.log(newComment.value)
+}
+//리뷰삭제
+const deleteReview = function(reviewNo){
+    // axios.delete(`http://localhost:8080/video-api/video/review/${reviewNo}`)
+    // emit('deleteReview', reviewNo)
+    //page 새로고침
+    // router.go()
+}
+const updateReview = function(){
+    // newReview.value.reviewNo = props.review.reviewNo;
+    // newReview.value.youtubeId  = props.review.youtubeId;
+    // newReview.value.userId = loginUser.value.id;
+    // console.log(newReview.content)
+    // console.log(newReview.value)
+    // axios.put(`http://localhost:8080/video-api/video/review/`, newReview.value)
+    updateToggle.value = !updateToggle
+    // router.go()
 }
 </script>
 

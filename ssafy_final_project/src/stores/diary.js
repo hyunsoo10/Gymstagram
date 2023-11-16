@@ -50,6 +50,18 @@ export const useDiaryStore = defineStore('diary', () => {
             comments.value = res.data
         })
     }
+
+    const createComment = function(comment){
+        axios({
+            url: `${REST_DIARY_API}/comment`,
+            method: 'POST',
+            data: comment
+        })
+        .then((res) => {
+            console.log('댓글 작성 성공')
+            comments.value.push(comment)
+        })
+    }
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -87,5 +99,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment}
 })

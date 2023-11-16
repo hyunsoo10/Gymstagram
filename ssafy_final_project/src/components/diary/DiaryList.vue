@@ -2,18 +2,6 @@
   <v-card class="mx-auto" width="300" height="400">
     <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`"
       cover>
-      <!-- <v-img
-      class="align-end text-white"
-      height="200"
-      :src="`src/assets/diary_image/${diary.image}.jpg`"
-      cover
-    > -->
-      <!-- <v-img
-      class="align-end text-white"
-      height="200"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      cover
-    > -->
       <v-card-title>{{ diary.title }}</v-card-title>
     </v-img>
 
@@ -40,7 +28,7 @@
         <template v-slot:default="{ isActive }">
           <v-card width="100%" height="100%">
             <v-toolbar
-              color="black"
+              color="blue-grey-lighten-5"
               :title="diary.userId"
             ></v-toolbar>
             <v-card-text>
@@ -62,20 +50,32 @@
     </v-card-actions>
   </v-card>
 </template>
-
+<!-- <template>
+<v-infinite-scroll :height="300" :items="diaryStore.allDiary" :onLoad="load">
+  <template v-for="(item, index) in items" :key="item">
+    <div :class="['pa-2', index % 2 === 0 ? 'bg-grey-lighten-2' : '']">
+      Item {{ item.diaryId }}
+    </div>
+  </template>
+</v-infinite-scroll>
+</template> -->
 <script setup>
 import { ref, onMounted } from 'vue'
 import DiaryDetail from '@/components/diary/DiaryDetail.vue'
 import { useDiaryStore } from '@/stores/diary'
+import axios from 'axios';
 const props = defineProps({
   diary: Object
 })
-const cards = ref([
-  { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
-  { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-  { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-],
-)
+// const cards = ref([
+//   { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
+//   { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
+//   { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
+// ],
+// )
+
+
+
 const diaryStore = useDiaryStore();
 
 const comments = ref()
