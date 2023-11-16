@@ -2,17 +2,16 @@
     <div>
         <main class="d-flex flex-column">
             <div class="login-title">
-                <h1>Login View</h1>
-                <br>
+                <h2>로그인</h2>
             </div>
             <section class="d-flex flex-column">
                 <div class="login-form">
-                    <h2>로그인</h2>
                     <form method="post" id="login-form">
-                        <input type="text" name="userId" placeholder="아이디를 입력해주세요" v-model="id"> <br>
-                        <input type="password" name="userPassword" placeholder="비밀번호를 입력해주세요" v-model="password">
+                        <input type="text" name="userId" placeholder="아이디" v-model="id"> <br>
+                        <input type="password" name="userPassword" placeholder="비밀번호" v-model="password">
                         <br>
                         <button button type="button" class="btn btn-secondary" @click="login">로그인</button>
+                        <br>
                         <br>
                         <a href="">아이디찾기</a>
                         <a href="">비밀번호찾기</a>
@@ -86,10 +85,13 @@ main {
 
 form input {
     margin: 10px;
+    padding-left: 4px;
+    border: 1px solid grey;
+    border-radius: 2px;
 }
 
 form a {
-    font-size: 9px;
+    font-size: 13px;
     text-decoration: none;
     color: grey;
     margin: 0px 5px;

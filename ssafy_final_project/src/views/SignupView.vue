@@ -2,36 +2,41 @@
      <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h1>Signup View</h1>
+                <h2>회원 정보 입력</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
                 <div class="login-form">
-                    <h2>회원가입</h2>
                     <form method="post" id="regist-form">
                         <label for="userName">
                             이름
-                            <img class="icon-star" src="@/assets/img/icon_star.png" />
+                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" name="userName" placeholder="이름을 입력해주세요" v-model="name">
+                        <input type="text" name="userName" placeholder="이름을 입력해주세요." v-model="name">
                         <br>
                         <label for="userId">
                             아이디
-                            <img class="icon-star" src="@/assets/img/icon_star.png" />
+                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" name="userId" placeholder="아이디를 입력해주세요" v-model="id">
+                        <input type="text" name="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="id">
+                        <br>
+                        <label for="userNickname">
+                           닉네임
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="text" name="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능)" v-model="nickname">
                         <br>
                         <label for="userPassword">
                             비밀번호
-                            <img class="icon-star" src="@/assets/img/icon_star.png" />
+                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" name="userPassword" placeholder="비밀번호를 입력해주세요" v-model="pass">
+                        <input type="password" name="userPassword" placeholder="비밀번호를 입력해주세요." v-model="password">
                         <br>
                         <label for="userPassword2">
                             비밀번호 확인
-                            <img class="icon-star" src="@/assets/img/icon_star.png" />
+                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" name="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요" v-model="pass2">
+                        <input type="password" name="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
                         <br>
                         <div class="regist-btn">
                             <button button type="button" class="btn btn-secondary" @click="regist">회원가입</button>
@@ -53,11 +58,14 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const name = ref('')
 const id = ref('');
-const pass = ref('');
-const pass2 = ref('');
+const nickname = ref('');
+const password = ref('');
+const password2 = ref('');
+
 const errorMessage = ref('');
 
 const regist = function () {
+
     // 중복ID 확인
     axios
         .get("http://localhost:8080/user-api/user")
@@ -94,11 +102,6 @@ const regist = function () {
 
 
 <style scoped>
-div {
-    margin: 30px auto;
-    text-align: center;
-}
-
 li,
 ui {
     list-style-type: none;
@@ -109,19 +112,41 @@ main {
     height: 100vh;
 }
 
+.login-form {
+    margin: 0 50px;
+    padding: 30px 50px;
+    width: 700px;
+    border: 1px solid grey;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.login-form h2 {
+    text-align: center;
+}
+
+form label {
+    display: inline-block;
+    text-align: start;
+    width: 140px;
+}
+
 form input {
+    width: 350px;
+    height: 35px;
     margin: 10px;
+    padding-left: 4px;
+    border: 1px solid rgb(177, 177, 177);
+    border-radius: 5px;
 }
 
-form a {
-    font-size: 9px;
-    text-decoration: none;
-    color: grey;
-    margin: 0px 5px;
+form input::placeholder {
+    font-size: 12px;
+    color: rgb(177,177,177);
 }
 
-form a:hover {
-    font-weight: bold;
+.regist-btn {
+    text-align: end;
 }
 
 button {
@@ -129,5 +154,9 @@ button {
     margin: 10px;
     background: #8EAEEC;
     border: 1px #8EAEEC;
+}
+
+body {
+    background-color: aliceblue;
 }
 </style>

@@ -30,9 +30,9 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
       beforeEnter: (to, from) => {
-        if(false){
+        if (false) {
           console.log("이미 로그인한 상태입니다.")
-          return {name: 'home'}
+          return { name: 'home' }
         }
       }
     },
