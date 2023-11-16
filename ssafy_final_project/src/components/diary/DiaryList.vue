@@ -40,7 +40,7 @@
         <template v-slot:default="{ isActive }">
           <v-card width="100%" height="100%">
             <v-toolbar
-              color="black"
+              color="blue-grey-lighten-5"
               :title="diary.userId"
             ></v-toolbar>
             <v-card-text>
