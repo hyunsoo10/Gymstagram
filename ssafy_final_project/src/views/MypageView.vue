@@ -1,13 +1,13 @@
 <template>
   <div id="my-page">
     <div class="profile-box">
-      <Profile />
+      <Profile :total-cnt="totalCnt" :weekly-cnt="weeklyCnt"/>
       <AVTY />
     </div>
     <v-card width=60%>
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
         <v-tab :value="1">My Weekly Diary</v-tab>
-        <v-tab :value="2">My Diary</v-tab>
+        <v-tab :value="2">My Total Diary</v-tab>
         <v-tab :value="3">Diary Create</v-tab>
       </v-tabs>
       <v-window v-model="tab">
@@ -18,7 +18,7 @@
               <MyWeeklyDiary v-for="diary in diaryStore.weeklyDiary" :key="diary.diaryId" :diary="diary" />
             </template>
             <template v-if="n == 2">
-              <h1>My Diary</h1>
+              <h1>My Total Diary</h1>
               <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" />
             </template>
             <template v-if="n == 3">
@@ -51,6 +51,7 @@ import MyWeeklyDiary from '@/components/diary/MyWeeklyDiary.vue'
 
 const diaryStore = useDiaryStore();
 const userStore = useUserStore();
+let totalCnt = 0;
 
 //전체 다이어리 중에 my diary만 가져오기
 //diary 목록 중에 login한 user의 id와 같은 diary들만 filter
@@ -59,6 +60,11 @@ const myDiary = computed(() => {
     return diary.userId == userStore.loginUser.userId
   })
 })
+
+for(let diary in myDiary) {
+  totalCnt++;
+}
+
 const loginUser = ref({});
 
 const tab = ref(null)
@@ -67,7 +73,6 @@ onMounted(() => {
   loginUser.value = userStore.loginUser
 
   diaryStore.getWeeklyDiary(loginUser.value.userId);
-  console.log(loginUser.value)
 })
 
 </script>
@@ -80,6 +85,7 @@ div {
 
 #my-page {
   display: flex;
+  width: 80%;
 }
 
 #diary-box {

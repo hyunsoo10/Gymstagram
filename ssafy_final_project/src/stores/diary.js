@@ -7,12 +7,32 @@ export const useDiaryStore = defineStore('diary', () => {
     const REST_DIARY_API = `http://localhost:8080/diary-api/diary`
 
     const allDiary = ref([])
+    const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
     const router = useRouter();
 
     const loginUser = ref(null)
+    const getOneDiary = function (diaryId) {
+        axios({
+            url: `${REST_DIARY_API}/${diaryId}`,
+            method: 'GET',
+        })
+        .then((res) => {
+            diary.value = res.data
+            console.log(diary.value)
+        })
+    }
 
+    onMounted(()=>{
+         axios({
+            url: REST_DIARY_API,
+            method: 'GET',
+        })
+        .then((res) => {
+                allDiary.value = res.data
+         }) 
+    })
     const getAllDiary = function () {
         axios({
             url: REST_DIARY_API,
@@ -99,5 +119,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary}
 })

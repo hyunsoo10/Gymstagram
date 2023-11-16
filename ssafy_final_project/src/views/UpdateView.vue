@@ -2,7 +2,7 @@
     <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h2>회원 정보 입력</h2>
+                <h2>회원 정보 수정</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
@@ -53,7 +53,7 @@
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
-                            <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
+                            <button type="button" class="btn btn-secondary" @click="regist($event)">수정하기</button>
                         </div>
                         <br>
                     </div>

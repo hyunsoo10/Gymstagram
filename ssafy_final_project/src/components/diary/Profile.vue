@@ -2,24 +2,30 @@
   <div class="mypage">
     <div class="mypage-profile">
       <div class="profile-img">
-        <img :src=profileImage width="150" height="200"/>
+        <img :src=profileImage width="150" height="150" />
       </div>
       <div class="profile-desc">
-        <div class="profile-name">
-          {{ userName }}
+        <div class="profile-user-info">
+          <div class="profile-name">
+            {{ userName }}🍑
+          </div>
+          <button type="button" class="profile-edit" onclick="location.href='/update'">
+            정보수정하기
+          </button>
         </div>
-        <button type="button" class="profile-edit">
-          정보수정하기
-        </button>
+        <br>
+        <div class="total-cnt">
+          📚 Total Diary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ totalCnt }}
+        </div>
+        <div class="weekly-cnt">
+          📒 Weekly Diary&nbsp;&nbsp;{{ weeklyCnt }}7
+        </div>
+        <div class="current-streak">
+          🗓️ 7일 연속 작성
+        </div>
       </div>
-</div>
-      <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
-      </v-list>
-      <!-- <v-main style="height: 250px"></v-main> -->
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -30,15 +36,75 @@ const loginUser = JSON.parse(localStorage.getItem('loginUser'))
 const userName = loginUser.userName;
 const profileImage = "../src/assets/user_image/" + loginUser.userId + "/" + loginUser.profileImage;
 
+defineProps({
+  totalCnt: Number,
+})
 </script>
 
 <style  scoped>
 nav {
   position: relative !important;
 }
+
 .mypage {
-  display: flex;
-  flex-direction: column;
+  border: 1px #c9c9c9 solid;
+  border-radius: 10px;
+  height: 210px;
+  width: 100%;
 }
 
-</style>
+.mypage-profile {
+  display: flex;
+  flex-direction: row;
+  margin: 25px 20px 20px;
+}
+
+.profile-img img {
+  border-radius: 70%;
+}
+
+.profile-user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 25px;
+}
+
+.profile-name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.profile-edit {
+  border: 1px solid #c9c9c9;
+  border-radius: 10px;
+  width: 70px;
+  height: 20px;
+  background: #c9c9c9;
+  font-size: 10px;
+  margin-left: 20px;
+}
+
+.total-cnt {
+  font-size: 16px;
+  text-align: start;
+  margin: 5px 0px;
+}
+
+.weekly-cnt {
+  font-size: 16px;
+  text-align: start;
+  margin: 5px 0px;
+}
+
+.current-streak {
+  font-size: 16px;
+  text-align: start;
+  margin: 5px 0px;
+}</style>

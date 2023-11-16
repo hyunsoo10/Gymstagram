@@ -6,6 +6,8 @@ import LoginView from '@/views/LoginView.vue'
 import MypageView from '@/views/MypageView.vue'
 import MyDiary from '@/components/diary/MyDiary.vue'
 import SignupView from '@/views/SignupView.vue'
+import DiaryDetailView from '@/views/DiaryDetailView.vue'
+import UpdateView from '@/views/UpdateView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,9 +39,25 @@ const router = createRouter({
       }
     },
     {
+      path: '/update',
+      name: 'update',
+      component: UpdateView
+    },
+    {
       path: '/diary',
       name: 'diary',
-      component: DiaryView
+      component: DiaryView,
+      // children: [{
+      //   path: ":diaryId",
+      //   name: "diaryDetail",
+      //   component: DiaryDetailView
+      // }
+      // ]
+    },
+    {
+      path: '/detail/:diaryId',
+      name: 'diaryDetail',
+      component: DiaryDetailView,
     },
     {
       path: '/mypage',
