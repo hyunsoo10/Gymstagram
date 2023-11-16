@@ -15,7 +15,12 @@
       <div class="text-truncate">{{ diary.content }}</div>
     </v-card-text>
     <v-card-actions>
-      <v-dialog
+      <v-btn
+            color="primary"
+            v-bind="props">
+          <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
+        </v-btn>
+      <!-- <v-dialog
         transition="dialog-bottom-transition"
         width="auto"
       >
@@ -32,7 +37,6 @@
               :title="diary.userId"
             ></v-toolbar>
             <v-card-text>
-              <!-- <div class="text-h2 pa-12">Hello world!</div> -->
               <DiaryDetail
                 :diary = "diary"
                 :comments = "comments"
@@ -46,7 +50,7 @@
             </v-card-actions>
           </v-card>
         </template>
-      </v-dialog>
+      </v-dialog> -->
     </v-card-actions>
   </v-card>
 </template>
