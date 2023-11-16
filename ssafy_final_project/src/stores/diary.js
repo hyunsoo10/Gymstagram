@@ -7,7 +7,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const REST_DIARY_API = `http://localhost:8080/diary-api/diary`
 
     const allDiary = ref([])
-    const diary = ref()
+    const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
     const router = useRouter();
@@ -18,10 +18,21 @@ export const useDiaryStore = defineStore('diary', () => {
             url: `${REST_DIARY_API}/${diaryId}`,
             method: 'GET',
         })
-            .then((res) => {
-                diary.value = res.data
-            })
+        .then((res) => {
+            diary.value = res.data
+            console.log(diary.value)
+        })
     }
+
+    onMounted(()=>{
+         axios({
+            url: REST_DIARY_API,
+            method: 'GET',
+        })
+        .then((res) => {
+                allDiary.value = res.data
+         }) 
+    })
     const getAllDiary = function () {
         axios({
             url: REST_DIARY_API,

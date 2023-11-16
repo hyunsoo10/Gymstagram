@@ -140,9 +140,6 @@ const diaryComment = computed(()=>{
     })
 })
 
-onMounted(() =>{
-  
-})
 
 // onMounted(() => {
 //     diaryStore.getDiaryComments(props.diary.diaryId)
