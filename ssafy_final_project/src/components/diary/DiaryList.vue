@@ -34,15 +34,35 @@
 
       <div class="text-truncate">{{diary.content}}</div>
     </v-card-text>
-
     <v-card-actions>
-      <v-btn color="orange">
-        Share
-      </v-btn>
-
-      <v-btn color="orange">
-        Explore
-      </v-btn>
+      <v-dialog
+        transition="dialog-bottom-transition"
+        width="auto"
+      >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            color="primary"
+            v-bind="props"
+          >DETAIL</v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card width="700" height="700">
+            <v-toolbar
+              color="black"
+              title="DETAIL"
+            ></v-toolbar>
+            <v-card-text>
+              <div class="text-h2 pa-12">Hello world!</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                variant="text"
+                @click="isActive.value = false"
+              >Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
     </v-card-actions>
   </v-card>
 </template>
