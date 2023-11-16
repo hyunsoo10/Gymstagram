@@ -67,20 +67,28 @@
             <v-row>
                 <v-col cols="12">
                 <v-text-field
-                    :v-model="message"
+                    v-model="message"
                     :append-icon="'mdi-send'"
                     variant="filled"
-                    clear-icon="mdi-close-circle"
                     clearable
                     label="your comment"
                     type="text"
-                    @click:append="sendMessage"
-                    @keypress.enter="sendMessage"
+                    @click:append="createComment"
                 ></v-text-field>
                 </v-col>
             </v-row>
             </v-container>
         </v-form>
+          
+      <!-- <v-card-actions>
+        <v-btn
+          color="deep-purple-lighten-2"
+          variant="text"
+          @click="createComment"
+        >
+        댓글 등록
+        </v-btn>
+      </v-card-actions> -->
       <template v-if="diaryComment.length>0">
         <div v-for="comment in diaryComment" class="comment-box">
             <div class="comment-line">
@@ -103,25 +111,19 @@
           <v-chip>9:00PM</v-chip>
         </v-chip-group> -->
       </div>
-  
-      <v-card-actions>
-        <!-- <v-btn
-          color="deep-purple-lighten-2"
-          variant="text"
-          @click="createComment"
-        >
-        댓글 등록
-        </v-btn> -->
-      </v-card-actions>
+
     </v-card>
   </template>
 
 <script setup>
 import {ref, onMounted, onUpdated, computed} from 'vue'
 import { useDiaryStore } from '@/stores/diary'
+import { useUserStore } from '@/stores/user'
 
 const diaryStore = useDiaryStore();
+const userStore = useUserStore();
 
+const message = ref("")
 const props = defineProps({
   diary: Object,
   comments : Object
@@ -133,20 +135,29 @@ const diaryComment = computed(()=>{
     })
 })
 
-const sendMessage = function(){
-    console.log("클릭")
-}
-
-
 
 // onMounted(() => {
 //     diaryStore.getDiaryComments(props.diary.diaryId)
 //     console.log(diaryStore.comments)
 //     comment.value = diaryStore.comments
 // })
+//(1, 'ssafy', '와 운동 진짜 열심히 하셨네요', 0),
+// diary_id, user_id, parent_comment, content
+const newComment = ref({
+    diaryId: "",
+    userId: "",
+    parent_comment: 0,
+    content: ""
+})
 
-const createComment = function(comment){
-    console.log(comment.value)
+//댓글 작성
+const createComment = function(){
+    newComment.value.diaryId = props.diary.diaryId
+    newComment.value.userId = userStore.loginUser.userId
+    newComment.value.content = message.value
+    diaryStore.createComment(newComment.value)
+    message.value = ""
+    // console.log(newComment.value)
 }
 </script>
 
