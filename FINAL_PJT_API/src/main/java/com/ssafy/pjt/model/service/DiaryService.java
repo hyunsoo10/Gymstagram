@@ -40,4 +40,7 @@ public interface DiaryService {
 	
 	//댓글 삭제
 	int removeComment(int commentId);
+	
+	//전체 댓글 조회
+	List<Comment>  getAllComment();
 }

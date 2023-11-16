@@ -59,6 +59,7 @@ const createDiary = function (event) {
     } else {
         formData.append('diary', new Blob([JSON.stringify(diary.value)], { type: "application/json" }));
     }
+    console.log(formData);
     // diary.value.image = image.value
     // console.log(diary.value)
     // console.log(event)

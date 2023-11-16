@@ -8,6 +8,7 @@ export const useDiaryStore = defineStore('diary', () => {
 
     const allDiary = ref([])
     const weeklyDiary = ref([])
+    const comments = ref([])
     const router = useRouter();
 
     const loginUser = ref(null)
@@ -26,9 +27,28 @@ export const useDiaryStore = defineStore('diary', () => {
             url: `${REST_DIARY_API}/weekly/${userId}`,
             method: 'GET',
         })
-            .then((res) => {
-                weeklyDiary.value = res.data
-            })
+        .then((res) => {
+            weeklyDiary.value = res.data
+        })
+}
+
+    const getDiaryComments = function(diaryId){
+        axios({
+            url: `${REST_DIARY_API}/comment/${diaryId}`,
+            method: 'GET',
+        })
+        .then((res) => {
+            comments.value = res.data
+        })
+    }
+    const getAllComments = function(){
+        axios({
+            url: `${REST_DIARY_API}/comment/`,
+            method: 'GET',
+        })
+        .then((res) => {
+            comments.value = res.data
+        })
     }
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
@@ -67,5 +87,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary }
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments}
 })

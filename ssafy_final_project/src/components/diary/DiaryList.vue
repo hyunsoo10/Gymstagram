@@ -35,16 +35,20 @@
           <v-btn
             color="primary"
             v-bind="props"
-          >DETAIL</v-btn>
+          >자세히보기</v-btn>
         </template>
         <template v-slot:default="{ isActive }">
-          <v-card width="700" height="700">
+          <v-card width="100%" height="100%">
             <v-toolbar
               color="black"
-              title="DETAIL"
+              :title="diary.userId"
             ></v-toolbar>
             <v-card-text>
-              <div class="text-h2 pa-12">Hello world!</div>
+              <!-- <div class="text-h2 pa-12">Hello world!</div> -->
+              <DiaryDetail
+                :diary = "diary"
+                :comments = "comments"
+              />
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
@@ -60,7 +64,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import DiaryDetail from '@/components/diary/DiaryDetail.vue'
+import { useDiaryStore } from '@/stores/diary'
 const props = defineProps({
   diary: Object
 })
@@ -70,6 +76,22 @@ const cards = ref([
   { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
 ],
 )
+const diaryStore = useDiaryStore();
+
+const comments = ref()
+
+onMounted(() => {
+  diaryStore.getAllComments()
+})
+
+const getComments = (diaryId) => {
+    console.log(diaryId)
+    diaryStore.getDiaryComments(diaryId)
+    comments.value = diaryStore.comments
+    console.log(diaryStore.comments)
+}
 </script>
 
-<style  scoped></style>
+<style  scoped>
+
+</style>

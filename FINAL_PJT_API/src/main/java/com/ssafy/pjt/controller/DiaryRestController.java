@@ -251,6 +251,22 @@ public class DiaryRestController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	//전체 comment 불러오기
+	@GetMapping("/diary/comment/")
+	@ApiOperation(value = "전체 comment 조회", response = Diary.class)
+	public ResponseEntity<?> selectAllComment(){
+		try {
+			List<Comment> commentList = diaryService.getAllComment();
+			if (commentList != null && commentList.size() > 0) {
+				return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 
 	
 	
