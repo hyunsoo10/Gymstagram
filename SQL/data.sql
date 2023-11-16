@@ -8,7 +8,7 @@ INSERT INTO `user` (user_id, user_password, user_name, nickname, avty_code ) VAL
 ('ssafy3', '1234', '김종인', '발가락', 1),
 ('ssafy4', '1234', '김남준', '남서방', 4),
 ('ssafy5', '1234', '김싸피', '싸피셜', 0),
-('admin', 'admin', '관리자', '화장님', 0);
+('admin', 'admin', '관리자', '회장님', 0);
 
 INSERT INTO `diary` (`user_id`, `title`, `content`, `create_date`, `original_image`, `save_image`)
 VALUES

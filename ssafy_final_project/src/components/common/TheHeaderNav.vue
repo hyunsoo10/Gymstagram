@@ -8,7 +8,7 @@
                                 </div>
                                 <ul class="navbar-menu">
                                         <li>
-                                                <RouterLink to="/">Home</RouterLink>
+                                                <RouterLink to="/">홈</RouterLink>
                                         </li>
                                         <li>
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
@@ -24,7 +24,10 @@
                                                 <a href="" @click="logout"> 로그아웃</a>
                                         </li>
                                         <li v-if="store.loginUser == null">
-                                                <RouterLink to="/login">Login</RouterLink>
+                                                <RouterLink to="/login">로그인</RouterLink>
+                                        </li>
+                                        <li v-if="store.loginUser == null">
+                                                <RouterLink to="/signup">회원가입</RouterLink>
                                         </li>
                                 </ul>
                                 <a href="#" class="navbar--toggle-btn"> <i class=""></i></a>
@@ -74,7 +77,7 @@ a {
 }
 
 .navbar-menu li {
-        padding: 8px 12px;
+        padding: 8px 12px 30px;
 }
 
 .navbar-menu li:hover {

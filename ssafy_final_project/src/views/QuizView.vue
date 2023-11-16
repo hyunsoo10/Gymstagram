@@ -254,7 +254,7 @@ function setResult() {
 
 #qna {
     height: 600px;
-    padding : 100px 0;
+    padding: 100px 0;
 }
 
 

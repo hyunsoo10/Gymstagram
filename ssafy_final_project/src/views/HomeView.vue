@@ -9,8 +9,8 @@
 </script>
 
 <style scoped>
-  div{
-    margin: 30px auto;
-    text-align: center;
-  }
+div {
+  margin: 30px auto;
+  text-align: center;
+}
 </style>
