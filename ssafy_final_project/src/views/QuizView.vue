@@ -234,9 +234,9 @@ function setResult() {
 </script>
 
 <style>
-* {
+/* * {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-}
+} */
 
 .avty-test {
     margin: 20px;
