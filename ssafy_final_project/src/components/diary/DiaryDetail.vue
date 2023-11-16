@@ -93,6 +93,9 @@
         <div v-for="comment in diaryComment" class="comment-box">
             <div class="comment-line">
                 {{comment.userId}} : {{ comment.content }}
+                <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button>
+        <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateReview" >수정완료</button>
+        <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteReview(comment.commentId)">삭제</button>
             </div>
         </div>
       </template>
@@ -129,6 +132,8 @@ const props = defineProps({
   comments : Object
 })
 
+const updateToggle = ref(false)
+
 const diaryComment = computed(()=>{
     return diaryStore.comments.filter((comment) =>{
         return comment.diaryId == props.diary.diaryId
@@ -158,6 +163,23 @@ const createComment = function(){
     diaryStore.createComment(newComment.value)
     message.value = ""
     // console.log(newComment.value)
+}
+//리뷰삭제
+const deleteReview = function(reviewNo){
+    // axios.delete(`http://localhost:8080/video-api/video/review/${reviewNo}`)
+    // emit('deleteReview', reviewNo)
+    //page 새로고침
+    // router.go()
+}
+const updateReview = function(){
+    // newReview.value.reviewNo = props.review.reviewNo;
+    // newReview.value.youtubeId  = props.review.youtubeId;
+    // newReview.value.userId = loginUser.value.id;
+    // console.log(newReview.content)
+    // console.log(newReview.value)
+    // axios.put(`http://localhost:8080/video-api/video/review/`, newReview.value)
+    updateToggle.value = !updateToggle
+    // router.go()
 }
 </script>
 
