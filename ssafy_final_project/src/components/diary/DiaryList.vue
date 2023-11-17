@@ -97,5 +97,9 @@ const getComments = (diaryId) => {
 </script>
 
 <style  scoped>
-
+.v-btn__content a{
+  text-decoration: none;
+  color: #EC407A;
+  font-weight: 700;
+}
 </style>

@@ -1,15 +1,16 @@
 <template>
     <div class="container">
+        <RouterLink to="/diary" class="back-icon" > <v-icon icon="mdi-chevron-left" />BACK</RouterLink>
 			<div class="card-body">
-						<h5 class="card-title">{{diaryStore.diary.title}}</h5>
-						<img class="card-img-top diray-img" width="500" height=""
-                            :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
-						<p class="card-text">
-                            {{diaryStore.diary.userId}} &nbsp;&nbsp;
-                            <small class="text-body-secondary">조회수 : {{diaryStore.diary.viewCount}}</small></p>
-						<p class="card-text">{{diaryStore.diary.createDate}}
-                                <span style="font-size: 30px; "><a href=""><i class="fa-solid fa-heart" style="color: red;"></i></a></span>
-						</p>
+                <h5 class="card-title">{{diaryStore.diary.title}}</h5>
+                <img class="card-img-top diray-img" width="500" height=""
+                    :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
+                <p class="card-text">
+                    {{diaryStore.diary.userId}} &nbsp;&nbsp;
+                    <small class="text-body-secondary">조회수 : {{diaryStore.diary.viewCount}}</small></p>
+                <p class="card-text">{{diaryStore.diary.createDate}}
+                        <span style="font-size: 30px; "><a href=""><i class="fa-solid fa-heart" style="color: red;"></i></a></span>
+                </p>
 			</div>
 			<!--로그인 안했으면 해당 문구 출력-->
 			<p v-show="!userStore.loginUser">
@@ -118,7 +119,7 @@
                 </div> -->
         </template>
         <template v-if="diaryComment.length<=0">
-            <div style="text-align: center;">해당 게시물에 작성된 댓글이 없습니다.</div>
+            <div style="text-align: center; margin: 50px auto">해당 게시물에 작성된 댓글이 없습니다. 첫 번째 댓글을 남겨보세요!</div>
         </template>
 
 	</div>
@@ -150,7 +151,7 @@
     const diaryId = ref(route.params.diaryId)
     const updateToggle = ref(false)
     onMounted(()=>{
-        diary.value = diaryStore.getOneDiary(diaryId.value)
+        diaryStore.getOneDiary(diaryId.value)
         diaryStore.getDiaryComments(diaryId.value)
     })
 
@@ -187,6 +188,7 @@
         diaryStore.createComment(newComment.value)
         newContent.value = ""
         // console.log(newComment.value)
+        router.go()
     }
 
     //댓글 수정
@@ -250,7 +252,10 @@
         box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
     }
     .diray-img{
-        width: 80% !important
+        width: 80% !important;
+        border-radius: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
     .card-body{
         margin: 20px auto;
@@ -274,15 +279,24 @@
     padding: 10px;
     margin: 5px;
     border-radius: 20px;
-}
- .reviews div{
-    margin: 5px;
- }
- .comment-date, .comment-btn{
-    text-align: end;
- }
- .comment{
-    padding-top: 10px;
- }
+    }
+    .reviews div{
+        margin: 5px;
+    }
+    .comment-date, .comment-btn{
+        text-align: end;
+    }
+    .comment{
+        padding-top: 10px;
+    }
+    .back-icon{
+        margin-top: 10px;
+        color: black;
+        font-size: 2rem;
+        display: flex;
     
+    }
+    .container a {
+        text-decoration: none;
+    }
 </style>

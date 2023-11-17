@@ -30,7 +30,7 @@ div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 40%;
+  width: 60%;
   ;
 }
 </style>
