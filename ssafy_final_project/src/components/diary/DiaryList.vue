@@ -132,22 +132,22 @@ const getComments = (diaryId) => {
 }
 .INJ{
   font-weight: 900;
-  border: 1px solid #A099FB;
-  color : #A099FB;
+  border: 1px solid #FCE38A;
+  color : #FCE38A;
 }
 .INP{
   font-weight: 900;
-  border: 1px solid #FE79AB;
-  color : #FE79AB;
+  border: 1px solid #79AC78;
+  color : #79AC78;
 }
 .ISJ{
   font-weight: 900;
-  border: 1px solid #01CECB;
-  color : #01CECB;
+  border: 1px solid #96B6C5;
+  color : #96B6C5;
 }
 .ISP{
   font-weight: 900;
-  border: 1px solid #f32c52;
-  color : #f32c52;
+  border: 1px solid #B3A492;
+  color : #B3A492;
 }
 </style>

@@ -8,29 +8,29 @@
             <button class="btn btn-outline-all btn-layer-2_0" @click="router.go()">
                 전체보기
             </button>
-            <button class="btn btn-outline-primary btn-layer-2_1" value="ENJ" @click="avtyDiary">
+            <button class="btn btn-outline-primary btn-layer-2_1" :class="{selected: isActive}" value="ENJ" @click="avtyDiary($event), isActive=!isActive">
                 ENJ
                 <!-- <i class="fa fa-check"></i> -->
             </button>
-            <button class="btn btn-outline-secondary btn-layer-2_2" value="ENP" @click="avtyDiary">
+            <button class="btn btn-outline-secondary btn-layer-2_2"   value="ENP" @click="avtyDiary($event)">
                 ENP
             </button>
-            <button class="btn btn-outline-success btn-layer-2_3" value="ESJ" @click="avtyDiary">
+            <button class="btn btn-outline-success btn-layer-2_3" value="ESJ" @click="avtyDiary($event), isActive=!isActive">
                 ESJ
             </button>
-            <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary">
+            <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary($event), isActive=!isActive">
                 ESP 
             </button>
-            <button class="btn btn-outline-primary2 btn-layer-2_5" value="INJ" @click="avtyDiary">
+            <button class="btn btn-outline-primary2 btn-layer-2_5" value="INJ" @click="avtyDiary($event), isActive=!isActive">
                 INJ
             </button>
-            <button class="btn btn-outline-secondary btn-layer-2_2" value="INP" @click="avtyDiary">
+            <button class="btn btn-outline-secondary2 btn-layer-2_6" value="INP" @click="avtyDiary($event), isActive=!isActive">
                 INP
             </button>
-            <button class="btn btn-outline-success btn-layer-2_3" value="ISJ" @click="avtyDiary">
+            <button class="btn btn-outline-success2 btn-layer-2_7" value="ISJ" @click="avtyDiary($event), isActive=!isActive">
                 ISJ
             </button>
-            <button class="btn btn-outline-danger btn-layer-2_4" value="ISP" @click="avtyDiary">
+            <button class="btn btn-outline-danger2 btn-layer-2_8" value="ISP" @click="avtyDiary($event), isActive=!isActive">
                 ISP
             </button>
           </div>
@@ -67,7 +67,7 @@
 
   })
 
-
+  const isActive = ref(false)
 
   const perPage = 8;
 
@@ -91,7 +91,7 @@
   //avty다이어리 가져오기
   const avtyDiary = function(e){
     // router.go()
-    // console.log(e.currentTarget.value)
+    console.log(e.currentTarget.value)
     store.getAvtyDiary(e.currentTarget.value)
     // console.log(store.allDiary)
     // console.log(store.avtyDiary)
@@ -183,8 +183,8 @@ h3 {
 }
 .button-container .btn-outline-all {
   background: none;
-  border: 1px solid #000000;
-  color: #000000;
+  border: 1px solid #393E46;
+  color: #393E46;
 }
 .button-container .btn-outline-primary {
   background: none;
@@ -193,8 +193,8 @@ h3 {
 }
 .button-container .btn-outline-primary2 {
   background: none;
-  border: 1px solid #6dac07;
-  color: #6C5CEA;
+  border: 1px solid #FCE38A;
+  color: #FCE38A;
 }
 .button-container .btn-secondary {
   background: #FE79AB;
@@ -205,6 +205,11 @@ h3 {
   border: 1px solid #FE79AB;
   color: #FEB6D3;
 }
+.button-container .btn-outline-secondary2 {
+  background: none;
+  border: 1px solid #79AC78;
+  color: #79AC78;
+}
 .button-container .btn-success {
   background: #01CECB;
   color: #96E6E6;
@@ -214,6 +219,11 @@ h3 {
   border: 1px solid #01CECB;
   color: #96E6E6;
 }
+.button-container .btn-outline-success2 {
+  background: none;
+  border: 1px solid #96B6C5;
+  color: #96B6C5;
+}
 .button-container .btn-danger {
   background: #f32c52;
   color: #ff6c88;
@@ -222,6 +232,11 @@ h3 {
   background: none;
   border: 1px solid #f32c52;
   color: #ff6c88;
+}
+.button-container .btn-outline-danger2 {
+  background: none;
+  border: 1px solid #B3A492;
+  color: #B3A492;
 }
 .button-container .btn-layer-2_1 i {
   position: relative;
@@ -236,12 +251,17 @@ h3 {
   color: white;
   font-weight: 900;
 }
+
 .button-container .btn-layer-2_1:hover{
   background : #A099FB;
   color: white;
   font-weight: 900;
 }
-
+.btn.btn-outline-primary.btn-layer-2_1.selected{
+  background : #A099FB !important;
+  color: white !important;
+  font-weight: 900 !important;
+}
 .button-container .btn-layer-2_2:hover{
   background : #FE79AB;
   color: white;
@@ -259,13 +279,28 @@ h3 {
   font-weight: 900;
 }
 .button-container .btn-layer-2_5:hover{
-  background : #f32c52;
+  background : #FCE38A;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_6:hover{
+  background : #79AC78;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_7:hover{
+  background : #96B6C5;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_8:hover{
+  background : #B3A492;
   color: white;
   font-weight: 900;
 }
 
 .avty-btn-box{
-  width: 60%;
+  width: 40%;
 }
 
 </style>
