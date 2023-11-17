@@ -213,7 +213,7 @@ public class DiaryRestController {
 
 	//diary에 comment 추가
 	@PostMapping("/diary/comment")
-	@ApiOperation(value = "diaryId에 해당하는 comment 추가", response = Diary.class)
+	@ApiOperation(value = "diaryId에 해당하는 comment 추가")
 	public ResponseEntity<?> insertComment(@RequestBody Comment comment){
 		try {
 			int result = diaryService.addComment(comment);

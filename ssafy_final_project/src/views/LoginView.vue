@@ -8,7 +8,7 @@
                 <div class="login-form">
                     <form method="post" id="login-form">
                         <input type="text" name="userId" placeholder="아이디" v-model="id"> <br>
-                        <input type="password" name="userPassword" placeholder="비밀번호" v-model="password">
+                        <input type="password" name="userPassword" placeholder="비밀번호" v-model="password" @keyup.enter="login">
                         <br>
                         <button button type="button" class="btn btn-secondary" @click="login">로그인</button>
                         <br>
@@ -72,8 +72,9 @@ main {
 }
 
 .login-form {
+    width: 80%;
     margin: 0 50px;
-    padding: 30px 100px;
+    padding: 30px 50px;
     border: 1px solid grey;
     border-radius: 20px;
     text-align: center;
