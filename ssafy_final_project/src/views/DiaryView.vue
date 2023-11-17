@@ -21,7 +21,7 @@
             <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary">
                 ESP 
             </button>
-            <button class="btn btn-outline-primary btn-layer-2_5" value="INJ" @click="avtyDiary">
+            <button class="btn btn-outline-primary2 btn-layer-2_5" value="INJ" @click="avtyDiary">
                 INJ
             </button>
             <button class="btn btn-outline-secondary btn-layer-2_2" value="INP" @click="avtyDiary">
@@ -189,6 +189,11 @@ h3 {
 .button-container .btn-outline-primary {
   background: none;
   border: 1px solid #A099FB;
+  color: #6C5CEA;
+}
+.button-container .btn-outline-primary2 {
+  background: none;
+  border: 1px solid #6dac07;
   color: #6C5CEA;
 }
 .button-container .btn-secondary {
