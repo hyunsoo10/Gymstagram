@@ -9,7 +9,7 @@
           <div class="profile-name">
             {{ userName }}🍑
           </div>
-          <button type="button" class="profile-edit" onclick="location.href='/update'">
+          <button type="button" class="profile-edit" @click="goUpdate(myId)">
             정보수정하기
           </button>
         </div>
@@ -18,7 +18,7 @@
           📚 Total Diary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ totalCnt }}
         </div>
         <div class="weekly-cnt">
-          📒 Weekly Diary&nbsp;&nbsp;{{ weeklyCnt }}7
+          📒 Weekly Diary&nbsp;&nbsp;{{ weeklyCnt }}
         </div>
         <div class="current-streak">
           🗓️ 7일 연속 작성
@@ -30,6 +30,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import {useRouter} from 'vue-router';
+
+const router = useRouter();
 
 const loginUser = JSON.parse(localStorage.getItem('loginUser'))
 
@@ -38,7 +41,14 @@ const profileImage = "../src/assets/user_image/" + loginUser.userId + "/" + logi
 
 defineProps({
   totalCnt: Number,
+  weeklyCnt: Number,
+  myId : String,
 })
+
+const goUpdate = (myId) => {
+  router.push({name: "update", params: "myId"})
+}
+
 </script>
 
 <style  scoped>

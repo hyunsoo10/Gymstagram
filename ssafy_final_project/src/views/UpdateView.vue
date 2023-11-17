@@ -6,48 +6,50 @@
                 <br>
             </div>
             <section class="d-flex flex-column">
-                <div class="regist-form">
+                <div class="update-form">
                     <div class="form-content">
                         <label for="userName">
                             이름
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
+                        <input type="text" id="userName" value="" placeholder="이름을 입력해주세요.">
                         <br>
                         <label for="userId">
                             아이디
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
+                        <input type="text" id="userId" :value="myId" readonly>
                         <br>
                         <label for="userNickname">
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)"
-                            v-model="user.nickName">
+                        <input type="text" id="userNickname" value=""
+                            placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)">
                         <br>
                         <label for="userPassword">
                             비밀번호
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요." v-model="user.userPassword">
+                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요.">
                         <br>
                         <label for="userPassword2">
                             비밀번호확인
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
+                        <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요.">
                         <br>
                         <div class="filebox">
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value=uploadName placeholder="첨부파일">
+                            <input class="upload-name" value="user.value.profileImage" placeholder="첨부파일">
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
-                        <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                        <img class="image-ex"
+                            :src="`https://cdn.pixabay.com/photo/2023/11/09/14/03/white-throated-sparrow-8377444_1280.jpg`"
+                            style="width: 200px; margin-top: 10px" />
                         <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
                             aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
@@ -66,13 +68,12 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user.js'
+import { useRouter, useRoute  } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 
-const store = useUserStore();
-
+const myId = ref(route.params.userId);
 const user = ref({
     userName: '',
     userId: '',
@@ -157,7 +158,6 @@ const regist = function (event) {
 };
 </script>
 
-
 <style scoped>
 li,
 ui {
@@ -169,7 +169,7 @@ main {
     /* height: 100vh; */
 }
 
-.regist-form {
+.update-form {
     margin: 0 50px 50px;
     padding: 30px 50px;
     width: 700px;
