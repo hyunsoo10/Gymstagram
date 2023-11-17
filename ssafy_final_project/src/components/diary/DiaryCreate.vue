@@ -1,31 +1,32 @@
 <template>
-    <div>
-        <h4>Diary Create</h4>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="title" placeholder="제목" v-model="diary.title">
-            <label for="title">Title</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="writer" placeholder="작성자" :value="userStore.loginUser.userId"
-                readonly>
-            <label for="writer">Writer</label>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea class="form-control" id="content" placeholder="내용" style="height: 200px"
-                v-model="diary.content"></textarea>
-            <label for="content">Content</label>
-        </div>
-        <div class="input-group">
-            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
-                aria-label="Upload" @change="upload" :ref="image" accept="image/.*">
-            <!-- <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" @click="upload">upload</button> -->
-        </div>
-        <img :src="imageUploaded" style="width: 500px; margin-top: 10px" />
-        <div class="d-flex justify-content-end " style="margin-top: 10px;">
-            <button class="btn btn-outline-primary" @click="createDiary($event)">등록</button>
-        </div>
+    <div class="create">
+        <div class="create-form">
+            <h4>Diary Create</h4>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="title" placeholder="제목" v-model="diary.title">
+                <label for="title">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="writer" placeholder="작성자" :value="userStore.loginUser.userId"
+                    readonly>
+                <label for="writer">Writer</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="content" placeholder="내용" style="height: 200px"
+                    v-model="diary.content"></textarea>
+                <label for="content">Content</label>
+            </div>
+            <div class="input-group">
+                <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                    aria-label="Upload" @change="upload" :ref="image" accept="image/.*">
+                <!-- <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" @click="upload">upload</button> -->
+            </div>
+            <img :src="imageUploaded" style="width: 500px; margin-top: 10px" />
+            <div class="d-flex justify-content-end " style="margin-top: 10px;">
+                <button class="btn btn-outline-primary" @click="createDiary($event)">등록</button>
+            </div>
 
-
+        </div>
     </div>
 </template>
 
@@ -92,4 +93,11 @@ const upload = function (e) {
 
 </script>
 
-<style  scoped></style>
+<style  scoped>
+.create {
+    display: flex;
+    justify-content: center;
+}
+
+
+</style>

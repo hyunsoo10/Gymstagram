@@ -110,6 +110,8 @@ public class UserRestController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	// avty 결과 반영
 
 	// 회원 수정
 	@PutMapping(value = "/user", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
