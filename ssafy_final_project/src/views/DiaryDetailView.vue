@@ -2,7 +2,7 @@
     <div class="container">
         <RouterLink to="/diary" class="back-icon" > <v-icon icon="mdi-chevron-left" />BACK</RouterLink>
 			<div class="card-body">
-                <h5 class="card-title">{{diaryStore.diary.title}}</h5>
+                <h3 class="card-title">{{diaryStore.diary.title}}</h3>
                 <img class="card-img-top diray-img" width="500" height=""
                     :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
                 <p class="card-text">
@@ -32,7 +32,7 @@
 				
 				<div class="col-auto"></div>
 				<div class="col-auto">
-					<button type="button" @click="createComment" class="btn btn-outline-success">comment</button>
+					<button type="button" @click="createComment" class="btn btn-outline-success"><i class="far fa-paper-plane" style="color: #7CB342;"></i></button>
 				</div>
 			</form>
             <!-- <template v-if="diaryStore.comments.length>0"> -->
