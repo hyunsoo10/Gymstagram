@@ -12,7 +12,7 @@
                             이름
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
+                        <input type="text" id="userName" placeholder="이름을 입력해주세요." >
                         <br>
                         <label for="userId">
                             아이디
@@ -66,12 +66,10 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user.js'
+import { useRouter,useRoute } from 'vue-router';
 
+const route = useRoute();
 const router = useRouter();
-
-const store = useUserStore();
 
 const user = ref({
     userName: '',
