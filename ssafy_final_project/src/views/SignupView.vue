@@ -12,7 +12,7 @@
                             이름
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userName" placeholder="이름을 입력해주세요." >
+                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
                         <br>
                         <label for="userId">
                             아이디
@@ -66,9 +66,8 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue';
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const route = useRoute();
 const router = useRouter();
 
 const user = ref({
@@ -81,7 +80,7 @@ const user = ref({
 
 const image = ref('');
 const password2 = ref('');
-const imageUploaded = ref("https://cdn.pixabay.com/photo/2023/11/09/14/03/white-throated-sparrow-8377444_1280.jpg")
+const imageUploaded = ref("../src/assets/default_profile.png")
 
 const uploadName = ref('첨부파일')
 

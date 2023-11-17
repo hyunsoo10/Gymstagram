@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.pjt.model.dto.Diary;
 import com.ssafy.pjt.model.dto.User;
 import com.ssafy.pjt.model.service.UserService;
 
@@ -81,7 +80,8 @@ public class UserRestController {
 			// 결과 값을 담을 변수(잘 등록되었는지 확인)
 			int result = 0;
 			if (file != null && file.getSize() > 0) {
-				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\user_image\\" + user.getUserId();
+				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\user_image\\"
+						+ user.getUserId();
 				String saveName = UUID.randomUUID() + "_" + user.getProfileImage();
 
 				File target = new File(uploadPath, saveName);
@@ -112,13 +112,42 @@ public class UserRestController {
 	}
 
 	// 회원 수정
-	@PutMapping("/user")
+	@PutMapping(value = "/user", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ApiOperation(value = "회원 정보 수정", response = Integer.class)
-	public ResponseEntity<?> update(User user) {
-		try {
-			int result = userService.modifyUser(user);
-			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	public ResponseEntity<?> update(
+			@RequestPart(required = false) @RequestParam(value = "image", required = false) MultipartFile file,
+			@RequestPart("user") User user) {
 
+		try {
+			// 결과 값을 담을 변수(잘 등록되었는지 확인)
+			int result = 0;
+			if (file != null && file.getSize() > 0) {
+				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\user_image\\"
+						+ user.getUserId();
+				String saveName = UUID.randomUUID() + "_" + user.getProfileImage();
+
+				File target = new File(uploadPath, saveName);
+
+				// 파일을 저장할 경로가 없으면 생성해주기
+				if (!new File(uploadPath).exists())
+					new File(uploadPath).mkdirs();
+
+				try {
+					FileCopyUtils.copy(file.getBytes(), target);
+					user.setProfileImage(saveName);
+					result = userService.modifyUser(user);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				// 파일이 없으면
+			} else {
+				result = userService.modifyUser(user);
+			}
+
+			if (result > 0) {
+				return new ResponseEntity<User>(user, HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
