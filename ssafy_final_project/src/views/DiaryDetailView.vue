@@ -15,7 +15,7 @@
 			<p v-show="!userStore.loginUser">
 			    게시물을 좋아요 하고 싶으면 로그인 하세요
 			</p>
-            <form class="row gx-3 gy-2 align-items-end" id="reviewForm" >
+            <form class="row gx-3 gy-2 align-items-end justify-content-center" id="commentForm" >
 				<div class="col-sm-3">
 					<label class="visually-hidden" for="specificSizeInputGroupUsername">Username</label>
 					<div class="input-group">
@@ -26,7 +26,7 @@
 				</div>
 				<div  class="col-sm-6">
 					<label for="floatingInputValue"></label>
-					<input type="text" class="form-control" id="floatingInputValue"   v-model.trim="newContent"  placeholder="write your review" @keyup.enter="createComment"/>
+					<input type="text" class="form-control" id="floatingInputValue"   v-model.trim="newContent"  placeholder="댓글을 작성해주세요" @keyup.enter="createComment"/>
 				</div>
 				
 				<div class="col-auto"></div>
@@ -34,7 +34,8 @@
 					<button type="button" @click="createComment" class="btn btn-outline-success">comment</button>
 				</div>
 			</form>
-            <template v-if="diaryStore.comments.length>0">
+            <!-- <template v-if="diaryStore.comments.length>0"> -->
+            <template v-if="diaryComment.length>0">
 
             <div v-for="comment in diaryStore.comments" class="comment-box">
                     <div class="reviews d-flex flex-column">
@@ -71,7 +72,8 @@
                                     <v-card-text>
                                         <v-text-field
                                             :placeholder="comment.content"
-                                            :v-model="newContent"
+                                            @keyup.enter="updateComment(comment), isActive.value = false"
+                                            v-model = "updateContent"
                                             type="text"
                                             ></v-text-field>
                                     </v-card-text>
@@ -80,7 +82,8 @@
                                         <v-spacer></v-spacer>
                                         <v-btn
                                         text="수정완료"
-                                        @click="updateComment"
+                                    
+                                        @click="updateComment(comment), isActive.value = false"
                                         ></v-btn>
                                         <v-btn
                                         text="취소"
@@ -113,10 +116,10 @@
                         </div>
                     </div>
                 </div> -->
-            </template>
-            <template v-if="diaryComment.length<=0">
-                <div style="text-align: center;">해당 게시물에 작성된 댓글이 없습니다.</div>
-            </template>
+        </template>
+        <template v-if="diaryComment.length<=0">
+            <div style="text-align: center;">해당 게시물에 작성된 댓글이 없습니다.</div>
+        </template>
 
 	</div>
 
@@ -136,6 +139,7 @@
     // })
     // console.log(props.diary)
     const newContent = ref('')
+    const updateContent = ref('')
     const route = useRoute()
     const router = useRouter()
 
@@ -158,6 +162,7 @@
         parent_comment: 0,
         content: ""
     })
+
 
     //댓글 작성
     const createComment = function(){
@@ -185,9 +190,9 @@
     }
 
     //댓글 수정
-    const updateComment = function(){
-        newComment.value.diaryId = diaryId.value
-        newComment.value.userId  = userStore.loginUser.userId
+    const updateComment = function(com){
+        // console.log(com)
+        // console.log(newContent.value)
         // newComment.value.content = newContent.value
         // console.log(event.target.value)
         var today = new Date();
@@ -202,35 +207,35 @@
         
         var dateString = year + '-' + month  + '-' + day;
         var timeString = hours + ':' + minutes  + ':' + seconds;
-        newComment.value.writeDate = dateString + " "+ timeString
-        // newComment.value.content  = comment
-        console.log(newComment.value)
-        axios.put("http://localhost:8080/diary-api/diary/comment", newComment.value)
-        // updateToggle.value = !updateToggle
+        com.updateDate = dateString + " "+ timeString
+        com.content = updateContent.value;
+        console.log(com)
+        axios.put("http://localhost:8080/diary-api/diary/comment", com)
+        // isActive.value = false
         // router.go()
     }
     const diaryComment = computed(()=>{
      return diaryStore.comments.filter((comment) =>{
             return comment.diaryId == diaryStore.diary.diaryId
+        })
     })
-})
-const deleteComment = function(commentId){
-        axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`)
-        // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)
-        // emit('deleteComment', commentId)
-        //page 새로고침
-        router.go()
+    const deleteComment = function(commentId){
+            axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`)
+            // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)
+            // emit('deleteComment', commentId)
+            //page 새로고침
+            router.go()
+        }
+    const updateReview = function(){
+        // newReview.value.reviewNo = props.review.reviewNo;
+        // newReview.value.youtubeId  = props.review.youtubeId;
+        // newReview.value.userId = loginUser.value.id;
+        // console.log(newReview.content)
+        // console.log(newReview.value)
+        // axios.put(`http://localhost:8080/video-api/video/review/`, newReview.value)
+        updateToggle.value = !updateToggle
+        // router.go()
     }
-const updateReview = function(){
-    // newReview.value.reviewNo = props.review.reviewNo;
-    // newReview.value.youtubeId  = props.review.youtubeId;
-    // newReview.value.userId = loginUser.value.id;
-    // console.log(newReview.content)
-    // console.log(newReview.value)
-    // axios.put(`http://localhost:8080/video-api/video/review/`, newReview.value)
-    updateToggle.value = !updateToggle
-    // router.go()
-}
 </script>
 
 <style scoped>
