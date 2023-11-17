@@ -2,7 +2,7 @@
   <div class="mypage">
     <div class="mypage-profile">
       <div class="profile-img">
-        <img :src=profileImage width="150" height="200"/>
+        <img :src=profileImage width="150" height="200" />
       </div>
       <div class="profile-desc">
         <div class="profile-name">
@@ -12,14 +12,14 @@
           정보수정하기
         </button>
       </div>
-</div>
-      <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
-      </v-list>
-      <!-- <v-main style="height: 250px"></v-main> -->
     </div>
+    <v-list density="compact" nav>
+      <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
+      <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+      <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
+    </v-list>
+    <!-- <v-main style="height: 250px"></v-main> -->
+  </div>
 </template>
 
 <script setup>
@@ -36,9 +36,14 @@ const profileImage = "../src/assets/user_image/" + loginUser.userId + "/" + logi
 nav {
   position: relative !important;
 }
-.mypage {
+
+.mypage-profile {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
 }
 
+.profile-desc {
+  margin-left: 30px;
+}
 </style>
