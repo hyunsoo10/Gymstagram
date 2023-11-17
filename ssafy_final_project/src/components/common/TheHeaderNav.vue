@@ -3,7 +3,7 @@
                 <header>
                         <nav class="navbar">
                                 <div class="navbar-logo">
-                                <img @click="gohome" class="logo-img" src="src/assets/gymstagram-logo.png" />
+                                <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
                                 <!-- <i class="fab fa-instagram"></i> -->
                                 <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
                                 </div>

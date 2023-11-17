@@ -5,29 +5,29 @@
     
         <div class="avty-btn-box">
           <div class="button-container">
-            <button class="btn btn-outline-primary btn-layer-2_1">
+            <button class="btn btn-outline-primary btn-layer-2_1" value="ENJ" @click="avtyDiary">
                 ENJ
                 <!-- <i class="fa fa-check"></i> -->
             </button>
-            <button class="btn btn-outline-secondary btn-layer-2_2">
+            <button class="btn btn-outline-secondary btn-layer-2_2" value="ENP" @click="avtyDiary">
                 ENP
             </button>
-            <button class="btn btn-outline-success btn-layer-2_3">
+            <button class="btn btn-outline-success btn-layer-2_3" value="ESJ" @click="avtyDiary">
                 ESJ
             </button>
-            <button class="btn btn-outline-danger btn-layer-2_4">
+            <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary">
                 ESP 
             </button>
-            <button class="btn btn-outline-primary btn-layer-2_1">
+            <button class="btn btn-outline-primary btn-layer-2_1" value="INJ" @click="avtyDiary">
                 INJ
             </button>
-            <button class="btn btn-outline-secondary btn-layer-2_2">
+            <button class="btn btn-outline-secondary btn-layer-2_2" value="INP" @click="avtyDiary">
                 INP
             </button>
-            <button class="btn btn-outline-success btn-layer-2_3">
+            <button class="btn btn-outline-success btn-layer-2_3" value="ISJ" @click="avtyDiary">
                 ISJ
             </button>
-            <button class="btn btn-outline-danger btn-layer-2_4">
+            <button class="btn btn-outline-danger btn-layer-2_4" value="ISP" @click="avtyDiary">
                 ISP
             </button>
           </div>
@@ -53,12 +53,18 @@
   import { ref, onMounted, computed } from 'vue';
   import DiaryList from '@/components/diary/DiaryList.vue';
   import { useDiaryStore } from '@/stores/diary'
+  import {useRouter} from 'vue-router'
+
+  const router = useRouter()
 
   const store = useDiaryStore();
 
   onMounted(() => {
     store.getAllDiary();
+
   })
+
+
 
   const perPage = 8;
 
@@ -72,12 +78,22 @@
   }
 
   const currentPageDiaryList = computed(() => {
-      return store.allDiary.slice(
+      return store.avtyDiary.slice(
           (currentPage.value - 1) * perPage,
           currentPage.value * perPage
       )
   })
   
+
+  //avty다이어리 가져오기
+  const avtyDiary = function(e){
+    // router.go()
+    // console.log(e.currentTarget.value)
+    store.getAvtyDiary(e.currentTarget.value)
+    // console.log(store.allDiary)
+    // console.log(store.avtyDiary)
+    
+  }
 </script>
   
 <style scoped>
