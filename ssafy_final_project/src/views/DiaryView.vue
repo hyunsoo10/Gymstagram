@@ -1,6 +1,36 @@
 <template>
   <div>
     <h1>Diary View</h1>
+
+    <div class="avty-btn-box">
+      <div class="button-container">
+        <button class="btn btn-outline-primary btn-layer-2_1">
+            ENJ
+            <!-- <i class="fa fa-check"></i> -->
+        </button>
+        <button class="btn btn-outline-secondary btn-layer-2_2">
+            ENP
+        </button>
+        <button class="btn btn-outline-success btn-layer-2_3">
+            ESJ
+        </button>
+        <button class="btn btn-outline-danger btn-layer-2_4">
+            ESP 
+        </button>
+        <button class="btn btn-outline-primary btn-layer-2_1">
+            INJ
+        </button>
+        <button class="btn btn-outline-secondary btn-layer-2_2">
+            INP
+        </button>
+        <button class="btn btn-outline-success btn-layer-2_3">
+            ISJ
+        </button>
+        <button class="btn btn-outline-danger btn-layer-2_4">
+            ISP
+        </button>
+      </div>
+    </div>
     
     <div id="my-diary-box">
       <DiaryList v-for="diary in currentPageDiaryList" :key="diary.diaryId" :diary="diary" />
@@ -47,6 +77,7 @@
           currentPage.value * perPage
       )
   })
+  
 </script>
   
 <style scoped>
@@ -62,5 +93,160 @@ div {
   width: 60%;
   ;
 }
+
+@import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap");
+body {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  background: #f8f8f8;
+}
+
+h3 {
+  text-align: center;
+  margin: 60px auto;
+  font-family: "Poppins", sans-serif;
+  color: #897bff;
+}
+
+.button-container {
+  padding: 16px;
+  display: flex;
+  margin: 60px auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.button-container .btn {
+  display: flex;
+  overflow: hidden;
+  margin: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 150ms linear;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none !important;
+  text-transform: none;
+  text-transform: capitalize;
+  color: #fff;
+  border: 0 none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 90px;
+  font-family: "Alatsi", sans-serif;
+  /* BUTTON ROW 1 STYLE */
+  /* BUTTON ROW 2 STYLE */
+  /* BUTTON ROW 3 STYLE */
+}
+.button-container .btn:hover {
+  transition: all 150ms linear;
+  opacity: 0.85;
+}
+.button-container .btn:active {
+  transition: all 150ms linear;
+  opacity: 0.75;
+}
+.button-container .btn:focus {
+  outline: none;
+}
+.button-container .btn-primary {
+  background: #A099FB;
+  color: #6C5CEA;
+}
+.button-container .btn-outline-primary {
+  background: none;
+  border: 1px solid #A099FB;
+  color: #6C5CEA;
+}
+.button-container .btn-secondary {
+  background: #FE79AB;
+  color: #FEB6D3;
+}
+.button-container .btn-outline-secondary {
+  background: none;
+  border: 1px solid #FE79AB;
+  color: #FEB6D3;
+}
+.button-container .btn-success {
+  background: #01CECB;
+  color: #96E6E6;
+}
+.button-container .btn-outline-success {
+  background: none;
+  border: 1px solid #01CECB;
+  color: #96E6E6;
+}
+.button-container .btn-danger {
+  background: #f32c52;
+  color: #ff6c88;
+}
+.button-container .btn-outline-danger {
+  background: none;
+  border: 1px solid #f32c52;
+  color: #ff6c88;
+}
+.button-container .btn-layer-2_1 i {
+  position: relative;
+  left: 30px;
+  padding: inherit;
+  background: none;
+  color: #A099FB;
+  border-radius: 5px;
+}
+.button-container .btn-layer-2_1:hover{
+  background : #A099FB;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_2 i {
+  position: relative;
+  left: 30px;
+  padding: inherit;
+  background: none;
+  color: #FE79AB;
+  border-radius: 5px;
+}
+.button-container .btn-layer-2_2:hover{
+  background : #FE79AB;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_3 i {
+  position: relative;
+  left: 30px;
+  padding: inherit;
+  background: none;
+  color: #01CECB;
+  border-radius: 5px;
+}
+.button-container .btn-layer-2_3:hover{
+  background : #01CECB;
+  color: white;
+  font-weight: 900;
+}
+
+.button-container .btn-layer-2_4 i {
+  position: relative;
+  left: 30px;
+  padding: inherit;
+  background: none;
+  color: #f32c52;
+  border-radius: 5px;
+}
+.button-container .btn-layer-2_4:hover{
+  background : #f32c52;
+  color: white;
+  font-weight: 900;
+}
+
 </style>
   

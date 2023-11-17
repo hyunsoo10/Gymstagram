@@ -1,6 +1,17 @@
 <template>
     <div class="container">
-        <RouterLink to="/diary" class="back-icon" > <v-icon icon="mdi-chevron-left" />BACK</RouterLink>
+        <v-btn
+        class="ma-2"
+        color="grey-darken-4"
+        @click.prevent="back"
+      >
+        <v-icon
+          start
+          icon="mdi-arrow-left"
+        ></v-icon>
+        Back
+      </v-btn>
+        <!-- <RouterLink to="/diary" class="back-icon" > <v-icon icon="mdi-chevron-left" />BACK</RouterLink> -->
         <!-- <a class="back-icon" @click.prevent="back" > <v-icon icon="mdi-chevron-left" />BACK</a> -->
 			<div class="card-body">
                 <h3 class="card-title">{{diaryStore.diary.title}}</h3>
