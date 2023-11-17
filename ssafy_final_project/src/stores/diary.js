@@ -7,6 +7,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const REST_DIARY_API = `http://localhost:8080/diary-api/diary`
 
     const allDiary = ref([])
+    const avtyDiary = ref([])
     const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
@@ -30,7 +31,7 @@ export const useDiaryStore = defineStore('diary', () => {
             method: 'GET',
         })
         .then((res) => {
-                allDiary.value = res.data
+            avtyDiary.value = res.data
          }) 
     })
     const getAllDiary = function () {
@@ -82,6 +83,12 @@ export const useDiaryStore = defineStore('diary', () => {
             comments.value.push(comment)
         })
     }
+
+    const getAvtyDiary = computed(()=>{
+        return (avty) => avtyDiary.value = allDiary.value.filter((diary)=> diary.avty === avty
+        )
+    })
+
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -119,5 +126,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary}
 })

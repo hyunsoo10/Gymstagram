@@ -67,11 +67,8 @@
 import axios from 'axios'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user.js'
 
 const router = useRouter();
-
-const store = useUserStore();
 
 const user = ref({
     userName: '',
@@ -83,7 +80,7 @@ const user = ref({
 
 const image = ref('');
 const password2 = ref('');
-const imageUploaded = ref("https://cdn.pixabay.com/photo/2023/11/09/14/03/white-throated-sparrow-8377444_1280.jpg")
+const imageUploaded = ref("../src/assets/default_profile.png")
 
 const uploadName = ref('첨부파일')
 

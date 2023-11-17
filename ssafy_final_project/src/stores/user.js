@@ -27,6 +27,7 @@ export const useUserStore = defineStore('user', () => {
             loginUser.value = JSON.parse(savedUser);
         }
     });
+    
     //로그인
     //user 객체를 인자로 받아서 DB에서 아이디 일치하는 회원 가져온 후에 비밀번호 검사
     const login = (user) => {

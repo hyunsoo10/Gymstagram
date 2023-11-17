@@ -3,8 +3,9 @@
                 <header>
                         <nav class="navbar">
                                 <div class="navbar-logo">
-                                        <i class="fab fa-instagram"></i>
-                                        <RouterLink to="/">&nbsp; GYM스타그램</RouterLink>
+                                <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
+                                <!-- <i class="fab fa-instagram"></i> -->
+                                <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
                                         <li>
@@ -38,11 +39,17 @@
   
 <script setup>
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router';
 import { ref } from 'vue'
+
+const router = useRouter()
 const store = useUserStore();
 
 const logout = () => {
         store.logout();
+}
+const gohome= () =>{
+        router.push('/')
 }
 </script>
   
@@ -51,7 +58,11 @@ a {
         text-decoration: none;
         color: var(--text-color);
 }
-
+.logo-img{
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+}
 .navbar {
         display: flex;
         justify-content: space-evenly;

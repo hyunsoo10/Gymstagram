@@ -6,32 +6,31 @@
                 <br>
             </div>
             <section class="d-flex flex-column">
-                <div class="regist-form">
+                <div class="update-form">
                     <div class="form-content">
                         <label for="userName">
                             이름
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
+                        <input type="text" id="userName" :placeholder="store.user.userName" v-model="user.userName">
                         <br>
                         <label for="userId">
                             아이디
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
+                        <input type="text" id="userId" :placeholder="store.user.userId" readonly>
                         <br>
                         <label for="userNickname">
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)"
-                            v-model="user.nickName">
+                        <input type="text" id="userNickname" :placeholder="store.user.nickName" v-model="user.nickName">
                         <br>
                         <label for="userPassword">
                             비밀번호
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요." v-model="user.userPassword">
+                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요" v-model="user.userPassword">
                         <br>
                         <label for="userPassword2">
                             비밀번호확인
@@ -43,7 +42,8 @@
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value=uploadName placeholder="첨부파일">
+                            <input class="upload-name" :placeholder="uploadName"
+                                v-model="user.profileImage">
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
@@ -53,7 +53,7 @@
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
-                            <button type="button" class="btn btn-secondary" @click="regist($event)">수정하기</button>
+                            <button type="button" class="btn btn-secondary" @click="update($event)">수정하기</button>
                         </div>
                         <br>
                     </div>
@@ -65,27 +65,28 @@
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user.js'
 
 const router = useRouter();
-
+const route = useRoute();
 const store = useUserStore();
+
+store.getUser(route.params.userId);
 
 const user = ref({
     userName: '',
-    userId: '',
+    userId: route.params.userId,
     nickName: '',
     userPassword: '',
     profileImage: '',
 })
+const password2 = ref('');
 
 const image = ref('');
-const password2 = ref('');
-const imageUploaded = ref("https://cdn.pixabay.com/photo/2023/11/09/14/03/white-throated-sparrow-8377444_1280.jpg")
-
-const uploadName = ref('첨부파일')
+const uploadName = ref('파일첨부')
+const imageUploaded = ref("../src/assets/default_profile.png")
 
 const upload = function (event) {
     image.value = event.target.files[0]
@@ -94,9 +95,8 @@ const upload = function (event) {
     uploadName.value = image.value.name;
 }
 
-const errorMessage = ref('');
 
-const regist = function (event) {
+const update = function (event) {
     // 유효성 검사
     // 1. 비밀번호 입력과 비밀번호 확인 입력의 일치 여부
     if (user.value.userPassword != password2.value) {
@@ -107,22 +107,16 @@ const regist = function (event) {
     const pattern = /[!@#$%^&*]/
     if (user.value.userPassword.length < 8 || user.value.userPassword.length > 16 || !pattern.test(user.value.userPassword)) {
         alert('비밀번호는 8자리 이상, 16자리 이하이며, 특수문자(!@#$%^&*)를 포함해야 합니다.')
-        return
+        return;
     }
-    // 3. 이미 등록된 ID, 닉네임인지 중복 여부 확인
+    // 3. 이미 등록된 닉네임인지 중복 여부 확인
     axios
         .get("http://localhost:8080/user-api/user")
         .then((res) => {
-            let checkId = res.data.find(
-                (u) => u.userId === user.value.userId
-            );
+
             let nickNameCheck = res.data.find(
                 (u) => u.nickName === user.value.nickName
             );
-            if (checkId) {
-                alert('이미 존재하는 ID입니다.');
-                router.push('/signup');
-            }
             if (nickNameCheck) {
                 alert('이미 존재하는 닉네임입니다.');
                 router.push('/signup');
@@ -132,6 +126,7 @@ const regist = function (event) {
     // 모든 유효성 검사를 통과했으면 회원 등록 가능
     console.log(user)
     console.log(image.value)
+
     let formData = new FormData()
     if (image.value != null) {
         // console.log('1')
@@ -143,20 +138,22 @@ const regist = function (event) {
     }
 
     axios
-        .post("http://localhost:8080/user-api/user", formData, {
+        .put("http://localhost:8080/user-api/user", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
         .then(() => {
-            alert('회원가입에 성공하였습니다!');
+            alert('정보수정에 성공하였습니다!');
             router.push('/');
         }).catch(() => {
-            console.log("회원가입에 실패하였습니다!")
+            console.log("정보수정에 실패하였습니다!")
         })
 };
+onMounted(() => {
+    store.getUser(route.params.userId)
+})
 </script>
-
 
 <style scoped>
 li,
@@ -169,7 +166,7 @@ main {
     /* height: 100vh; */
 }
 
-.regist-form {
+.update-form {
     margin: 0 50px 50px;
     padding: 30px 50px;
     width: 700px;

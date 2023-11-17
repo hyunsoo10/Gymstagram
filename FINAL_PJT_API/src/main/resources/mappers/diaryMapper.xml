@@ -24,8 +24,12 @@
 	</resultMap>
 	
 	<!-- 전체 다이어리 조회 -->
-	<select id="selectAllDiary" parameterType="SearchCondition" resultMap="diaryMap">
-		SELECT * FROM diary
+	<select id="selectAllDiary" parameterType="SearchCondition" resultType="Diary">
+		SELECT diary.diary_id AS diaryId, diary.user_id as userId, diary.title AS title, diary.content AS content, diary.range AS `range`, create_date AS createDate, original_image AS originalImage,
+			   save_image AS saveImage, view_count AS viewCount, like_count AS likeCount, avty.avty_name AS avty
+		 FROM diary
+			INNER JOIN user ON diary.user_id = user.user_id
+   			INNER JOIN avty ON user.avty_code = avty.avty_code
 		<if test="key!='none'">
 			WHERE ${key} LIKE CONCAT('%' #{word} '%')
 		</if>
