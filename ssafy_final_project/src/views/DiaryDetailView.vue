@@ -42,7 +42,13 @@
                             <strong>작성자: </strong>{{ comment.userId }}
                         </div>
 
-                        <div v-if="updateToggle">
+            
+                        <strong>comment: </strong>
+                        <p class="comment">
+                            {{ comment.content }} 
+                        </p>
+              
+                        <!-- <div v-if="updateToggle">
                             <strong>comment: </strong>
                             <input type="text" class="form-control"  v-model.trim="newContent" :placeholder="comment.content">
                         </div>
@@ -51,12 +57,44 @@
                             <p class="comment">
                                 {{ comment.content }} 
                             </p>
-                        </div>
+                        </div> -->
                         <div class="comment-btn">
-                        <template v-if="userStore.loginUser != null">
-                            <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button>
-                            <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateComment" >수정완료</button>
-                            <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</button>
+                        <template v-if="userStore.loginUser != null && (userStore.loginUser.userId == comment.userId) ">
+                            <!-- <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button> -->
+                            <v-dialog width="500">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn v-bind="props" text="수정"> </v-btn>
+                                </template>
+
+                                <template v-slot:default="{ isActive }">
+                                    <v-card title="댓글 수정">
+                                    <v-card-text>
+                                        <v-text-field
+                                            :placeholder="comment.content"
+                                            :v-model="newContent"
+                                            type="text"
+                                            ></v-text-field>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                        text="수정완료"
+                                        @click="updateComment"
+                                        ></v-btn>
+                                        <v-btn
+                                        text="취소"
+                                        @click="isActive.value = false"
+                                        ></v-btn>
+                                    </v-card-actions>
+                                    </v-card>
+                                </template>
+                            </v-dialog>
+
+
+                            <!-- <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateComment" >수정완료</button> -->
+                            <!-- <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</button> -->
+                            <button  v-if="userStore.loginUser.userId == comment.userId" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</button>
                         </template>
                         </div>
                         <div class="comment-date"><strong>date</strong>{{ comment.writeDate }}  </div>
@@ -112,7 +150,8 @@
         diaryStore.getDiaryComments(diaryId.value)
     })
 
-        const newComment = ref({
+  
+    const newComment = ref({
         diaryId: "",
         userId: "",
         writeDate: "",
@@ -149,10 +188,25 @@
     const updateComment = function(){
         newComment.value.diaryId = diaryId.value
         newComment.value.userId  = userStore.loginUser.userId
+        // newComment.value.content = newContent.value
+        // console.log(event.target.value)
+        var today = new Date();
+	
+        var year = today.getFullYear();
+        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+        var day = ('0' + today.getDate()).slice(-2);
+        
+        var hours = ('0' + today.getHours()).slice(-2); 
+        var minutes = ('0' + today.getMinutes()).slice(-2);
+        var seconds = ('0' + today.getSeconds()).slice(-2); 
+        
+        var dateString = year + '-' + month  + '-' + day;
+        var timeString = hours + ':' + minutes  + ':' + seconds;
+        newComment.value.writeDate = dateString + " "+ timeString
         // newComment.value.content  = comment
         console.log(newComment.value)
         axios.put("http://localhost:8080/diary-api/diary/comment", newComment.value)
-        updateToggle.value = !updateToggle
+        // updateToggle.value = !updateToggle
         // router.go()
     }
     const diaryComment = computed(()=>{
