@@ -1,37 +1,37 @@
 <template>
   <div>
     <h1>Diary View</h1>
-
-    <div class="avty-btn-box">
-      <div class="button-container">
-        <button class="btn btn-outline-primary btn-layer-2_1">
-            ENJ
-            <!-- <i class="fa fa-check"></i> -->
-        </button>
-        <button class="btn btn-outline-secondary btn-layer-2_2">
-            ENP
-        </button>
-        <button class="btn btn-outline-success btn-layer-2_3">
-            ESJ
-        </button>
-        <button class="btn btn-outline-danger btn-layer-2_4">
-            ESP 
-        </button>
-        <button class="btn btn-outline-primary btn-layer-2_1">
-            INJ
-        </button>
-        <button class="btn btn-outline-secondary btn-layer-2_2">
-            INP
-        </button>
-        <button class="btn btn-outline-success btn-layer-2_3">
-            ISJ
-        </button>
-        <button class="btn btn-outline-danger btn-layer-2_4">
-            ISP
-        </button>
-      </div>
-    </div>
     
+    
+        <div class="avty-btn-box">
+          <div class="button-container">
+            <button class="btn btn-outline-primary btn-layer-2_1">
+                ENJ
+                <!-- <i class="fa fa-check"></i> -->
+            </button>
+            <button class="btn btn-outline-secondary btn-layer-2_2">
+                ENP
+            </button>
+            <button class="btn btn-outline-success btn-layer-2_3">
+                ESJ
+            </button>
+            <button class="btn btn-outline-danger btn-layer-2_4">
+                ESP 
+            </button>
+            <button class="btn btn-outline-primary btn-layer-2_1">
+                INJ
+            </button>
+            <button class="btn btn-outline-secondary btn-layer-2_2">
+                INP
+            </button>
+            <button class="btn btn-outline-success btn-layer-2_3">
+                ISJ
+            </button>
+            <button class="btn btn-outline-danger btn-layer-2_4">
+                ISP
+            </button>
+          </div>
+        </div>
     <div id="my-diary-box">
       <DiaryList v-for="diary in currentPageDiaryList" :key="diary.diaryId" :diary="diary" />
     </div>
@@ -94,7 +94,7 @@ div {
   ;
 }
 
-@import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap");
+/* @import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap"); */
 body {
   height: 100vh;
   width: 100%;
@@ -246,6 +246,10 @@ h3 {
   background : #f32c52;
   color: white;
   font-weight: 900;
+}
+
+.avty-btn-box{
+  width: 60%;
 }
 
 </style>

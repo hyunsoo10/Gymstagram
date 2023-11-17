@@ -19,7 +19,12 @@
             color="primary"
             v-bind="props">
           <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
-        </v-btn>
+      </v-btn>
+      <v-btn 
+            :class="diary.avty"
+            v-bind="props">
+           {{ diary.avty }}
+      </v-btn>
       <!-- <v-dialog
         transition="dialog-bottom-transition"
         width="auto"
@@ -101,5 +106,48 @@ const getComments = (diaryId) => {
   text-decoration: none;
   color: #EC407A;
   font-weight: 700;
+}
+.v-card-actions{
+  justify-content: space-between;
+}
+.ENJ{
+  font-weight: 900;
+  border: 1px solid #A099FB;
+  color : #A099FB;
+}
+.ENP{
+  font-weight: 900;
+  border: 1px solid #FE79AB;
+  color : #FE79AB;
+}
+.ESJ{
+  font-weight: 900;
+  border: 1px solid #01CECB;
+  color : #01CECB;
+}
+.ESP{
+  font-weight: 900;
+  border: 1px solid #f32c52;
+  color : #f32c52;
+}
+.INJ{
+  font-weight: 900;
+  border: 1px solid #A099FB;
+  color : #A099FB;
+}
+.INP{
+  font-weight: 900;
+  border: 1px solid #FE79AB;
+  color : #FE79AB;
+}
+.ISJ{
+  font-weight: 900;
+  border: 1px solid #01CECB;
+  color : #01CECB;
+}
+.ISP{
+  font-weight: 900;
+  border: 1px solid #f32c52;
+  color : #f32c52;
 }
 </style>

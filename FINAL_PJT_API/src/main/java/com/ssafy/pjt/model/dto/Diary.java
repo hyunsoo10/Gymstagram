@@ -12,6 +12,7 @@ public class Diary {
 	private int likeCount;
 	/**0-public 1-친구공개 2-private*/
 	private int range;
+	private String avty;
 	
 	public Diary() {
 	}
@@ -124,6 +125,15 @@ public class Diary {
 
 	public void setRange(int range) {
 		this.range = range;
+	}
+	
+
+	public String getAvty() {
+		return avty;
+	}
+
+	public void setAvty(String avty) {
+		this.avty = avty;
 	}
 
 
