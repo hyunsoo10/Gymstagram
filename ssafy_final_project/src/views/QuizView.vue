@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="d-flex align-center justify-center flex-wrap text-center mt-5 mx-auto py-7 px-4" elevation="4"
+    <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4" elevation="4"
         height="700" rounded max-width="800" width="100%">
         <div class="avty-test">
             <section id="main" :style="styleObjMain">
@@ -234,10 +234,9 @@ function setResult() {
 </script>
 
 <style>
-/* * {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-} */
-
+#outer {
+    margin-bottom: 10rem;
+}
 .avty-test {
     margin: 20px;
     width: 700px;
