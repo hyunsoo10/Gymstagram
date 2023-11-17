@@ -5,6 +5,9 @@
     
         <div class="avty-btn-box">
           <div class="button-container">
+            <button class="btn btn-outline-all btn-layer-2_0" @click="router.go()">
+                전체보기
+            </button>
             <button class="btn btn-outline-primary btn-layer-2_1" value="ENJ" @click="avtyDiary">
                 ENJ
                 <!-- <i class="fa fa-check"></i> -->
@@ -178,6 +181,11 @@ h3 {
   background: #A099FB;
   color: #6C5CEA;
 }
+.button-container .btn-outline-all {
+  background: none;
+  border: 1px solid #000000;
+  color: #000000;
+}
 .button-container .btn-outline-primary {
   background: none;
   border: 1px solid #A099FB;
@@ -218,11 +226,17 @@ h3 {
   color: #A099FB;
   border-radius: 5px;
 }
+.button-container .btn-layer-2_0:hover{
+  background : #020202;
+  color: white;
+  font-weight: 900;
+}
 .button-container .btn-layer-2_1:hover{
   background : #A099FB;
   color: white;
   font-weight: 900;
 }
+
 .button-container .btn-layer-2_2:hover{
   background : #FE79AB;
   color: white;
