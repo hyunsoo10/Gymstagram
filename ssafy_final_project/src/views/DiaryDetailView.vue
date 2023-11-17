@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <RouterLink to="/diary" class="back-icon" > <v-icon icon="mdi-chevron-left" />BACK</RouterLink>
+        <!-- <a class="back-icon" @click.prevent="back" > <v-icon icon="mdi-chevron-left" />BACK</a> -->
 			<div class="card-body">
                 <h3 class="card-title">{{diaryStore.diary.title}}</h3>
                 <img class="card-img-top diray-img" width="500" height=""
@@ -238,6 +239,8 @@
         updateToggle.value = !updateToggle
         // router.go()
     }
+
+    const back = () =>{router.go(-1)}
 </script>
 
 <style scoped>
