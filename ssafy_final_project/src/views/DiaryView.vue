@@ -18,7 +18,7 @@
             <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary">
                 ESP 
             </button>
-            <button class="btn btn-outline-primary btn-layer-2_1" value="INJ" @click="avtyDiary">
+            <button class="btn btn-outline-primary btn-layer-2_5" value="INJ" @click="avtyDiary">
                 INJ
             </button>
             <button class="btn btn-outline-secondary btn-layer-2_2" value="INP" @click="avtyDiary">
@@ -223,26 +223,10 @@ h3 {
   color: white;
   font-weight: 900;
 }
-.button-container .btn-layer-2_2 i {
-  position: relative;
-  left: 30px;
-  padding: inherit;
-  background: none;
-  color: #FE79AB;
-  border-radius: 5px;
-}
 .button-container .btn-layer-2_2:hover{
   background : #FE79AB;
   color: white;
   font-weight: 900;
-}
-.button-container .btn-layer-2_3 i {
-  position: relative;
-  left: 30px;
-  padding: inherit;
-  background: none;
-  color: #01CECB;
-  border-radius: 5px;
 }
 .button-container .btn-layer-2_3:hover{
   background : #01CECB;
@@ -250,15 +234,12 @@ h3 {
   font-weight: 900;
 }
 
-.button-container .btn-layer-2_4 i {
-  position: relative;
-  left: 30px;
-  padding: inherit;
-  background: none;
-  color: #f32c52;
-  border-radius: 5px;
-}
 .button-container .btn-layer-2_4:hover{
+  background : #f32c52;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_5:hover{
   background : #f32c52;
   color: white;
   font-weight: 900;
