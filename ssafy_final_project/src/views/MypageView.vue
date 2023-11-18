@@ -4,7 +4,11 @@
       <Profile :total-cnt="myDiary.length" :weekly-cnt="diaryStore.weeklyDiary.length" :my-id="userId" />
       <div id="today-date">
         <p v-html="timeContent"></p>
-        <RouterLink to="/create">다이어리 작성하기</RouterLink>
+        <!-- <RouterLink to="/create">다이어리 작성하기</RouterLink> -->
+        <v-btn color="accent" @click.stop="dialog = true">
+          다이어리 작성하기
+        </v-btn>
+        <DiaryCreate @close-Dialog="close" :dialog="dialog" v-model="dialog"></DiaryCreate>
       </div>
       <AVTY />
     </div>
@@ -46,6 +50,13 @@ import MyWeeklyDiary from '@/components/diary/MyWeeklyDiary.vue'
 const route = useRoute();
 const diaryStore = useDiaryStore();
 const userStore = useUserStore();
+
+// 모달창 false
+const dialog = ref(false);
+const close = function() {
+  console.log(dialog.value)
+  dialog.value = false
+}
 
 const userId = ref(route.params.userId);
 //전체 다이어리 중에 my diary만 가져오기

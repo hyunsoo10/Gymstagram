@@ -5,32 +5,32 @@
     
         <div class="avty-btn-box">
           <div class="button-container">
-            <button class="btn btn-outline-all btn-layer-2_0" @click="router.go()">
+            <button class="btn btn-outline-all btn-layer-2_0 active" value="전체보기" @click="router.go(), changeBtn($event)">
                 전체보기
             </button>
-            <button class="btn btn-outline-primary btn-layer-2_1" :class="{selected: isActive}" value="ENJ" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-primary btn-layer-2_1" value="ENJ" @click="avtyDiary($event), changeBtn($event)">
                 ENJ
                 <!-- <i class="fa fa-check"></i> -->
             </button>
-            <button class="btn btn-outline-secondary btn-layer-2_2"   value="ENP" @click="avtyDiary($event)">
+            <button class="btn btn-outline-secondary btn-layer-2_2" value="ENP" @click="avtyDiary($event), changeBtn($event)">
                 ENP
             </button>
-            <button class="btn btn-outline-success btn-layer-2_3" value="ESJ" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-success btn-layer-2_3" value="ESJ" @click="avtyDiary($event), changeBtn($event)">
                 ESJ
             </button>
-            <button class="btn btn-outline-danger btn-layer-2_4" value="ESP" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-danger btn-layer-2_4"  value="ESP" @click="avtyDiary($event),changeBtn($event)">
                 ESP 
             </button>
-            <button class="btn btn-outline-primary2 btn-layer-2_5" value="INJ" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-primary2 btn-layer-2_5"  value="INJ" @click="avtyDiary($event), changeBtn($event)">
                 INJ
             </button>
-            <button class="btn btn-outline-secondary2 btn-layer-2_6" value="INP" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-secondary2 btn-layer-2_6"  value="INP" @click="avtyDiary($event), changeBtn($event)">
                 INP
             </button>
-            <button class="btn btn-outline-success2 btn-layer-2_7" value="ISJ" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-success2 btn-layer-2_7"  value="ISJ" @click="avtyDiary($event), changeBtn($event)">
                 ISJ
             </button>
-            <button class="btn btn-outline-danger2 btn-layer-2_8" value="ISP" @click="avtyDiary($event), isActive=!isActive">
+            <button class="btn btn-outline-danger2 btn-layer-2_8"  value="ISP" @click="avtyDiary($event), changeBtn($event)">
                 ISP
             </button>
           </div>
@@ -64,11 +64,9 @@
 
   onMounted(() => {
     store.getAllDiary();
-
   })
 
   const isActive = ref(false)
-
   const perPage = 8;
 
   const currentPage = ref(1)
@@ -91,12 +89,26 @@
   //avty다이어리 가져오기
   const avtyDiary = function(e){
     // router.go()
-    console.log(e.currentTarget.value)
+    // console.log(e.currentTarget.value)
     store.getAvtyDiary(e.currentTarget.value)
     // console.log(store.allDiary)
     // console.log(store.avtyDiary)
     
   }
+
+  // 버튼 색상 유지하기
+  const changeBtn = function(e) {
+    let btns = document.querySelectorAll(".btn");
+  btns.forEach(function (btn, i) {
+    if (e.currentTarget == btn) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+    console.log(e.currentTarget.value);
+  }
+
 </script>
   
 <style scoped>
@@ -257,11 +269,7 @@ h3 {
   color: white;
   font-weight: 900;
 }
-.btn.btn-outline-primary.btn-layer-2_1.selected{
-  background : #A099FB !important;
-  color: white !important;
-  font-weight: 900 !important;
-}
+
 .button-container .btn-layer-2_2:hover{
   background : #FE79AB;
   color: white;
@@ -294,6 +302,55 @@ h3 {
   font-weight: 900;
 }
 .button-container .btn-layer-2_8:hover{
+  background : #B3A492;
+  color: white;
+  font-weight: 900;
+}
+
+.button-container .btn-layer-2_0.active{
+  background : #020202;
+  color: white;
+  font-weight: 900;
+}
+
+.button-container .btn-layer-2_1.active{
+  background : #A099FB;
+  color: white;
+  font-weight: 900;
+}
+
+.button-container .btn-layer-2_2.active{
+  background : #FE79AB;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_3.active{
+  background : #01CECB;
+  color: white;
+  font-weight: 900;
+}
+
+.button-container .btn-layer-2_4.active{
+  background : #f32c52;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_5.active{
+  background : #FCE38A;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_6.active{
+  background : #79AC78;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_7.active{
+  background : #96B6C5;
+  color: white;
+  font-weight: 900;
+}
+.button-container .btn-layer-2_8.active{
   background : #B3A492;
   color: white;
   font-weight: 900;
