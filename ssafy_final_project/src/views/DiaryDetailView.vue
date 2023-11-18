@@ -77,7 +77,7 @@
                             <!-- <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button> -->
                             <v-dialog width="500">
                                 <template v-slot:activator="{ props }">
-                                    <v-btn v-bind="props" text="수정"> </v-btn>
+                                    <v-btn color="blue-lighten-1"  v-bind="props" text="수정"> </v-btn>
                                 </template>
 
                                 <template v-slot:default="{ isActive }">
@@ -109,8 +109,7 @@
 
 
                             <!-- <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateComment" >수정완료</button> -->
-                            <!-- <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</button> -->
-                            <button  v-if="userStore.loginUser.userId == comment.userId" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</button>
+                            <v-btn  color="red"  v-if="userStore.loginUser.userId == comment.userId" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</v-btn >
                         </template>
                         </div>
                         <div class="comment-date"><strong>date</strong>{{ comment.writeDate }}  </div>
@@ -234,11 +233,15 @@
         })
     })
     const deleteComment = function(commentId){
-            axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`)
+            var flag = confirm("정말로 댓글을 삭제하시겠습니까?")
+            console.log(flag)
+            if(flag){
+                axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`)
+                router.go()
+            }
             // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)
             // emit('deleteComment', commentId)
             //page 새로고침
-            router.go()
         }
     const updateReview = function(){
         // newReview.value.reviewNo = props.review.reviewNo;
