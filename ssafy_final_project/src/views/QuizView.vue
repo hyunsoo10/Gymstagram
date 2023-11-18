@@ -1,6 +1,6 @@
 <template>
     <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4" elevation="4"
-        height="700" rounded max-width="800" width="100%">
+        height="auto" rounded max-width="800" width="100%">
         <div class="avty-test">
             <section id="main" :style="styleObjMain">
                 <br>
@@ -29,6 +29,25 @@
                 <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
                 <div class="resultDesc">
                 </div>
+               
+                <p><strong>추천 음악 들어보세요!</strong></p>
+                <div class="play-box">
+                    <button @click="playMusic(avty), isPlaying=true"><i class="fas fa-volume-up" style="color: cornflowerblue;"></i></button>
+                    <button @click=" isPlaying=false"><i class="fas fa-volume-mute"  style="color: tomato;"></i></button>
+
+                </div>
+                <template v-if="isPlaying">
+                    <div class="container">
+                                <YoutubeMusicPlayer
+                                    class="youtube-list"
+                                    v-for="(video, index) in store.videos"
+                                    :key="video.id.videoId"
+                                    :video="video"
+                                    :index="index"
+                                    :current="current"
+                                />
+                    </div>
+                </template>
             </section>
         </div>
     </v-sheet>
@@ -36,11 +55,31 @@
 
 <script setup>
 import { qnaList, infoList } from "@/assets/data/data.js";
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
+import { useUserStore } from "@/stores/user";
+import { useYoutubeStore } from "@/stores/youtube";
 
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
+const avty = ref()
+const isPlaying = ref(false)
+const userStore = useUserStore();
+const store = useYoutubeStore();
+
+const current = ref(0)
+const prev = function() {
+  current.value = (current.value+9)%10;
+}
+const next = function() {
+  current.value = (current.value+1)%10
+}
+
+const playMusic = (avty)=>{
+    console.log(avty)
+    store.youtubeSearch(avty)
+}
 
 // 질문 9개
 const endPoint = 9;
@@ -208,10 +247,11 @@ function setResult() {
     // infoList[최대값이 발견된 index번호]의 name을 담기
     const loginUser = JSON.parse(localStorage.getItem('loginUser'))
     loginUser.avtyCode = point;
-
+    avty.value = loginUser.avtyCode
     const userName = loginUser.userName;
 
     localStorage.setItem('loginUser', JSON.stringify(loginUser))
+    
     resultName.innerHTML = userName + `님은 ` + infoList[point].name + ` 유형입니다 !`;
 
     // 결과 이미지 띄우기
@@ -324,6 +364,15 @@ focus {
     font-size: 15px;
     text-align: text-align;
 
+}
+
+.play-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    width: 5rem;
+    font-size: 1.5rem;
 }
 </style>
 
