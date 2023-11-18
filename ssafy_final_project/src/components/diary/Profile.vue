@@ -48,7 +48,6 @@ defineProps({
 const goUpdate = (myId) => {
   router.push({name: "update", params: "myId"})
 }
-
 </script>
 
 <style  scoped>
@@ -59,7 +58,7 @@ nav {
 .mypage {
   border: 1px #c9c9c9 solid;
   border-radius: 10px;
-  height: 210px;
+  height: auto;
   width: 100%;
 }
 
@@ -94,10 +93,10 @@ nav {
 .profile-edit {
   border: 1px solid #c9c9c9;
   border-radius: 10px;
-  width: 70px;
-  height: 20px;
+  width: 6rem;
+  height: 1.5rem;
   background: #c9c9c9;
-  font-size: 10px;
+  font-size: 0.7rem;
   margin-left: 20px;
 }
 
@@ -117,4 +116,11 @@ nav {
   font-size: 16px;
   text-align: start;
   margin: 5px 0px;
-}</style>
+}
+
+.profile-desc div{
+  font-size: 0.8rem;
+}
+
+
+</style>

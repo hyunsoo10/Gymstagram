@@ -36,6 +36,9 @@
 		<if test="orderBy!='none'">
 			ORDER BY ${orderBy} ${orderByDir}
 		</if>
+		<if test="orderBy =='none'">
+			ORDER BY diary.create_date DESC
+		</if>
 	</select>
 	
 	<!-- 다이어리 1개 상세 조회 -->

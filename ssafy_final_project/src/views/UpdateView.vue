@@ -10,31 +10,26 @@
                     <div class="form-content">
                         <label for="userName">
                             이름
-                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userName" :placeholder="store.user.userName" v-model="user.userName">
+                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
                         <br>
                         <label for="userId">
-                            아이디
-                            <img class="icon-star" src="@/assets/icon_star.png" />
+                            아이디(변경불가)
                         </label>
-                        <input type="text" id="userId" :placeholder="store.user.userId" readonly>
+                        <input type="text" id="userId" :value="myId" disabled>
                         <br>
                         <label for="userNickname">
                             닉네임
-                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userNickname" :placeholder="store.user.nickName" v-model="user.nickName">
+                        <input type="text" id="userNickname" placeholder="닉네임을 입력해주세요." v-model="user.nickName">
                         <br>
                         <label for="userPassword">
                             비밀번호
-                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요" v-model="user.userPassword">
+                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요" v-model="user.userPassword" >
                         <br>
                         <label for="userPassword2">
                             비밀번호확인
-                            <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
                         <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
                         <br>
@@ -42,14 +37,11 @@
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :placeholder="uploadName"
-                                v-model="user.profileImage">
+                            <input class="upload-name" :value="uploadName">
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
                         <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
-                        <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
-                            aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
@@ -73,26 +65,25 @@ const router = useRouter();
 const route = useRoute();
 const store = useUserStore();
 
-store.getUser(route.params.userId);
+const myId = route.params.userId;
 
 const user = ref({
-    userName: '',
+    userName: store.loginUser.userName,
     userId: route.params.userId,
-    nickName: '',
-    userPassword: '',
-    profileImage: '',
+    nickName: store.loginUser.nickName,
+    userPassword: store.loginUser.userPassword,
+    profileImage: store.loginUser.profileImage,
 })
 const password2 = ref('');
 
 const image = ref('');
-const uploadName = ref('파일첨부')
-const imageUploaded = ref("../src/assets/default_profile.png")
+const uploadName = ref('')
+const imageUploaded = ref("../src/assets/user_image/" + route.params.userId + "/" + store.loginUser.profileImage)
 
 const upload = function (event) {
+    uploadName.value = image.value.name;
     image.value = event.target.files[0]
     imageUploaded.value = URL.createObjectURL(image.value)
-    console.log(URL.createObjectURL(image.value))
-    uploadName.value = image.value.name;
 }
 
 
@@ -109,50 +100,31 @@ const update = function (event) {
         alert('비밀번호는 8자리 이상, 16자리 이하이며, 특수문자(!@#$%^&*)를 포함해야 합니다.')
         return;
     }
-    // 3. 이미 등록된 닉네임인지 중복 여부 확인
+    // 3. 이미 등록된 닉네임인지 중복 여부 확인, 원래 내 닉네임은 괜찮음
     axios
         .get("http://localhost:8080/user-api/user")
         .then((res) => {
-
             let nickNameCheck = res.data.find(
                 (u) => u.nickName === user.value.nickName
             );
-            if (nickNameCheck) {
+            if (store.loginUser.nickName !== user.value.nickName && nickNameCheck) {
                 alert('이미 존재하는 닉네임입니다.');
                 router.push('/signup');
             }
         });
 
     // 모든 유효성 검사를 통과했으면 회원 등록 가능
-    console.log(user)
-    console.log(image.value)
-
     let formData = new FormData()
     if (image.value != null) {
-        // console.log('1')
         user.value.profileImage = image.value.name;
         formData.append('image', image.value)
         formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
     } else {
         formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
     }
-
-    axios
-        .put("http://localhost:8080/user-api/user", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(() => {
-            alert('정보수정에 성공하였습니다!');
-            router.push('/');
-        }).catch(() => {
-            console.log("정보수정에 실패하였습니다!")
-        })
+    store.update(formData);
 };
-onMounted(() => {
-    store.getUser(route.params.userId)
-})
+
 </script>
 
 <style scoped>
