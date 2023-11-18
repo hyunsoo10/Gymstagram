@@ -48,7 +48,6 @@ defineProps({
 const goUpdate = (myId) => {
   router.push({name: "update", params: "myId"})
 }
-
 </script>
 
 <style  scoped>
