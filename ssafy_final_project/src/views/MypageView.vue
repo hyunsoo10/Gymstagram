@@ -1,6 +1,6 @@
 <template>
   <div id="my-page">
-    <div class="profile-box">
+    <div class="profile-box"  v-if="userStore.loginUser != null">
       <Profile :total-cnt="myDiary.length" :weekly-cnt="diaryStore.weeklyDiary.length" :my-id="userId" />
       <div id="today-date">
         <p v-html="timeContent"></p>
@@ -12,7 +12,7 @@
       </div>
       <AVTY />
     </div>
-    <v-card width=60%>
+    <v-card width=60%  v-if="userStore.loginUser != null">
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
         <v-tab :value="1">My Weekly Diary</v-tab>
         <v-tab :value="2">My Total Diary</v-tab>

@@ -89,6 +89,7 @@ export const useUserStore = defineStore('user', () => {
         loginUser.value = null;
         localStorage.removeItem("loginUser");
         router.push({ name: "home" });
+        console.log("?")
     };
 
     const user = ref([])
