@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
             loginUser.value = JSON.parse(savedUser);
         }
     });
-    
+
     //로그인
     //user 객체를 인자로 받아서 DB에서 아이디 일치하는 회원 가져온 후에 비밀번호 검사
     const login = (user) => {
@@ -59,8 +59,32 @@ export const useUserStore = defineStore('user', () => {
             });
     };
 
-    //로그아웃
+    // 정보수정
+    const update = (formData) => {
+        axios
+            .put(`${REST_USER_API}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(() => {
+                alert('정보수정에 성공하였습니다!');
+                // localStorage에 저장된 정보도 변경하기
+                const localUser = JSON.parse(localStorage.getItem('loginUser'))
+                axios.get(`${REST_USER_API}/${localUser.userId}`)
+                    .then((res) => {
+                        let dbUser = res.data;
+                        localStorage.setItem('loginUser', JSON.stringify(dbUser));
+                        loginUser.value = dbUser;
+                    })
+                router.push('/');
+            })
+            .catch(() => {
+                console.log("정보수정에 실패하였습니다!")
+            })
+    }
 
+    //로그아웃
     const logout = () => {
         loginUser.value = null;
         localStorage.removeItem("loginUser");
@@ -74,5 +98,5 @@ export const useUserStore = defineStore('user', () => {
                 user.value = res.data
             })
     }
-    return { users, getUserList, user, getUser, login, loginUser, logout }
+    return { users, getUserList, user, getUser, login, loginUser, logout, update }
 })

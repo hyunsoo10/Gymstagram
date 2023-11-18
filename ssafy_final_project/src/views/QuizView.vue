@@ -1,6 +1,6 @@
 <template>
-    <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4" elevation="4"
-        height="auto" rounded max-width="800" width="100%">
+    <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4"
+        elevation="4" height="auto" rounded max-width="800" width="100%">
         <div class="avty-test">
             <section id="main" :style="styleObjMain">
                 <br>
@@ -29,23 +29,18 @@
                 <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
                 <div class="resultDesc">
                 </div>
-               
+
                 <p><strong>추천 음악 들어보세요!</strong></p>
                 <div class="play-box">
-                    <button @click="playMusic(avty), isPlaying=true"><i class="fas fa-volume-up" style="color: cornflowerblue;"></i></button>
-                    <button @click=" isPlaying=false"><i class="fas fa-volume-mute"  style="color: tomato;"></i></button>
+                    <button @click="playMusic(avty), isPlaying = true"><i class="fas fa-volume-up"
+                            style="color: cornflowerblue;"></i></button>
+                    <button @click="isPlaying = false"><i class="fas fa-volume-mute" style="color: tomato;"></i></button>
 
                 </div>
                 <template v-if="isPlaying">
                     <div class="container">
-                                <YoutubeMusicPlayer
-                                    class="youtube-list"
-                                    v-for="(video, index) in store.videos"
-                                    :key="video.id.videoId"
-                                    :video="video"
-                                    :index="index"
-                                    :current="current"
-                                />
+                        <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in store.videos"
+                            :key="video.id.videoId" :video="video" :index="index" :current="current" />
                     </div>
                 </template>
             </section>
@@ -59,6 +54,8 @@ import { ref, onMounted } from 'vue'
 import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
 import { useUserStore } from "@/stores/user";
 import { useYoutubeStore } from "@/stores/youtube";
+import axios from "axios";
+
 
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
@@ -69,14 +66,14 @@ const userStore = useUserStore();
 const store = useYoutubeStore();
 
 const current = ref(0)
-const prev = function() {
-  current.value = (current.value+9)%10;
+const prev = function () {
+    current.value = (current.value + 9) % 10;
 }
-const next = function() {
-  current.value = (current.value+1)%10
+const next = function () {
+    current.value = (current.value + 1) % 10
 }
 
-const playMusic = (avty)=>{
+const playMusic = (avty) => {
     console.log(avty)
     store.youtubeSearch(avty)
 }
@@ -250,10 +247,17 @@ function setResult() {
     avty.value = loginUser.avtyCode
     const userName = loginUser.userName;
 
+    // 검사 결과를 DB에 반영
+    axios
+        .put(`http://localhost:8080/user-api/user/${loginUser.userId}`, loginUser)
+        .then(() => {
+            alert('정보수정에 성공하였습니다!');
+        }).catch(() => {
+            console.log("정보수정에 실패하였습니다!")
+        })
     localStorage.setItem('loginUser', JSON.stringify(loginUser))
-    
-    resultName.innerHTML = userName + `님은 ` + infoList[point].name + ` 유형입니다 !`;
 
+    resultName.innerHTML = userName + `님은 ` + infoList[point].name + ` 유형입니다 !`;
     // 결과 이미지 띄우기
     let resultImg = document.createElement('img');
     const imgDiv = document.querySelector('#resultImg');
@@ -277,6 +281,7 @@ function setResult() {
 #outer {
     margin-bottom: 10rem;
 }
+
 .avty-test {
     margin: 20px;
     width: 700px;
@@ -366,7 +371,7 @@ focus {
 
 }
 
-.play-box{
+.play-box {
     display: flex;
     justify-content: space-between;
     align-items: center;

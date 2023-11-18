@@ -9,11 +9,11 @@ import com.ssafy.pjt.model.dao.UserDao;
 import com.ssafy.pjt.model.dto.User;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Override
 	public List<User> getAllUser() {
 		return userDao.selectAllUser();
@@ -38,5 +38,10 @@ public class UserServiceImpl implements UserService{
 	public User getOneUser(String userId) {
 		return userDao.selectOneUser(userId);
 	}
-	
+
+	@Override
+	public int modifyAvty(User user) {
+		return userDao.updateAvty(user);
+	}
+
 }
