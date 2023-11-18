@@ -19,4 +19,7 @@ public interface UserService {
 	
 	//유저 상세 조회
 	User getOneUser(String userId);
+
+	// avty 코드 수정
+	int modifyAvty(User user);
 }

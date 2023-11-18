@@ -38,6 +38,13 @@
 		SET user_name = #{userName}, nickname = #{nickName}, user_password = #{userPassword}, profile_image = #{profileImage}
 		WHERE user_id = #{userId}
 	</update>
+	
+	<!-- avty코드 수정 -->
+	<update id="updateAvty" parameterType="User">
+		UPDATE user
+		SET avty_code = #{avtyCode}
+		WHERE user_id = #{userId}
+	</update>
 
 	<!-- 회원 탈퇴 -->
 	<delete id="deleteUser" parameterType="String">
