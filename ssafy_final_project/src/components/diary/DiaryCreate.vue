@@ -20,7 +20,9 @@
                             accept="image/.*">
                         <!-- <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" @click="upload">upload</button> -->
                     </div>
-                    <img :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                    <div style="text-align: center;">
+                        <img :src="imageUploaded" style="width: 20rem; margin-top: 10px" />
+                    </div>
                     <div class="d-flex justify-content-center " style="margin-top: 10px;">
                         <v-btn class="create-btn" @click="createDiary($event)">등록</v-btn>
                         <v-btn class="close-btn" @click="close">닫기</v-btn>
@@ -81,7 +83,7 @@ const createDiary = function (event) {
     })
 }
 
-const imageUploaded = ref("https://cdn.pixabay.com/photo/2023/11/09/14/03/white-throated-sparrow-8377444_1280.jpg")
+const imageUploaded = ref("https://cdn.pixabay.com/photo/2014/07/31/23/42/notepad-407197_1280.jpg")
 const image = ref(null)
 const upload = function (e) {
     // console.log(e.target.files[0])
