@@ -15,24 +15,23 @@
         <!-- <a class="back-icon" @click.prevent="back" > <v-icon icon="mdi-chevron-left" />BACK</a> -->
 			<div class="card-body">
                 <h3 class="card-title">{{diaryStore.diary.title}}</h3>
-                <img class="card-img-top diray-img" width="500" height=""
-                    :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
-                    <p>{{ diaryStore.diary.content }}</p>
-                <p class="card-text" style="display: flex; justify-content: space-around;   align-items: center;" >
-                    <div >{{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
-                    <small class="text-body-secondary">조회수 : <strong>{{diaryStore.diary.viewCount}}</strong></small>
-                    <small class="text-body-secondary">좋아요수 : <strong>{{diaryStore.likeCount(diaryId)}}</strong> </small>
-                    <small class="card-text">{{diaryStore.diary.createDate}} </small>
+                <img class="card-img-top diray-img" width="500" height=""  :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
+                <p class="card-text" style="display: flex; justify-content: space-around;   align-items: center; width: 70%; margin: 5px auto;" >
+                    <div ><i class="fas fa-user-circle"  style="color: #727479;"></i> {{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
+                    <small class="text-body-secondary"><i class="fas fa-eye" style="color: #727479;"></i> <strong>{{diaryStore.diary.viewCount}}</strong></small>
+                    <small class="text-body-secondary"><i class="fa-regular fa-thumbs-up" style="color: #727479;"></i> <strong>{{diaryStore.likeCount(diaryId)}}</strong> </small>
+                    <small class="card-text"><i class="fas fa-calendar-alt" style="color: #727479;"></i> {{diaryStore.diary.createDate}} </small>
                 </p>
+                <div style="width: 70%; margin: 20px auto;">{{ diaryStore.diary.content }}</div>
                 <template v-if="likeFlag">
-                    <div style="font-size: 30px;  display: flex; justify-content: end; width: 90%;" >
+                    <div style="font-size: 2rem;  display: flex; justify-content: end; width: 90%;" >
                     <button @click="unlike(), likeFlag = !likeFlag">
                         <i class="fa-solid fa-heart" style="color: red;"></i>
                     </button>
                 </div>
                 </template>
                 <template v-else>
-                    <div style="font-size: 30px;  display: flex; justify-content: end; width: 90%;" >
+                    <div style="font-size: 2rem;  display: flex; justify-content: end; width: 90%;" >
                     <button @click="like(), likeFlag = !likeFlag">
                         <i class="fa-regular fa-heart" style="color: red;" ></i>
                     </button>
@@ -298,8 +297,10 @@
         display: flex;
         justify-content: space-between;
     }
-    .comment-box{
-        margin: 10px;
+  
+    .comment-box, #commentForm{
+        margin: 10px auto;
+        width: 80%;
     }
 
     .reviews{
