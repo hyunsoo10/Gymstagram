@@ -11,6 +11,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
+
     const router = useRouter();
 
     const loginUser = ref(null)
@@ -72,6 +73,17 @@ export const useDiaryStore = defineStore('diary', () => {
         })
     }
 
+    const subComments = ref()
+    
+    const getSubComments = computed(()=>{
+        return (commentId) => subComments.value = comments.value.filter((comment) => comment.parentComment === commentId);
+    })
+
+    const getSubCommentLength = computed(()=>{
+        return (commentId) => comments.value.filter((comment)=>comment.parentComment === commentId).length
+    })
+
+
     const createComment = function(comment){
         axios({
             url: `${REST_DIARY_API}/comment`,
@@ -126,5 +138,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength}
 })

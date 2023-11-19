@@ -51,13 +51,56 @@
             <template v-if="diaryComment.length>0">
 
             <div v-for="comment in diaryStore.comments" class="comment-box">
-                <!--부모댓글인 경우에만 정상 출력, 하위 댓글은 그 댓글의 대댓글로 출력할 것임-->
-                <template v-if="comment.parentComment==0">
-                    <Comment 
-                    :comment="comment"
-                    />
-                </template>
-            </div>
+                    <div class="reviews d-flex flex-column">
+                        <div class="writer">
+                            <strong>작성자: </strong>{{ comment.userId }}
+                        </div>
+                        <p class="comment">
+                            {{ comment.content }} 
+                        </p>
+
+                        <div class="comment-btn">
+                        <template v-if="userStore.loginUser != null && (userStore.loginUser.userId == comment.userId) ">
+                            <v-dialog width="500">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn color="blue-lighten-1"  v-bind="props" text="수정"> </v-btn>
+                                </template>
+
+                                <template v-slot:default="{ isActive }">
+                                    <v-card title="댓글 수정">
+                                    <v-card-text>
+                                        <v-text-field
+                                            :placeholder="comment.content"
+                                            @keyup.enter="updateComment(comment), isActive.value = false"
+                                            v-model = "updateContent"
+                                            type="text"
+                                            ></v-text-field>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                        text="수정완료"
+                                    
+                                        @click="updateComment(comment), isActive.value = false"
+                                        ></v-btn>
+                                        <v-btn
+                                        text="취소"
+                                        @click="isActive.value = false"
+                                        ></v-btn>
+                                    </v-card-actions>
+                                    </v-card>
+                                </template>
+                            </v-dialog>
+
+
+                            <!-- <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateComment" >수정완료</button> -->
+                            <v-btn  color="red"  v-if="userStore.loginUser.userId == comment.userId" type="button" class="btn btn-outline-danger"  @click="deleteComment(comment.commentId)">삭제</v-btn >
+                        </template>
+                        </div>
+                        <div class="comment-date">{{ comment.writeDate }}  </div>
+                    </div>
+                </div>
 
 
                 
@@ -86,7 +129,6 @@
     import { useUserStore } from '@/stores/user'
     import { useDiaryStore } from '@/stores/diary'
     import axios from 'axios'
-    import Comment from '@/components/diary/comment/Comment.vue'
 
     const diaryStore = useDiaryStore();
     const userStore = useUserStore();

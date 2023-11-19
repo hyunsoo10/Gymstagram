@@ -44,6 +44,9 @@ public interface DiaryDao {
 	
 	//전체 댓글조회
 	List<Comment> selectAllComment();
+	
+	//대댓글 조회
+	List<Comment> selectSubComment(int commentId);
 
 	
 }

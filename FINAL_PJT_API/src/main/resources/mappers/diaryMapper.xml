@@ -112,4 +112,10 @@
 		SELECT * FROM comment
 	</select>
 	
+	<!-- 대댓글 조회 -->
+	<select id="selectSubComment" resultMap="commentMap">
+		SELECT * FROM comment
+			WHERE parent_comment = #{commentId}
+	</select>
+	
 </mapper>
