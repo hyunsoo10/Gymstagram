@@ -70,7 +70,7 @@
 </template> -->
 <script setup>
 import { ref, onMounted } from 'vue'
-import DiaryDetail from '@/components/diary/DiaryDetail.vue'
+// import DiaryDetail from '@/components/diary/DiaryDetail.vue'
 import { useDiaryStore } from '@/stores/diary'
 import axios from 'axios';
 const props = defineProps({
