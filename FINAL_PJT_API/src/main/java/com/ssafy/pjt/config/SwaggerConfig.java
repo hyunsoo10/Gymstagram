@@ -25,7 +25,7 @@ public class SwaggerConfig {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("SSAFY 10기 SSAFIT REST API")
-				.description("싸피 7반 노세희 조현수의 SSAFY 최종 프로젝트 REST API 활용")
+				.description("싸피 7반 노조 노세희 조현수의 SSAFY 최종 프로젝트 REST API")
 				.version("0.1")
 				.build();
 	}
