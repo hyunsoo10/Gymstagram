@@ -17,12 +17,28 @@
                 <h3 class="card-title">{{diaryStore.diary.title}}</h3>
                 <img class="card-img-top diray-img" width="500" height=""
                     :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`"/>
-                <p class="card-text">
-                    {{diaryStore.diary.userId}} &nbsp;&nbsp;
-                    <small class="text-body-secondary">조회수 : {{diaryStore.diary.viewCount}}</small></p>
-                <p class="card-text">{{diaryStore.diary.createDate}}
-                        <span style="font-size: 30px; "><a href=""><i class="fa-solid fa-heart" style="color: red;"></i></a></span>
+                    <p>{{ diaryStore.diary.content }}</p>
+                <p class="card-text" style="display: flex; justify-content: space-around;   align-items: center;" >
+                    <div >{{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
+                    <small class="text-body-secondary">조회수 : <strong>{{diaryStore.diary.viewCount}}</strong></small>
+                    <small class="text-body-secondary">좋아요수 : <strong>{{diaryStore.likeCount(diaryId)}}</strong> </small>
+                    <small class="card-text">{{diaryStore.diary.createDate}} </small>
                 </p>
+                <template v-if="likeFlag">
+                    <div style="font-size: 30px;  display: flex; justify-content: end; width: 90%;" >
+                    <button @click="unlike(), likeFlag = !likeFlag">
+                        <i class="fa-solid fa-heart" style="color: red;"></i>
+                    </button>
+                </div>
+                </template>
+                <template v-else>
+                    <div style="font-size: 30px;  display: flex; justify-content: end; width: 90%;" >
+                    <button @click="like(), likeFlag = !likeFlag">
+                        <i class="fa-regular fa-heart" style="color: red;" ></i>
+                    </button>
+                </div>
+                </template>
+        
 			</div>
 			<!--로그인 안했으면 해당 문구 출력-->
 			<p v-show="!userStore.loginUser">
@@ -87,6 +103,7 @@
     import { useDiaryStore } from '@/stores/diary'
     import axios from 'axios'
     import Comment from '@/components/diary/comment/Comment.vue'
+    import { resetTracking } from '@vue/reactivity'
 
     const diaryStore = useDiaryStore();
     const userStore = useUserStore();
@@ -100,16 +117,76 @@
     const router = useRouter()
 
     const diary = ref({})
-
     const show = ref(false)
 
     const diaryId = ref(route.params.diaryId)
     const updateToggle = ref(false)
+
+    const likeFlag = ref(false)
+    const tempFlag = likeFlag.value
+
+    const likeInfo = ref(
+        {
+            userId: '',
+            diaryId: ''
+        }
+    )
+
+    const like =() =>{
+        // console.log('like')
+        // console.log(userStore.loginUser.userId)
+        // console.log(diaryId.value)
+        likeInfo.value.userId = userStore.loginUser.userId
+        likeInfo.value.diaryId = diaryId.value
+        diaryStore.like(likeInfo.value)
+        likeInfo.value.userId = ''
+        likeInfo.value.diaryId = ''
+        // router.go()
+    }
+    const unlike =() =>{
+        // console.log('unlike')
+        // console.log(userStore.loginUser.userId)
+        // console.log(diaryId.value)
+        likeInfo.value.userId = userStore.loginUser.userId
+        likeInfo.value.diaryId = diaryId.value
+        diaryStore.unlike(likeInfo.value)
+        likeInfo.value.userId = ''
+        likeInfo.value.diaryId = ''
+        // router.go()
+    }
+    onMounted(()=>{
+        diaryStore.getAllLike()
+    })
+    const showLike = () =>{
+        // diaryStore.getDiaryLike(diaryId.value)
+        // console.log(diaryId.value)
+        // console.log(diaryStore.like/DiaryInfo)
+        // console.log(diaryStore.likeCount)
+    }
+    
+    // const likeCount = ref()
+    // const getDiaryLike = computed(()=>{
+    //     return (diaryId) => likeCount.value = likeDiaryInfo.value.filter((diary) => diary.diaryId === diaryId).length
+    // })
+
     onMounted(()=>{
         diaryStore.getOneDiary(diaryId.value)
         diaryStore.getDiaryComments(diaryId.value)
+        
+        axios({
+            url: `http://localhost:8080/diary-api/diary/like/${userStore.loginUser.userId}/${diaryId.value}`,
+            method: 'GET',
+        })
+        .then((res)=>{
+            // likeDiaryInfo.value = res.data
+            // console.log(likeDiaryInfo.value)
+            // console.log(res.data)
+            if(res.data>0){
+                likeFlag.value = true;
+            }
+        })
     })
-
+    
   
     const newComment = ref({
         diaryId: "",
@@ -187,16 +264,6 @@
             // emit('deleteComment', commentId)
             //page 새로고침
         }
-    const updateReview = function(){
-        // newReview.value.reviewNo = props.review.reviewNo;
-        // newReview.value.youtubeId  = props.review.youtubeId;
-        // newReview.value.userId = loginUser.value.id;
-        // console.log(newReview.content)
-        // console.log(newReview.value)
-        // axios.put(`http://localhost:8080/video-api/video/review/`, newReview.value)
-        updateToggle.value = !updateToggle
-        // router.go()
-    }
 
     const back = () =>{router.go(-1)}
 </script>

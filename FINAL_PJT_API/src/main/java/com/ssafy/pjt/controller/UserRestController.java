@@ -179,9 +179,9 @@ public class UserRestController {
 		}
 	}
 
-	@PostMapping("login")
+	@PostMapping("/user/login")
 	@ApiOperation(value = "로그인")
-	public ResponseEntity<?> login(User user, HttpSession session) {
+	public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
 		String userId = user.getUserId();
 		String password = user.getUserPassword();
 

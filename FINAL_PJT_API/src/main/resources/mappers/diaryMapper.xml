@@ -80,6 +80,35 @@
 			WHERE diary_id = #{diaryId}
 	</delete>
 	
+	<!-- 다이어리 조회수 업데이트 -->
+	<update id="updateDiaryViewCount" parameterType="int">
+		UPDATE diary
+			SET view_count = view_count+1
+			WHERE diary_id = #{diaryId}
+	</update>
+	
+	<!-- 다이어리 좋아요 -->
+	<insert id="like" parameterType="LikeDiary">
+		INSERT INTO likediary (user_id, diary_id)
+			VALUES (#{userId}, #{diaryId})
+	</insert>
+	<!-- 다이어리 좋아요 해제 -->
+	<delete id="unLike" parameterType="LikeDiary">
+		DELETE FROM likediary
+			WHERE user_id = #{userId} AND diary_id = #{diaryId}
+	</delete>
+	<!-- 다이어리 좋아요 테이블  조회 -->
+	<select id="selectLike" resultType="int" parameterType="LikeDiary">
+		SELECT count(*)
+			FROM likediary
+			WHERE user_id = #{userId} AND diary_id = #{diaryId}
+	</select>
+	<!-- 다이어리 전체 조회 -->
+	<select id="selectAllLike" resultType="LikeDiary" >
+		SELECT user_id AS userID, diary_id AS diaryID
+			FROM likediary
+	</select>
+	
 	<!--  댓글 등록 -->
 	<insert id="insertComment" parameterType="Comment">
 		INSERT INTO comment (diary_id, user_id, parent_comment, content)

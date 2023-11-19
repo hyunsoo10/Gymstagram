@@ -44,6 +44,7 @@ export const useUserStore = defineStore('user', () => {
                         user.value = dbUser;
                         localStorage.setItem('loginUser', JSON.stringify(dbUser));
                         alert(dbUser.userName + "님 환영합니다!");
+                        axios.post(`${REST_USER_API}/login`, user.value)
                         loginUser.value = dbUser;
                         router.push('/');
                     } else {

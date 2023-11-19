@@ -35,6 +35,7 @@ export const useDiaryStore = defineStore('diary', () => {
             avtyDiary.value = res.data
          }) 
     })
+
     const getAllDiary = function () {
         axios({
             url: REST_DIARY_API,
@@ -101,19 +102,69 @@ export const useDiaryStore = defineStore('diary', () => {
         )
     })
 
-    // onMounted(() => {
-    // const savedUser = localStorage.getItem("loginUser");
-    // if (savedUser) {
-    //     console.log(savedUser)
-    //     loginUser.value = JSON.parse(savedUser);
-    // }
-    // });
-    //로그인
-    // const login= (user) => {
-    //     // user 정보 요청 api 주소
-    //     // axios 요청
-    //     axios .get(`${REST_USER_API}/${user.id}`)
-    //       .then((res) => {
+    const likeDiaryInfo = ref([])
+    // const likeCount = ref(0)
+    // const getDiaryLike = computed(()=>{
+    //     return (diaryId) =>  likeCount.value = likeDiaryInfo.value.filter((info) => info.diaryId === diaryId).length
+    // })
+    
+    const getAllLike = function () {
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'GET',
+        })
+        .then((res)=>{
+            likeDiaryInfo.value = res.data
+            console.log(likeDiaryInfo.value)
+        })
+    }
+    
+    onMounted(() => {
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'GET',
+        })
+        .then((res)=>{
+            likeDiaryInfo.value = res.data
+            console.log(likeDiaryInfo.value)
+            })
+        })
+        const like = function(like){
+            axios({
+                url: `${REST_DIARY_API}/like`,
+                method: 'POST',
+                data: like
+            })
+            .then((res)=>{
+                console.log('좋아요')
+            })
+        }
+        const unlike = function(like){
+            axios({
+                url: `${REST_DIARY_API}/like`,
+                method: 'DELETE',
+                data: like
+            })
+            .then((res)=>{
+                console.log('좋아요해제')
+            })
+        }
+        const likeCount = computed(()=>{
+            return (diaryId) =>  likeDiaryInfo.value.filter((info) => info.diaryId == diaryId).length
+        })
+        // onMounted(() => {
+            // const savedUser = localStorage.getItem("loginUser");
+            // if (savedUser) {
+                //     console.log(savedUser)
+                //     loginUser.value = JSON.parse(savedUser);
+                // }
+                // });
+                //로그인
+                // const login= (user) => {
+                    //     // user 정보 요청 api 주소
+                    //     // axios 요청
+                    //     axios .get(`${REST_USER_API}/${user.id}`)
+                    //       .then((res) => {
     //         console.log(user)
     //         //db에서 해당하는 id의 회원 찾아오기
     //         let dbUser = res.data;
@@ -138,5 +189,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, likeCount, getAllLike}
 })

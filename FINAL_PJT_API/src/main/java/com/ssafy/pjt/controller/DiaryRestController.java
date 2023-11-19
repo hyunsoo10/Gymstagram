@@ -2,9 +2,12 @@ package com.ssafy.pjt.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 //import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.pjt.model.dto.Comment;
 import com.ssafy.pjt.model.dto.Diary;
+import com.ssafy.pjt.model.dto.LikeDiary;
 import com.ssafy.pjt.model.dto.SearchCondition;
 import com.ssafy.pjt.model.service.DiaryService;
 
@@ -45,6 +49,7 @@ public class DiaryRestController {
 	
 	@Autowired
 	ResourceLoader resLoader;
+
 	
 	//등록된 다이어리 모두 반환 with 조건(public, private, avtyCode 등)
 	@GetMapping("/diary")
@@ -79,10 +84,11 @@ public class DiaryRestController {
 	//diaryId로 diary한개 가져오기
 	@GetMapping("/diary/{diaryId}")
 	@ApiOperation(value = "diaryId에 해당하는 diary 반환", response = Diary.class)
-	public ResponseEntity<?> selectOne(@PathVariable int diaryId){
+	public ResponseEntity<?> selectOne(HttpServletRequest req, HttpServletResponse res, HttpSession session, @PathVariable int diaryId){
 		try {
 			//diary가져오기
 			Diary diary = diaryService.getOneDiary(diaryId);
+//			viewCountUp(req, res, session, diaryId);
 			if(diary != null) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
 			}else return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -195,6 +201,75 @@ public class DiaryRestController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	//diary 좋아요
+	@PostMapping("diary/like")
+	@ApiOperation(value = "diary 좋아요")
+	public ResponseEntity<?> likeDiary(@RequestBody LikeDiary likeDiary){
+		try {
+			int result = diaryService.like(likeDiary);
+			if(result > 0) {
+				return new ResponseEntity<String>("좋아요 성공", HttpStatus.OK);
+			}else return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+		
+	}
+	
+	//diary 좋아요 해제
+	@DeleteMapping("diary/like")
+	@ApiOperation(value = "diary 좋아요 해제")
+	public ResponseEntity<?> unLikeDiary(@RequestBody LikeDiary likeDiary){
+		try {
+			int result = diaryService.unLike(likeDiary);
+			if(result > 0) {
+				return new ResponseEntity<String>("좋아요 해제", HttpStatus.OK);
+			}else return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+		
+	}
+	
+	
+	//diaryId와 userId 로 다이어리 좋아요 여부 체크
+	@GetMapping("diary/like/{userId}/{diaryId}")
+	@ApiOperation(value = "diary좋아요 여부 확인 diaryId와 userId와 일치하는 목록 있는지 체크")
+	public ResponseEntity<?> likeList(@PathVariable(value = "userId") String userId, @PathVariable(value="diaryId") int diaryId){
+		try {
+			LikeDiary likeDiary = new LikeDiary();
+			
+			likeDiary.setUserId(userId);
+			likeDiary.setDiaryId(diaryId);
+//			System.out.println(likeDiary);
+			int result = diaryService.getLikeDiary(likeDiary);
+			if(result == 1) {
+				return new ResponseEntity<Integer>(1, HttpStatus.OK);
+			}else return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+		
+	}
+	
+	//diary like 테이블 전체 조회
+	@GetMapping("diary/like")
+	@ApiOperation(value = "diary like 테이블 전체 조회")
+	public ResponseEntity<?> likeList(){
+		try {
+			
+			List<LikeDiary> likeList= diaryService.getAllLike();
+			if(!likeList.isEmpty()) {
+				return new ResponseEntity<List<LikeDiary>>(likeList, HttpStatus.OK);
+			}else return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return exceptionHandling(e);
+		}
+		
+	}
+	
+	
 	//diary에 해당하는 comment 불러오기
 	@GetMapping("/diary/comment/{diaryId}")
 	@ApiOperation(value = "diaryId에 해당하는 comment 조회", response = Diary.class)
@@ -268,8 +343,39 @@ public class DiaryRestController {
 		}
 	}
 
-	
-	
+	//조회수 증가
+//    private void viewCountUp(HttpServletRequest req, HttpServletResponse res, HttpSession session,  int diaryId) {
+//
+//        Cookie oldCookie = null;
+//        User user = (User) session.getAttribute("loginUser");
+//        Cookie[] cookies = req.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("diaryView")) {
+//                    oldCookie = cookie;
+//                }
+//            }
+//        }
+//
+//        if (oldCookie != null) {
+//            if (!oldCookie.getValue().contains("[" + user.getUserId() + "]")) {
+//                diaryService.updateViewCount(diaryId);
+//                oldCookie.setValue(oldCookie.getValue() + "_[" + user.getUserId() + "]");
+//                oldCookie.setPath("/");
+//                oldCookie.setMaxAge(60 * 60 * 24);
+//                res.addCookie(oldCookie);
+//            }
+//            System.out.println("oldCookie 있어");
+//        } else {
+//        	diaryService.updateViewCount(diaryId);
+//            Cookie newCookie = new Cookie("diaryView","[" + user.getUserId() + "]");
+//            newCookie.setPath("/");
+//            newCookie.setMaxAge(60 * 60 * 24);
+//            res.addCookie(newCookie);
+//            System.out.println("oldCookie 없으니까 쿠키 생성해");
+//        }
+//    }
+//	
 	
 	//예외 처리 
 	private ResponseEntity<String> exceptionHandling(Exception e) {

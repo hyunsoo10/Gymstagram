@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.pjt.model.dto.Comment;
 import com.ssafy.pjt.model.dto.Diary;
+import com.ssafy.pjt.model.dto.LikeDiary;
 import com.ssafy.pjt.model.dto.SearchCondition;
 
 public interface DiaryDao {
@@ -47,6 +48,20 @@ public interface DiaryDao {
 	
 	//대댓글 조회
 	List<Comment> selectSubComment(int commentId);
+	
+	//조회수 증가
+	void updateDiaryViewCount(int diaryId);
+	
+	//다이어리 좋아요
+	int like(LikeDiary like);
+	
+	//다이어리 좋아요 해제
+	int unLike(LikeDiary like);
+	
+	//다이어리 좋아요 여부 확인
+	int selectLike(LikeDiary like);
+	
+	List<LikeDiary> selectAllLike();
 
 	
 }
