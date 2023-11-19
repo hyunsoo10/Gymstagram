@@ -251,7 +251,7 @@
         diaryStore.createComment(newComment.value)
         subCommentContent.value = ""
         // console.log(newComment.value)
-        // router.go()
+        router.go()
     }
 
 
