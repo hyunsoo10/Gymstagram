@@ -251,7 +251,7 @@ function setResult() {
     axios
         .put(`http://localhost:8080/user-api/user/${loginUser.userId}`, loginUser)
         .then(() => {
-            alert('정보수정에 성공하였습니다!');
+            console.log('정보수정에 성공하였습니다!');
         }).catch(() => {
             console.log("정보수정에 실패하였습니다!")
         })
