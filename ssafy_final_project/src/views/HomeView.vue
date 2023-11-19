@@ -1,21 +1,24 @@
 <template>
   <div>
+    <WeatherForecast />
+    <div class=home-content>
     <p>
-      <span>Enjoy</span>  
-      <span class="light">GYM</span> 
-      <span> even in</span> 
-      <span>the darkest</span>  
+      <span>Enjoy</span>
+      <span class="light">GYM</span>
+      <span> even in</span>
+      <span>the darkest</span>
       <span>places</span>
     </p>
+  </div>
   </div>
 </template>
 
 <script setup>
-
+import WeatherForecast from '@/components/weather/WeatherForecast.vue'
 </script>
 
 <style scoped>
-div {
+.home-content {
   width: 80%;
   margin: 30px auto;
   /* text-align: center; */
@@ -25,7 +28,7 @@ div {
 }
 
 
-p{
+p {
   font-family: "Arial";
   color: #fff;
   text-transform: uppercase;
@@ -48,6 +51,7 @@ span.light {
   position: relative;
   display: inline-block;
 }
+
 span.light:before {
   position: absolute;
   left: 0;
@@ -66,6 +70,7 @@ span.light:before {
     opacity: 1;
   }
 }
+
 @keyframes flashText {
   to {
     opacity: 0.15;
