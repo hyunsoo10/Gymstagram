@@ -37,7 +37,7 @@
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value="uploadName">
+                            <input class="upload-name" v-model="uploadName">
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
@@ -77,12 +77,12 @@ const user = ref({
 const password2 = ref('');
 
 const image = ref('');
-const uploadName = ref('')
+const uploadName = ref(store.loginUser.profileImage)
 const imageUploaded = ref("../src/assets/user_image/" + route.params.userId + "/" + store.loginUser.profileImage)
 
 const upload = function (event) {
-    uploadName.value = image.value.name;
     image.value = event.target.files[0]
+    uploadName.value = image.value.name;
     imageUploaded.value = URL.createObjectURL(image.value)
 }
 
