@@ -22,4 +22,6 @@ public interface UserService {
 
 	// avty 코드 수정
 	int modifyAvty(User user);
+	
+	int updateUserAct(String userId);
 }

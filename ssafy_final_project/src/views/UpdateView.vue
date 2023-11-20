@@ -45,8 +45,52 @@
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
-                            <button type="button" class="btn btn-secondary" @click="update($event)">수정하기</button>
+                            <button type="button" class="btn btn-secondary " @click="update($event)">수정하기</button>
+                                <v-dialog
+                                
+                                v-model="dialog"
+                                persistent
+                                width="auto"
+                                >
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                    v-bind="props"
+                                    type="button" 
+                                    class="btn btn-danger delete-btn" 
+                                    >
+                                    회원탈퇴
+                                    </v-btn>
+                                </template>
+                                <v-card>
+                                    <v-card-title class="text-h5" style="text-align: center; margin-top: 2em;">
+                                        <strong>정말로 회원탈퇴를 하시겠습니까?</strong>
+                                    </v-card-title>
+                                    <v-card-text style="text-align: center;  padding: 5em;">
+                                        회원 탈퇴시에 다시 복구가 불가능합니다. 회원 탈퇴 말고 계정 비활성화 기능이 있습니다. <br>
+                                        계정을 비활성화 하면 다른 유저들이 회원님의 정보를 볼 수 없습니다.</v-card-text>
+                                    <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn class="delete-btn"
+                                        color="white"
+                                        variant="text"
+                                        @click="deleteUser(), dialog = false"
+                                    >
+                                        회원탈퇴
+                                    </v-btn>
+                                    <v-btn class="disable-btn"
+                                        color="white"
+                                        variant="text"
+                                        @click="disableUser(), dialog = false"
+                                    >
+                                        비활성화
+                                    </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                                </v-dialog>
+                            <!-- <button type="button" class="btn btn-danger delete-btn" @click="deleteUser($event)">회원탈퇴</button> -->
                         </div>
+        
+          
                         <br>
                     </div>
                 </div>
@@ -60,25 +104,39 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user.js'
+import { toNumber } from '@vue/shared';
 
 const router = useRouter();
 const route = useRoute();
 const store = useUserStore();
 
 const myId = route.params.userId;
-
-const user = ref({
-    userName: store.loginUser.userName,
-    userId: route.params.userId,
-    nickName: store.loginUser.nickName,
-    userPassword: '',
-    profileImage: store.loginUser.profileImage,
-})
+const user = ref({})
+try{
+    user.value = {
+        userName: store.loginUser.userName,
+        userId: route.params.userId,
+        nickName: store.loginUser.nickName,
+        userPassword: '',
+        profileImage: store.loginUser.profileImage,
+    }
+} catch{
+    router.push("/")
+} 
 const password2 = ref('');
 
 const image = ref('');
-const uploadName = ref(store.loginUser.profileImage)
-const imageUploaded = ref("../src/assets/user_image/" + route.params.userId + "/" + store.loginUser.profileImage)
+const uploadName = ref()
+const imageUploaded = ref()
+try{
+   uploadName.value = store.loginUser.profileImage
+   imageUploaded.value = "../src/assets/user_image/" + route.params.userId + "/" + store.loginUser.profileImage
+    
+}catch{
+    router.push("/")
+}
+// const uploadName = ref(store.loginUser.profileImage)
+// const imageUploaded = ref("../src/assets/user_image/" + route.params.userId + "/" + store.loginUser.profileImage)
 
 const upload = function (event) {
     image.value = event.target.files[0]
@@ -125,6 +183,38 @@ const update = function (event) {
     store.update(formData,user.value.userPassword);
 };
 
+const dialog = ref(false)
+
+const deleteUser = () =>{
+    // console.log("회원 탈퇴")
+    axios({
+            url: `http://localhost:8080/user-api/user/${store.loginUser.userId}`,
+            method: 'DELETE',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res) => {
+            alert(res.data)
+            sessionStorage.removeItem('access-token');
+            router.go()
+            router.push("/")
+        })
+}
+const disableUser = () =>{
+    // console.log("계정 비활성화")
+    axios({
+            url: `http://localhost:8080/user-api/user/activate/${store.loginUser.userId}`,
+            method: 'PUT',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res) => {
+            alert(res.data)
+            router.go()
+        })
+}
 </script>
 
 <style scoped>
@@ -182,6 +272,24 @@ button {
     background: #8EAEEC;
     border: 1px #8EAEEC;
     font-size: 15px;
+    height: 2.5em !important;
+}
+
+.delete-btn{
+    width: 120px;
+    margin: 10px;
+    background: #eca28e;
+    border: 1px #eca28e;
+    font-size: 15px;
+    height: 2.5em !important;
+}
+.disable-btn{
+    width: 120px;
+    margin: 10px;
+    background: #838281;
+    border: 1px #838281;
+    font-size: 15px;
+    height: 2.5em !important;
 }
 
 body {

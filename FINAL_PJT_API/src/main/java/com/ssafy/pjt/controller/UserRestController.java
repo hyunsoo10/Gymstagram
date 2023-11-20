@@ -182,11 +182,30 @@ public class UserRestController {
 	// 회원탈퇴
 	@DeleteMapping("/user/{userId}")
 	@ApiOperation(value = "{userId} 회원 탈퇴", response = Integer.class)
-	public ResponseEntity<?> delete(@PathVariable String userId) {
+	public ResponseEntity<String> delete(@PathVariable String userId) {
 		try {
-			int result = userService.removeUser(userId);
-			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+//			int result = userService.removeUser(userId);
+			return new ResponseEntity<String>("회원탈퇴에 성공했습니다.", HttpStatus.OK);
 
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	// 회원 비활성화 / 활성화
+	@PutMapping("/user/activate/{userId}")
+	@ApiOperation(value = "{userId} 회원 활성화 상태 변화")
+	public ResponseEntity<String> changeActivate(@PathVariable String userId) {
+		try {
+			int result = userService.updateUserAct(userId);
+			if(result > 0) {
+				User user = (User) userService.getOneUser(userId);
+				if(user.isActivate())
+					return new ResponseEntity<String>("계정이 활성화 되었습니다.", HttpStatus.OK);
+				else
+					return new ResponseEntity<String>("계정이 비활성화 되었습니다.", HttpStatus.OK);
+				
+			}
+			return new ResponseEntity<String>("계정 상태 변경에 실패했습니다.", HttpStatus.NOT_MODIFIED);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}

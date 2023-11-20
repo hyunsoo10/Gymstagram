@@ -41,12 +41,12 @@ VALUES
 
 
 INSERT INTO `avty`VALUES
-(0, '해당없음'),
-(1, 'ENJ'),
-(2, 'ENP'),
-(3, 'ESJ'),
-(4, 'ESP'),
-(5, 'INJ'),
-(6, 'INP'),
-(7, 'ISJ'),
-(8, 'ISP');
+(0, 'ENJ'),
+(1, 'ENP'),
+(2, 'ESJ'),
+(3, 'ESP'),
+(4, 'INJ'),
+(5, 'INP'),
+(6, 'ISJ'),
+(7, 'ISP'),
+(8, '해당없음');
