@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
         <h4>날씨정보</h4>
         <div> 현재 위치 : {{ location }} </div>
@@ -7,7 +7,63 @@
         <div>강수형태 : {{ pty }}</div>
         <div>강수확률 : {{ pop }}%</div>
     </div>
+</template> -->
+<template>
+    <v-card class="mx-auto" max-width="368">
+        <v-card-item :title="location">
+            <template v-slot:subtitle>
+                <v-icon icon="mdi-alert" size="18" color="error" class="me-1 pb-1"></v-icon>
+                Extreme Weather Alert
+            </template>
+        </v-card-item>
+
+        <v-card-text class="py-0">
+            <v-row align="center" no-gutters>
+                <v-col class="text-h2" cols="6">
+                    {{ tmp }} ℃
+                </v-col>
+
+                <v-col cols="6" class="text-right">
+                    <v-icon color="error" icon="mdi-weather-hurricane" size="88"></v-icon>
+                </v-col>
+            </v-row>
+        </v-card-text>
+
+        <div class="d-flex py-3 justify-space-between">
+            <v-list-item density="compact" prepend-icon="mdi-weather-windy">
+                <v-list-item-subtitle>{{ wsd }} m/s</v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item density="compact" prepend-icon="mdi-weather-pouring">
+                <v-list-item-subtitle>{{ pop }}%</v-list-item-subtitle>
+            </v-list-item>
+        </div>
+
+        <v-expand-transition>
+            <div v-if="expand">
+                <div class="py-2">
+                    <v-slider v-model="time" :max="6" :step="1" :ticks="labels" class="mx-4" color="primary"
+                        density="compact" hide-details show-ticks="always" thumb-size="10"></v-slider>
+                </div>
+
+                <v-list class="bg-transparent">
+                    <v-list-item v-for="item in forecast" :key="item.day" :title="item.day" :append-icon="item.icon"
+                        :subtitle="item.temp">
+                    </v-list-item>
+                </v-list>
+            </div>
+        </v-expand-transition>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+            <v-btn @click="expand = !expand">
+                {{ !expand ? 'Full Report' : 'Hide Report' }}
+            </v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
+
   
 <script setup>
 import { onMounted, ref } from "vue";
@@ -21,11 +77,11 @@ const longitude = ref(0)
 const location = ref('')
 
 // 날씨 정보
-const tmp = ref(null);
-const sky = ref(null);
-const pty = ref(null);
-const pop = ref(0);
-
+const tmp = ref(null); // 기온
+const sky = ref(null); // 하늘 상태
+const pty = ref(null); // 강수 형태
+const pop = ref(0); // 강수 확률
+const wsd = ref(0); // 풍속
 onMounted(() => {
 
     // 내 위치정보 구하기
@@ -159,6 +215,9 @@ onMounted(() => {
                             pty.value = item.fcstValue;
                         } else if (item.category === "POP") {
                             pop.value = item.fcstValue;
+                        } else if(item.category === "WSD") {
+                            wsd.value = item.fcstValue;
+
                         }
                     });
                 });
