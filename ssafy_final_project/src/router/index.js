@@ -9,6 +9,7 @@ import SignupView from '@/views/SignupView.vue'
 import DiaryDetailView from '@/views/DiaryDetailView.vue'
 import UpdateView from '@/views/UpdateView.vue'
 import DiaryCreateView from '@/components/diary/DiaryCreate.vue'
+import DiaryUpdate from '@/components/diary/diaryUpdate.VUE'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,12 @@ const router = createRouter({
       path: '/detail/:diaryId',
       name: 'diaryDetail',
       component: DiaryDetailView,
+    },
+    {
+      path: '/update/:diaryId',
+      name: 'diaryUpdate',
+      component: DiaryUpdate,
+
     },
     {
       path: '/mypage',

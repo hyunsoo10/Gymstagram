@@ -4,6 +4,7 @@ public class Diary {
 	private int diaryId;
 	private String userId;
 	private String createDate;
+	private String updateDate;
 	private String originalImage;
 	private String saveImage;
 	private String title;
@@ -136,14 +137,22 @@ public class Diary {
 		this.avty = avty;
 	}
 
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
 
 	@Override
 	public String toString() {
-		return "Diary [diaryId=" + diaryId + ", userId=" + userId + ", createDate=" + createDate + ", originalImage="
-				+ originalImage + ", saveImage=" + saveImage + ", title=" + title + ", content=" + content
-				+ ", viewCount=" + viewCount + ", likeCount=" + likeCount + ", range=" + range + "]";
+		return "Diary [diaryId=" + diaryId + ", userId=" + userId + ", createDate=" + createDate + ", updateDate="
+				+ updateDate + ", originalImage=" + originalImage + ", saveImage=" + saveImage + ", title=" + title
+				+ ", content=" + content + ", viewCount=" + viewCount + ", likeCount=" + likeCount + ", range=" + range
+				+ ", avty=" + avty + "]";
 	}
-
 
 
 }

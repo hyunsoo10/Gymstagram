@@ -7,7 +7,7 @@
         다이어리 작성하기
       </v-btn>
       <DiaryCreate @close-Dialog="close" :dialog="dialog" v-model="dialog"></DiaryCreate>
-      <AVTY />
+      <AVTY/>
     </div>
     <v-card width=60% v-if="userStore.loginUser != null">
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
@@ -25,7 +25,6 @@
               <h1>My Total Diary</h1>
               <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" />
             </template>
-
           </v-container>
         </v-window-item>
       </v-window>

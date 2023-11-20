@@ -184,11 +184,37 @@ public class DiaryRestController {
 	}
 
 	// diary 수정
-	@PutMapping("/diary")
-	@ApiOperation(value = "diary수정", response = Diary.class)
-	public ResponseEntity<?> updateOne(@RequestBody Diary diary) {
+	@PutMapping(value = "/diary", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@ApiOperation(value = "diary 수정", response = Diary.class)
+	public ResponseEntity<?> updateOne(
+			@RequestPart(required = false) @RequestParam(value = "image", required = false) MultipartFile file,
+			@RequestPart("diary") Diary diary) {
+
 		try {
-			int result = diaryService.modifyDiary(diary);
+			// 결과 값 담을 변수
+			int result = 0;
+			if (file != null && file.getSize() > 0) {
+
+				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\diary_image\\"
+						+ diary.getUserId();
+				String saveName = UUID.randomUUID() + "_" + diary.getOriginalImage();
+				File target = new File(uploadPath, saveName);
+
+				if (!new File(uploadPath).exists()) {
+					new File(uploadPath).mkdirs();
+				}
+
+				try {
+					FileCopyUtils.copy(file.getBytes(), target);
+					diary.setSaveImage(saveName);
+					result = diaryService.modifyDiary(diary);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				// 파일이 없으면
+				result = diaryService.modifyDiary(diary);
+			}
 			if (result > 0) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
 			} else
