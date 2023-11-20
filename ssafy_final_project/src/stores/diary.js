@@ -19,6 +19,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/${diaryId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             diary.value = res.data
@@ -30,6 +33,9 @@ export const useDiaryStore = defineStore('diary', () => {
          axios({
             url: REST_DIARY_API,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             avtyDiary.value = res.data
@@ -40,6 +46,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: REST_DIARY_API,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
             .then((res) => {
                 allDiary.value = res.data
@@ -49,6 +58,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/weekly/${userId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             weeklyDiary.value = res.data
@@ -59,6 +71,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/comment/${diaryId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             comments.value = res.data
@@ -68,6 +83,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/comment/`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             comments.value = res.data
@@ -89,7 +107,10 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/comment`,
             method: 'POST',
-            data: comment
+            data: comment,
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
             console.log('댓글 작성 성공')
@@ -112,6 +133,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/like`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res)=>{
             likeDiaryInfo.value = res.data
@@ -123,6 +147,9 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/like`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res)=>{
             likeDiaryInfo.value = res.data
@@ -133,7 +160,10 @@ export const useDiaryStore = defineStore('diary', () => {
             axios({
                 url: `${REST_DIARY_API}/like`,
                 method: 'POST',
-                data: like
+                data: like,
+                headers: {
+                    'access-token': sessionStorage.getItem('access-token')
+                }
             })
             .then((res)=>{
                 console.log('좋아요')
@@ -143,7 +173,10 @@ export const useDiaryStore = defineStore('diary', () => {
             axios({
                 url: `${REST_DIARY_API}/like`,
                 method: 'DELETE',
-                data: like
+                data: like,
+                headers: {
+                    'access-token': sessionStorage.getItem('access-token')
+                }
             })
             .then((res)=>{
                 console.log('좋아요해제')

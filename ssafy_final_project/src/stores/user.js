@@ -27,6 +27,9 @@ export const useUserStore = defineStore('user', () => {
         axios({
             url: REST_USER_API,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
             .then((res) => {
                 users.value = res.data

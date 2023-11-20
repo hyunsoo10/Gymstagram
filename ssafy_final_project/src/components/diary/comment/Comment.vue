@@ -194,7 +194,9 @@
         com.updateDate = dateString + " "+ timeString
         com.content = updateContent.value;
         console.log(com)
-        axios.put("http://localhost:8080/diary-api/diary/comment", com)
+        axios.put("http://localhost:8080/diary-api/diary/comment", com, { headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }})
         updateContent.value = ""
         // isActive.value = false
         // router.go()
@@ -203,7 +205,9 @@
             var flag = confirm("정말로 댓글을 삭제하시겠습니까?")
             console.log(flag)
             if(flag){
-                axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`)
+                axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`, {headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }})
                 router.go()
             }
             // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)

@@ -7,7 +7,7 @@
       <div class="profile-desc">
         <div class="profile-user-info">
           <div class="profile-name">
-            {{ userName }}🍑
+            {{ userStore.loginUser.userName }}🍑
           </div>
           <button type="button" class="profile-edit" @click="goUpdate(myId)">
             정보수정하기
@@ -37,10 +37,11 @@ const userStore = useUserStore()
 
 const router = useRouter();
 
-const loginUser = JSON.parse(localStorage.getItem('loginUser'))
+// const loginUser = JSON.parse(localStorage.getItem('loginUser'))
+
 
 // const userName = loginUser.userName;
-const profileImage = "../src/assets/user_image/" + userStore.loginUser.userId + "/" + loginUser.profileImage;
+const profileImage = "../src/assets/user_image/" + userStore.loginUser.userId + "/" + userStore.loginUser.profileImage;
 
 defineProps({
   totalCnt: Number,

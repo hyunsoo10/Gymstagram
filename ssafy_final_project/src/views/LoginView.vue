@@ -55,12 +55,12 @@ const login = () => {
 // };
 
 
-onMounted(() => {
-    const savedUser = localStorage.getItem("loginUser");
-    if (savedUser) {
-        user.value = JSON.parse(savedUser);
-    }
-});
+// onMounted(() => {
+//     const savedUser = localStorage.getItem("loginUser");
+//     if (savedUser) {
+//         user.value = JSON.parse(savedUser);
+//     }
+// });
 
 </script>
   
