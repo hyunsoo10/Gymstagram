@@ -61,8 +61,8 @@ export const useUserStore = defineStore('user', () => {
     const login = (user) => {
         axios.post(`${REST_USER_API}/jwtlogin`, user)
         .then((response)=>{
-          console.log(response.data)
-          console.log(atob(response.data['access-token'].split('.')[1]))
+        //   console.log(response.data)
+        //   console.log(atob(response.data['access-token'].split('.')[1]))
           sessionStorage.setItem('access-token', response.data["access-token"])
     
           const token = response.data['access-token'].split('.')
@@ -118,7 +118,7 @@ export const useUserStore = defineStore('user', () => {
     // };
 
     // 정보수정
-    const update = (formData) => {
+    const update = (formData, newPassword) => {
         axios
             .put(`${REST_USER_API}`, formData, {
                 headers: {
@@ -129,16 +129,37 @@ export const useUserStore = defineStore('user', () => {
             .then(() => {
                 alert('정보수정에 성공하였습니다!');
                 // localStorage에 저장된 정보도 변경하기
-                const localUser = JSON.parse(localStorage.getItem('loginUser'))
-                axios.get(`${REST_USER_API}/${localUser.userId}`, {headers: {
+                // const localUser = JSON.parse(localStorage.getItem('loginUser'))
+                axios.get(`${REST_USER_API}/${loginUser.value.userId}`, {headers: {
                 'access-token': sessionStorage.getItem('access-token')
             }})
-                    .then((res) => {
-                        let dbUser = res.data;
-                        localStorage.setItem('loginUser', JSON.stringify(dbUser));
-                        loginUser.value = dbUser;
-                    })
+            .then((res) => {
+                //업데이트 했던 비밀번호 넘겨줘야됌
+                let user =  {
+                    userId: loginUser.value.userId,
+                    userPassword: newPassword
+                }
+                console.log(user)
+                axios.post(`${REST_USER_API}/jwtlogin`, user)
+                .then((response)=>{
+                  console.log(response.data)
+                //   console.log(atob(response.data['access-token'].split('.')[1]))
+                  sessionStorage.setItem('access-token', response.data["access-token"])
+            
+                  const token = response.data['access-token'].split('.')
+                  let user = token[1]
+                  // user = atob(user)
+                  //디코딩
+                  user = decodeURIComponent(escape(atob(user)));
+                  user = JSON.parse(user)
+                  user = user["user"]
+                  console.log(user)
+                  loginUser.value = Object.assign({}, user);
+            
+                })
                 router.push('/');
+                // loginUser.value = dbUser;
+            })
             })
             .catch(() => {
                 console.log("정보수정에 실패하였습니다!")

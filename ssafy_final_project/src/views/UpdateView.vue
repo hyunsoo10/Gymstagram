@@ -71,7 +71,7 @@ const user = ref({
     userName: store.loginUser.userName,
     userId: route.params.userId,
     nickName: store.loginUser.nickName,
-    userPassword: store.loginUser.userPassword,
+    userPassword: '',
     profileImage: store.loginUser.profileImage,
 })
 const password2 = ref('');
@@ -122,7 +122,7 @@ const update = function (event) {
     } else {
         formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
     }
-    store.update(formData);
+    store.update(formData,user.value.userPassword);
 };
 
 </script>
