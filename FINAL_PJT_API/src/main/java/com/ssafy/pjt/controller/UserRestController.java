@@ -184,9 +184,9 @@ public class UserRestController {
 	@ApiOperation(value = "{userId} 회원 탈퇴", response = Integer.class)
 	public ResponseEntity<String> delete(@PathVariable String userId) {
 		try {
-//			int result = userService.removeUser(userId);
-			return new ResponseEntity<String>("회원탈퇴에 성공했습니다.", HttpStatus.OK);
-
+			int result = userService.removeUser(userId);
+			if(result > 0) return new ResponseEntity<String>("회원탈퇴에 성공했습니다.", HttpStatus.OK);
+			else return new ResponseEntity<String>("회원 탈퇴에 실패했습니다", HttpStatus.NOT_ACCEPTABLE);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
@@ -252,8 +252,10 @@ public class UserRestController {
 					user.setProfileImage(dbUser.getProfileImage());
 					user.setRegisterDate(dbUser.getRegisterDate());
 					user.setUserName(dbUser.getUserName());
-					//유저 비밀번호는 알려주지 않는다.
-					user.setUserPassword("TOP-SECRET");
+					user.setActivate(dbUser.isActivate());
+					//세션 스토리지에 유저의 비밀번호를 저장하고 싶지 않을 때 읨의로 set해서 프론트쪽에 보낼 수 있다
+//					user.setUserPassword("TOP-SECRET");
+					user.setUserPassword(dbUser.getUserPassword());
 					System.out.println("프론트로 넘길 유저 정보 : " +user);
 					
 					result.put("access-token", jwtUtil.createToken("user", user));

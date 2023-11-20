@@ -67,9 +67,22 @@
                                     </v-card-title>
                                     <v-card-text style="text-align: center;  padding: 5em;">
                                         회원 탈퇴시에 다시 복구가 불가능합니다. 회원 탈퇴 말고 계정 비활성화 기능이 있습니다. <br>
-                                        계정을 비활성화 하면 다른 유저들이 회원님의 정보를 볼 수 없습니다.</v-card-text>
+                                        계정을 비활성화 하면 다른 유저들이 회원님의 정보를 볼 수 없습니다.
+                                        <br>
+                                        <br>
+                                        <small style="color:red">회원 탈퇴나 계정 비활성화를 하기 위해서는 비밀번호를 다시 한번 입력해주세요</small>
+                                        <v-col cols="12">
+                                        <v-text-field
+                                            label="비밀번호*"
+                                            type="password"
+                                            required
+                                            v-model="confirmPassword"
+                                        ></v-text-field>
+                                        </v-col>
+                                    </v-card-text>
                                     <v-card-actions>
                                     <v-spacer></v-spacer>
+                                    
                                     <v-btn class="delete-btn"
                                         color="white"
                                         variant="text"
@@ -83,6 +96,13 @@
                                         @click="disableUser(), dialog = false"
                                     >
                                         비활성화
+                                    </v-btn>
+                                    <v-btn class="close-btn"
+                                        color="white"
+                                        variant="text"
+                                        @click="dialog = false"
+                                    >
+                                        닫기
                                     </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -187,6 +207,7 @@ const dialog = ref(false)
 
 const deleteUser = () =>{
     // console.log("회원 탈퇴")
+    if(confirmPassword.value === store.loginUser.userPassword){
     axios({
             url: `http://localhost:8080/user-api/user/${store.loginUser.userId}`,
             method: 'DELETE',
@@ -200,20 +221,44 @@ const deleteUser = () =>{
             router.go()
             router.push("/")
         })
+    }
+    else{
+        alert("비밀번호가 일치하지 않습니다.")
+        confirmPassword.value = ''
+    }
 }
+
+const confirmPassword = ref()
 const disableUser = () =>{
-    // console.log("계정 비활성화")
-    axios({
-            url: `http://localhost:8080/user-api/user/activate/${store.loginUser.userId}`,
-            method: 'PUT',
-            headers: {
-                'access-token': sessionStorage.getItem('access-token')
-            }
-        })
-        .then((res) => {
-            alert(res.data)
-            router.go()
-        })
+    if(confirmPassword.value === store.loginUser.userPassword){
+
+        // console.log("계정 비활성화")
+        axios({
+                url: `http://localhost:8080/user-api/user/activate/${store.loginUser.userId}`,
+                method: 'PUT',
+                headers: {
+                    'access-token': sessionStorage.getItem('access-token')
+                }
+            })
+            .then((res) => {
+                alert(res.data)
+                let user = {
+                userId : store.loginUser.userId,
+                userPassword : confirmPassword.value
+                // alert(res.data)
+                }
+                console.log(user)
+                store.refreshLogin(user)
+                // activateDialog.value = false
+            
+                // router.go()
+                // router.push({name: 'mydiary', params: {userId: user.userId}})
+                router.push(`/mypage/${user.userId}`)
+            })
+    }else{
+        alert("비밀번호가 일치하지 않습니다.")
+        confirmPassword.value = ''
+    }
 }
 </script>
 
@@ -284,6 +329,14 @@ button {
     height: 2.5em !important;
 }
 .disable-btn{
+    width: 120px;
+    margin: 10px;
+    background: #ff9800db;
+    border: 1px #ff9800db;
+    font-size: 15px;
+    height: 2.5em !important;
+}
+.close-btn{
     width: 120px;
     margin: 10px;
     background: #838281;

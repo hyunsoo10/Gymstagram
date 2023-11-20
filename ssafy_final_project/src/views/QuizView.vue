@@ -242,7 +242,7 @@ function setResult() {
     // 결과 이름 담기
     const resultName = document.querySelector('.resultName');
     // infoList[최대값이 발견된 index번호]의 name을 담기
-    const loginUser = JSON.parse(localStorage.getItem('loginUser'))
+    // const loginUser = JSON.parse(localStorage.getItem('loginUser'))
     userStore.loginUser.avtyCode = point;
     avty.value = userStore.loginUser.avtyCode
     // const userName = loginUser.userName;
