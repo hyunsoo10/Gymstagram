@@ -4,9 +4,11 @@
       max-width="344"
     > -->
   <v-card class="mx-auto" width="300">
+    <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary" class="cursor">
     <v-img :src="`../src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
     height="200px" cover>
     </v-img>
+    </RouterLink>
 
     <v-card-title>
       {{ diary.title }}
@@ -21,8 +23,8 @@
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn color="orange-lighten-2" variant="text">
-        Explore
+      <v-btn color="teal-darken-1" variant="text"  @click="show = !show">
+        글 보기
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -63,4 +65,9 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.cursor{
+  cursor: url("@/assets/click.png"), auto;
+}
+</style>
+
