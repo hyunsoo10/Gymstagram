@@ -73,7 +73,7 @@
 	<!-- 다이어리 수정 -->
 	<update id="updateDiary" parameterType="Diary">
 			UPDATE diary
-			SET user_id = #{userId}, image = #{image}, title = #{title}, content = #{content}, view_count = #{viewCount}, like_count = #{likeCount}
+			SET image = #{image}, title = #{title}, content = #{content}, update_date = #{updateDate}
 			WHERE diary_id = #{diaryId}
 	</update>
 	

@@ -301,7 +301,7 @@ onMounted(() => {
 }
 
 .weather-info {
-    width: 30em
+    width: 30em;
 }
 .today-date p {
     font-size: 1em;
