@@ -9,11 +9,11 @@ public class User {
 	private String profileImage;
 	
 	/**사용중인 회원 : true, 비사용(비활성화 화원): false; **/
-	boolean activate = true; 
+	private boolean activate; 
 	/**일반 유저: 0, vip유저 : 1, admin 유저: 2 **/
-	int permission;
+	private int permission;
 	/**avty테스트 안한 사람들은 8로 기본값*/
-	int avtyCode = 8;
+	private int avtyCode = 8;
 	
 	
 	public User() {
@@ -130,6 +130,7 @@ public class User {
 		this.avtyCode = avtyCode;
 	}
 
+	
 
 	@Override
 	public String toString() {
