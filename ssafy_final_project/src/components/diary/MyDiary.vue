@@ -67,7 +67,7 @@ onMounted(() => {
 
 <style scoped>
 .cursor{
-  cursor: url("@/assets/click.png"), auto;
+  cursor: url("@/assets/cursor/cursor2.png"), auto;
 }
 </style>
 
