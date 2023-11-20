@@ -93,6 +93,11 @@ main {
     text-align: center;
 }
 
+.login-form input {
+    padding: 0.5em;
+    border-radius: 10px;
+}
+
 form input {
     margin: 10px;
     padding-left: 4px;

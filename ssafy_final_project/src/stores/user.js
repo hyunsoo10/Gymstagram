@@ -63,21 +63,28 @@ export const useUserStore = defineStore('user', () => {
         .then((response)=>{
         //   console.log(response.data)
         //   console.log(atob(response.data['access-token'].split('.')[1]))
-          sessionStorage.setItem('access-token', response.data["access-token"])
-    
-          const token = response.data['access-token'].split('.')
-          let user = token[1]
-          // user = atob(user)
-          //디코딩
-          user = decodeURIComponent(escape(atob(user)));
-          user = JSON.parse(user)
-          user = user["user"]
-          console.log(user)
-          loginUser.value = Object.assign({}, user);
-          console.log(loginUser.value)
-          alert(loginUser.value.userName + "님 환영합니다!");
-        //   localStorage.setItem('loginUser', user);
-          router.push('/');
+            let message = response.data['message']
+
+            if(message != "success"){
+                alert(message)
+            }
+            else{
+                sessionStorage.setItem('access-token', response.data["access-token"])
+            
+                const token = response.data['access-token'].split('.')
+                let user = token[1]
+                // user = atob(user)
+                //디코딩
+                user = decodeURIComponent(escape(atob(user)));
+                user = JSON.parse(user)
+                user = user["user"]
+                loginUser.value = Object.assign({}, user);
+                console.log(loginUser.value)
+                alert(loginUser.value.userName + "님 환영합니다!");
+            //   localStorage.setItem('loginUser', user);
+                router.push('/');
+            }
+
     
         })
         .catch(()=>{

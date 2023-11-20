@@ -43,6 +43,8 @@ public class UserRestController {
 	
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
+	private static final String WRONGPASSWORD = "비밀번호가 틀렸습니다.";
+	private static final String NOFOUNDID = "해당 ID와 일치하는 정보가 없습니다.";
 	
 	@Autowired
 	UserService userService;
@@ -221,31 +223,39 @@ public class UserRestController {
 			User dbUser = userService.getOneUser(userId);
 			
 			
-			//로그인 정보가 일치한다면
-			if (dbUser != null && dbUser.getUserPassword().equals(password)) {
-				//나머지 필요한 정보 담아주기
-				user.setAvtyCode(dbUser.getAvtyCode());
-				user.setNickName(dbUser.getNickName());
-				user.setProfileImage(dbUser.getProfileImage());
-				user.setRegisterDate(dbUser.getRegisterDate());
-				user.setUserName(dbUser.getUserName());
-				//유저 비밀번호는 알려주지 않는다.
-				user.setUserPassword("TOP-SECRET");
-				System.out.println("프론트로 넘길 유저 정보 : " +user);
-				
-				result.put("access-token", jwtUtil.createToken("user", user));
-				
-				result.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			}else {
-				result.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
+			//아이디가 있다면
+			if(dbUser != null) {
+				//비밀번호까지 일치한다면
+				if (dbUser.getUserPassword().equals(password)) {
+					//나머지 필요한 정보 담아주기
+					user.setAvtyCode(dbUser.getAvtyCode());
+					user.setNickName(dbUser.getNickName());
+					user.setProfileImage(dbUser.getProfileImage());
+					user.setRegisterDate(dbUser.getRegisterDate());
+					user.setUserName(dbUser.getUserName());
+					//유저 비밀번호는 알려주지 않는다.
+					user.setUserPassword("TOP-SECRET");
+					System.out.println("프론트로 넘길 유저 정보 : " +user);
+					
+					result.put("access-token", jwtUtil.createToken("user", user));
+					
+					result.put("message", SUCCESS);
+					status = HttpStatus.ACCEPTED;
+				}else {
+					//아이디는 맞았지만 비밀번호가 틀렸다면
+					result.put("message", WRONGPASSWORD);
+					status = HttpStatus.OK;
+				}
+			}
+			else {
+				//해당하는 ID를 찾을 수 없다면
+				result.put("message", NOFOUNDID);
+				status = HttpStatus.OK;
 			}
 		} catch (UnsupportedEncodingException e) {
 			result.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		
 		return new ResponseEntity<Map<String,Object>>(result, status);
 	}
