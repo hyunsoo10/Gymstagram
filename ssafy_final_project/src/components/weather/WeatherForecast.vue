@@ -25,7 +25,7 @@
                             <br>
                         </div>
                     </v-col>
-                    <v-col class="text-center text-h3" cols="6">
+                    <v-col class="tmp-info" cols="6">
                         &nbsp;{{ tmp }} ℃
                     </v-col>
                 </v-row>
@@ -304,11 +304,16 @@ onMounted(() => {
     width: 30em
 }
 .today-date p {
-    font-size: 15px;
+    font-size: 1em;
 }
 
 .weather-icon p {
-    font-size: 80px;
+    font-size: 6em;
+}
+
+.tmp-info {
+    text-align: center;
+    font-size: 3.5em;
 }
 </style>
   
