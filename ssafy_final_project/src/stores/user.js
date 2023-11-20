@@ -61,8 +61,8 @@ export const useUserStore = defineStore('user', () => {
     const login = (user) => {
         axios.post(`${REST_USER_API}/jwtlogin`, user)
         .then((response)=>{
-          console.log(response)
-    
+          console.log(response.data)
+          console.log(atob(response.data['access-token'].split('.')[1]))
           sessionStorage.setItem('access-token', response.data["access-token"])
     
           const token = response.data['access-token'].split('.')
