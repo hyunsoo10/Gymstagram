@@ -75,7 +75,7 @@ const createDiary = function (event) {
              'access-token': sessionStorage.getItem('access-token')
 
         },
-        
+
     }).then(() => {
         console.log("다이어리 추가 성공")
         emit("closeDialog")
