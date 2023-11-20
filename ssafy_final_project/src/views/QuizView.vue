@@ -243,21 +243,23 @@ function setResult() {
     const resultName = document.querySelector('.resultName');
     // infoList[최대값이 발견된 index번호]의 name을 담기
     const loginUser = JSON.parse(localStorage.getItem('loginUser'))
-    loginUser.avtyCode = point;
-    avty.value = loginUser.avtyCode
-    const userName = loginUser.userName;
+    userStore.loginUser.avtyCode = point;
+    avty.value = userStore.loginUser.avtyCode
+    // const userName = loginUser.userName;
 
     // 검사 결과를 DB에 반영
     axios
-        .put(`http://localhost:8080/user-api/user/${loginUser.userId}`, loginUser)
+        .put(`http://localhost:8080/user-api/user/${userStore.loginUser.userId}`, userStore.loginUser, {headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }})
         .then(() => {
-            alert('정보수정에 성공하였습니다!');
+            console.log('정보수정에 성공하였습니다!');
         }).catch(() => {
             console.log("정보수정에 실패하였습니다!")
         })
-    localStorage.setItem('loginUser', JSON.stringify(loginUser))
+    // localStorage.setItem('loginUser', JSON.stringify(loginUser))
 
-    resultName.innerHTML = userName + `님은 ` + infoList[point].name + ` 유형입니다 !`;
+    resultName.innerHTML = userStore.loginUser.userName + `님은 ` + infoList[point].name + ` 유형입니다 !`;
     // 결과 이미지 띄우기
     let resultImg = document.createElement('img');
     const imgDiv = document.querySelector('#resultImg');

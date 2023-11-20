@@ -71,8 +71,11 @@ const createDiary = function (event) {
     axios.post('http://localhost:8080/diary-api/diary', formData, {
         headers: {
             // 'Content-Type': 'application/json'
-            'Content-Type': 'multipart/form-data'
-        }
+            'Content-Type': 'multipart/form-data',
+             'access-token': sessionStorage.getItem('access-token')
+
+        },
+
     }).then(() => {
         console.log("다이어리 추가 성공")
         emit("closeDialog")

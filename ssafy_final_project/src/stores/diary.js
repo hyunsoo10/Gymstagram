@@ -11,6 +11,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
+
     const router = useRouter();
 
     const loginUser = ref(null)
@@ -18,26 +19,36 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/${diaryId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
-        .then((res) => {
-            diary.value = res.data
-            console.log(diary.value)
-        })
+            .then((res) => {
+                diary.value = res.data
+                console.log(diary.value)
+            })
     }
 
-    onMounted(()=>{
-         axios({
+    onMounted(() => {
+        axios({
             url: REST_DIARY_API,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
-        .then((res) => {
-            avtyDiary.value = res.data
-         }) 
+            .then((res) => {
+                avtyDiary.value = res.data
+            })
     })
+
     const getAllDiary = function () {
         axios({
             url: REST_DIARY_API,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
             .then((res) => {
                 allDiary.value = res.data
@@ -47,48 +58,146 @@ export const useDiaryStore = defineStore('diary', () => {
         axios({
             url: `${REST_DIARY_API}/weekly/${userId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
-        .then((res) => {
-            weeklyDiary.value = res.data
-        })
-}
+            .then((res) => {
+                weeklyDiary.value = res.data
+            })
+    }
 
-    const getDiaryComments = function(diaryId){
+    const getDiaryComments = function (diaryId) {
         axios({
             url: `${REST_DIARY_API}/comment/${diaryId}`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
-            comments.value = res.data
+            if(res.data.length > 0){
+                comments.value = res.data
+            }
         })
     }
-    const getAllComments = function(){
+    const getAllComments = function () {
         axios({
             url: `${REST_DIARY_API}/comment/`,
             method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
         .then((res) => {
-            comments.value = res.data
+            if(res.data.length > 0){
+                comments.value = res.data
+            }
         })
     }
 
-    const createComment = function(comment){
+    const subComments = ref()
+
+    const getSubComments = computed(() => {
+        return (commentId) => subComments.value = comments.value.filter((comment) => comment.parentComment === commentId);
+    })
+
+    const getSubCommentLength = computed(() => {
+        return (commentId) => comments.value.filter((comment) => comment.parentComment === commentId).length
+    })
+
+
+    const createComment = function (comment) {
         axios({
             url: `${REST_DIARY_API}/comment`,
             method: 'POST',
-            data: comment
+            data: comment,
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
         })
-        .then((res) => {
-            console.log('댓글 작성 성공')
-            comments.value.push(comment)
-        })
+            .then((res) => {
+                console.log('댓글 작성 성공')
+                comments.value.push(comment)
+            })
     }
 
-    const getAvtyDiary = computed(()=>{
-        return (avty) => avtyDiary.value = allDiary.value.filter((diary)=> diary.avty === avty
+    const getAvtyDiary = computed(() => {
+        return (avty) => avtyDiary.value = allDiary.value.filter((diary) => diary.avty === avty
         )
     })
 
+    const likeDiaryInfo = ref([])
+    // const likeCount = ref(0)
+    // const getDiaryLike = computed(()=>{
+    //     return (diaryId) =>  likeCount.value = likeDiaryInfo.value.filter((info) => info.diaryId === diaryId).length
+    // })
+
+    const getAllLike = function () {
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res)=>{
+            if(res.data.length>0){
+                likeDiaryInfo.value = res.data
+            }
+            // console.log(likeDiaryInfo.value)
+        })
+    }
+
+    onMounted(() => {
+
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'GET',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+            .then((res) => {
+                likeDiaryInfo.value = res.data
+                console.log(likeDiaryInfo.value)
+            })
+    })
+
+    const like = function(like){
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'POST',
+            data: like,
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res)=>{
+            if(res.data.length>0){
+                likeDiaryInfo.value = res.data
+            }
+            // console.log(likeDiaryInfo.value)
+            })
+        }
+    
+    const unlike = function(like){
+        axios({
+            url: `${REST_DIARY_API}/like`,
+            method: 'DELETE',
+            data: like,
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res)=>{
+            console.log('좋아요해제')
+        })
+    }
+
+    const updateDiary = function() {
+        
+    }
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -126,5 +235,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike }
 })

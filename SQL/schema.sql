@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `diary`(
   `view_count` int(52) DEFAULT 0,
   `like_count` int(52) DEFAULT 0,
   `range` int(2) DEFAULT 0,
+  `update_date` TIMESTAMP,
   CONSTRAINT `diary_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   PRIMARY KEY (`diary_id`)
 );
@@ -60,12 +61,20 @@ CREATE TABLE IF NOT EXISTS `avty`(
 );
 
 
--- CREATE TABLE IF NOT EXISTS `likedVideo`(
+CREATE TABLE IF NOT EXISTS `likeDiary`(
+  `user_Id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
+  `diary_Id` INT NOT NULL,
+  PRIMARY KEY (`user_Id`, `diary_Id`),
+  CONSTRAINT `like_ibfk_1` FOREIGN KEY (`user_Id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  CONSTRAINT `like_ibfk_2` FOREIGN KEY (`diary_Id`) REFERENCES `diary` (`diary_Id`) ON DELETE CASCADE
+);
+
+-- CREATE TABLE IF NOT EXISTS `viewDiary`(
 --   `userId` varchar(45) CHARACTER SET utf8mb4 NOT NULL,
---   `youtubeId` varchar(45) CHARACTER SET utf8mb4 NOT NULL,
---   PRIMARY KEY (`userId`, `youtubeId`),
---   CONSTRAINT `like_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
---   CONSTRAINT `like_ibfk_2` FOREIGN KEY (`youtubeId`) REFERENCES `video` (`youtubeId`) ON DELETE CASCADE
+--   `diaryId` varchar(45) CHARACTER SET utf8mb4 NOT NULL,
+--   PRIMARY KEY (`userId`, `diaryId`),
+--   CONSTRAINT `like_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+--   CONSTRAINT `like_ibfk_2` FOREIGN KEY (`diaryId`) REFERENCES `diary` (`diaryId`) ON DELETE CASCADE
 -- );
 
 -- follow 테이블 만들면 이런식으로

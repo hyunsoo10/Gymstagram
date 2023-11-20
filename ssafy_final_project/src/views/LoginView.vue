@@ -37,21 +37,30 @@ const router = useRouter();
 const user = ref(null);
 const store = useUserStore()
 
+//jwt 로그인
 const login = () => {
     let user = {
-        id: id.value,
-        password: password.value
+        userId: id.value,
+        userPassword: password.value
     };
     store.login(user);
 };
+//그냥 로그인
+// const login = () => {
+//     let user = {
+//         id: id.value,
+//         password: password.value
+//     };
+//     store.login(user);
+// };
 
 
-onMounted(() => {
-    const savedUser = localStorage.getItem("loginUser");
-    if (savedUser) {
-        user.value = JSON.parse(savedUser);
-    }
-});
+// onMounted(() => {
+//     const savedUser = localStorage.getItem("loginUser");
+//     if (savedUser) {
+//         user.value = JSON.parse(savedUser);
+//     }
+// });
 
 </script>
   
@@ -82,6 +91,11 @@ main {
 
 .login-form h2 {
     text-align: center;
+}
+
+.login-form input {
+    padding: 0.5em;
+    border-radius: 10px;
 }
 
 form input {

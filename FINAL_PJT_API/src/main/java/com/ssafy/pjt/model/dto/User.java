@@ -12,12 +12,23 @@ public class User {
 	boolean activate = true; 
 	/**일반 유저: 0, vip유저 : 1, admin 유저: 2 **/
 	int permission;
-	int avtyCode;
+	/**avty테스트 안한 사람들은 8로 기본값*/
+	int avtyCode = 8;
 	
 	
 	public User() {
 		
 	}
+	
+	 
+
+	//로그인 객체 전달 할 때 필요한 생성자
+	public User(String userId, String userPassword) {
+		this.userId = userId;
+		this.userPassword = userPassword;
+	}
+
+
 
 
 	public User(String userId, String userPassword, String userName, String nickName,

@@ -4,43 +4,65 @@ import java.util.List;
 
 import com.ssafy.pjt.model.dto.Comment;
 import com.ssafy.pjt.model.dto.Diary;
+import com.ssafy.pjt.model.dto.LikeDiary;
 import com.ssafy.pjt.model.dto.SearchCondition;
 
 public interface DiaryService {
-	//전체 다이어리 조회(with condition)
+	// 전체 다이어리 조회(with condition)
 	List<Diary> getAllDiary(SearchCondition condition);
-	
-	//다이어리 1개 상세 조회 
+
+	// 다이어리 1개 상세 조회
 	Diary getOneDiary(int diaryId);
-	
+
 	// my diary 전체 조회
 	List<Diary> getMyDiary(String userId);
-	
+
 	// my weekly diary 조회
 	// 이 부분은 그냥 front에서 computed로 조작하면될까?
 	List<Diary> getMyWeeklyDiary(String userId);
-	
-	//다이어리 등록
+
+	// 다이어리 등록
 	int addDiary(Diary diary);
-	
-	//다이어리 수정
+
+	// 다이어리 수정
 	int modifyDiary(Diary diary);
-	
-	//다이어리 삭제
+
+	// 다이어리 삭제
 	int removeDiary(int diaryId);
-	
-	//댓글 등록
+
+	// 다이어리 조회수 증가
+	void updateViewCount(int diaryId);
+
+	// 다이어리 좋아요
+	int like(LikeDiary like);
+
+	// 좋아요 수 증가
+	int increaseLikeCount(int diaryId);
+
+	// 좋아요 수 감소
+	int decreaseLikeCount(int diaryId);
+
+	// 다이어리 좋아요 해제
+	int unLike(LikeDiary like);
+
+	// 특정 유저가 좋아요 했는지 확인
+	int getLikeDiary(LikeDiary like);
+
+	// 다이어리 like 테이블 전체 조회
+	List<LikeDiary> getAllLike();
+
+	// 댓글 등록
 	int addComment(Comment comment);
-	
-	//Diary 댓글 조회
+
+	// Diary 댓글 조회
 	List<Comment> getDiaryComments(int diaryId);
-	
-	//댓글 수정
+
+	// 댓글 수정
 	int modifyComment(Comment comment);
-	
-	//댓글 삭제
+
+	// 댓글 삭제
 	int removeComment(int commentId);
-	
-	//전체 댓글 조회
-	List<Comment>  getAllComment();
+
+	// 전체 댓글 조회
+	List<Comment> getAllComment();
 }
