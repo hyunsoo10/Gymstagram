@@ -2,7 +2,10 @@ package com.ssafy.pjt.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -27,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.pjt.model.dto.User;
 import com.ssafy.pjt.model.service.UserService;
+import com.ssafy.pjt.util.JwtUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +40,15 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "User 컨트롤러")
 @CrossOrigin("*")
 public class UserRestController {
+	
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	// 회원가입 시 아이디 중복체크할 때 활용
 	@GetMapping("/user")
@@ -193,6 +204,50 @@ public class UserRestController {
 		} else {
 			return new ResponseEntity<String>("login failed", HttpStatus.UNAUTHORIZED);
 		}
+	}
+	
+	
+	@PostMapping("/user/jwtlogin")
+	@ApiOperation(value = "로그인 with Jwt 토큰인증")
+	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println("백앤드로 넘어오는 유저 정보 : " + user);
+		HttpStatus status = null;
+		try {
+			//로그인 시도 user 객체의 ID와 비밀번호에 해당하는 user정보가 있는지 DB에서 검사
+			String userId = user.getUserId();
+			String password = user.getUserPassword();
+
+			User dbUser = userService.getOneUser(userId);
+			
+			
+			//로그인 정보가 일치한다면
+			if (dbUser != null && dbUser.getUserPassword().equals(password)) {
+				//나머지 필요한 정보 담아주기
+				user.setAvtyCode(dbUser.getAvtyCode());
+				user.setNickName(dbUser.getNickName());
+				user.setProfileImage(dbUser.getProfileImage());
+				user.setRegisterDate(dbUser.getRegisterDate());
+				user.setUserName(dbUser.getUserName());
+				//유저 비밀번호는 알려주지 않는다.
+				user.setUserPassword("TOP-SECRET");
+				System.out.println("프론트로 넘길 유저 정보 : " +user);
+				
+				result.put("access-token", jwtUtil.createToken("user", user));
+				
+				result.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}else {
+				result.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (UnsupportedEncodingException e) {
+			result.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		
+		return new ResponseEntity<Map<String,Object>>(result, status);
 	}
 
 	@GetMapping("logout")

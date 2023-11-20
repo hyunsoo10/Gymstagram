@@ -31,13 +31,16 @@
 <script setup>
 import { ref } from 'vue'
 import {useRouter} from 'vue-router';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore()
 
 const router = useRouter();
 
 const loginUser = JSON.parse(localStorage.getItem('loginUser'))
 
-const userName = loginUser.userName;
-const profileImage = "../src/assets/user_image/" + loginUser.userId + "/" + loginUser.profileImage;
+// const userName = loginUser.userName;
+const profileImage = "../src/assets/user_image/" + userStore.loginUser.userId + "/" + loginUser.profileImage;
 
 defineProps({
   totalCnt: Number,
