@@ -43,5 +43,10 @@ public class UserServiceImpl implements UserService {
 	public int modifyAvty(User user) {
 		return userDao.updateAvty(user);
 	}
+	
+	@Override
+	public int updateUserAct(String userId) {
+		return userDao.updateUserAct(userId);
+	}
 
 }

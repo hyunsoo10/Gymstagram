@@ -3,11 +3,10 @@
     <WeatherForecast />
     <div class=home-content>
     <p>
-      <span>Enjoy</span>
+      <span style="font-size: 0.8em;">Enjoy</span>
       <span class="light">GYM</span>
-      <span> even in</span>
-      <span>the darkest</span>
-      <span>places</span>
+      <span>WITH</span>
+      <span class="light">GYM STAGRAM</span>
     </p>
   </div>
   </div>
@@ -22,7 +21,7 @@ import WeatherForecast from '@/components/weather/WeatherForecast.vue'
   width: 80%;
   margin: 30px auto;
   /* text-align: center; */
-  background: #362020;
+  background: #776B5D;
   padding: 2rem;
   /* height: 100vh; */
 }
@@ -62,7 +61,7 @@ span.light:before {
   filter: blur(10px);
   content: "";
   opacity: 0;
-  animation: flash 0.5s ease-out alternate infinite;
+  animation: flash 0.7s ease-out alternate infinite;
 }
 
 @keyframes flash {

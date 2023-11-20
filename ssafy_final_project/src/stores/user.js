@@ -84,8 +84,28 @@ export const useUserStore = defineStore('user', () => {
             //   localStorage.setItem('loginUser', user);
                 router.push('/');
             }
-
+        })
+        .catch(()=>{
     
+        })
+      }
+    const refreshLogin = (user) => {
+        axios.post(`${REST_USER_API}/jwtlogin`, user)
+        .then((response)=>{
+            let message = response.data['message']
+
+            if(message != "success"){
+                alert(message)
+            }
+            else{
+                sessionStorage.setItem('access-token', response.data["access-token"])
+                const token = response.data['access-token'].split('.')
+                let user = token[1]
+                user = decodeURIComponent(escape(atob(user)));
+                user = JSON.parse(user)
+                user = user["user"]
+                loginUser.value = Object.assign({}, user);
+            }
         })
         .catch(()=>{
     
@@ -196,5 +216,5 @@ export const useUserStore = defineStore('user', () => {
                 user.value = res.data
             })
     }
-    return { users, getUserList, user, getUser, login, loginUser, logout, update }
+    return { users, getUserList, user, getUser, login, loginUser, logout, update, refreshLogin }
 })

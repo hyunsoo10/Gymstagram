@@ -1,10 +1,9 @@
 <template>
         <div>
                 <header>
-                        <nav class="navbar">
+                        <nav class="navbar fixed-top">
                                 <div class="navbar-logo">
                                 <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
-                                <!-- <i class="fab fa-instagram"></i> -->
                                 <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
@@ -31,7 +30,6 @@
                                                 <RouterLink to="/signup">회원가입</RouterLink>
                                         </li>
                                 </ul>
-                                <a href="#" class="navbar--toggle-btn"> <i class=""></i></a>
                         </nav>
                 </header>
         </div>
@@ -54,6 +52,10 @@ const gohome= () =>{
 </script>
   
 <style scoped>
+
+.router-link-active{
+        font-weight: 900;
+}
 a {
         text-decoration: none;
         color: var(--text-color);
@@ -68,9 +70,11 @@ a {
         justify-content: space-evenly;
         align-items: center;
         background-color: var(--background-color);
-        padding: 8px 12px;
+        padding: 12px 12px;
         font-family: 'Source Sans Pro', sans-serif;
+        background-color: #EBE3D5;
 }
+
 
 .navbar-logo {
         font-size: 24px;
@@ -85,10 +89,11 @@ a {
         display: flex;
         list-style: none;
         padding-left: 0;
+        margin-bottom: 0 !important;
 }
-
 .navbar-menu li {
-        padding: 8px 12px 30px;
+        padding-left: 2em;;
+      
 }
 
 .navbar-menu li:hover {
@@ -96,15 +101,17 @@ a {
         border-radius: 4px;
 }
 
-.navbar-toggle-btn {
+
+
+/* .navbar-toggle-btn {
         display: none;
         position: absolute;
         right: 32px;
         font-size: 24px;
         color: var(--accent-color);
-}
+} */
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
         .navbar {
                 flex-direction: column;
                 align-items: flex-start;
@@ -130,5 +137,6 @@ a {
         .navbar-menu.active {
                 display: flex;
         }
-}</style>
+} */
+</style>
   

@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `diary`;
 DROP TABLE IF EXISTS `comment`;
 DROP TABLE IF EXISTS `avty`;
--- DROP TABLE IF EXISTS `follow`;
+DROP TABLE IF EXISTS `likeDiary`;
 
 
 CREATE TABLE IF NOT EXISTS `user`(
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `diary`(
   `view_count` int(52) DEFAULT 0,
   `like_count` int(52) DEFAULT 0,
   `range` int(2) DEFAULT 0,
-  `update_date` TIMESTAMP,
+  `update_date` DATE,
   CONSTRAINT `diary_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   PRIMARY KEY (`diary_id`)
 );

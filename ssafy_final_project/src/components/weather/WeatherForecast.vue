@@ -295,7 +295,7 @@ onMounted(() => {
   
 <style scoped>
 .home-weather-info {
-    margin: 0 20em;
+    margin: 0 5em;
     display: flex;
     justify-content: center;
 }
