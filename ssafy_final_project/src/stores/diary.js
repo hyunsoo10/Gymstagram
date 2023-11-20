@@ -76,7 +76,9 @@ export const useDiaryStore = defineStore('diary', () => {
             }
         })
         .then((res) => {
-            comments.value = res.data
+            if(res.data.length > 0){
+                comments.value = res.data
+            }
         })
     }
     const getAllComments = function(){
@@ -88,7 +90,9 @@ export const useDiaryStore = defineStore('diary', () => {
             }
         })
         .then((res) => {
-            comments.value = res.data
+            if(res.data.length > 0){
+                comments.value = res.data
+            }
         })
     }
 
@@ -138,8 +142,10 @@ export const useDiaryStore = defineStore('diary', () => {
             }
         })
         .then((res)=>{
-            likeDiaryInfo.value = res.data
-            console.log(likeDiaryInfo.value)
+            if(res.data.length>0){
+                likeDiaryInfo.value = res.data
+            }
+            // console.log(likeDiaryInfo.value)
         })
     }
     
@@ -152,8 +158,10 @@ export const useDiaryStore = defineStore('diary', () => {
             }
         })
         .then((res)=>{
-            likeDiaryInfo.value = res.data
-            console.log(likeDiaryInfo.value)
+            if(res.data.length>0){
+                likeDiaryInfo.value = res.data
+            }
+            // console.log(likeDiaryInfo.value)
             })
         })
         const like = function(like){
