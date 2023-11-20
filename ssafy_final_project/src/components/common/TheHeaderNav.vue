@@ -4,12 +4,12 @@
                         <nav class="navbar fixed-top">
                                 <div class="navbar-logo">
                                 <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
-                                <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
+                                <RouterLink to="/">&nbsp; <strong style="color:#776B5D"> GYM STAGRAM</strong></RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
-                                        <li>
+                                        <!-- <li>
                                                 <RouterLink to="/">홈</RouterLink>
-                                        </li>
+                                        </li> -->
                                         <li>
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
@@ -17,7 +17,7 @@
                                                 <RouterLink to="/diary">Diary</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser != null">
-                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My page({{
+                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My Diary({{
                                                         store.loginUser.userName }})</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser != null">
@@ -49,16 +49,18 @@ const logout = () => {
 const gohome= () =>{
         router.push('/')
 }
+
 </script>
   
 <style scoped>
 
 .router-link-active{
-        font-weight: 900;
+        font-family:'GmarketSansTTFBold';
 }
 a {
         text-decoration: none;
         color: var(--text-color);
+        
 }
 .logo-img{
         width: 3rem;
@@ -72,7 +74,7 @@ a {
         background-color: var(--background-color);
         padding: 12px 12px;
         font-family: 'Source Sans Pro', sans-serif;
-        background-color: #EBE3D5;
+        background-color: #EBE3D5
 }
 
 
@@ -93,6 +95,8 @@ a {
 }
 .navbar-menu li {
         padding-left: 2em;;
+        font-family:'GmarketSansTTFLight';
+        color : #776B5D;
       
 }
 
@@ -100,6 +104,7 @@ a {
         background-color: var(--accent-color);
         border-radius: 4px;
 }
+
 
 
 

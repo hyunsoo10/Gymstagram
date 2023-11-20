@@ -49,8 +49,8 @@
     </div>
     <v-card width=60% v-if="userStore.loginUser != null">
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-        <v-tab :value="1">My Weekly Diary</v-tab>
-        <v-tab :value="2">My Total Diary</v-tab>
+        <v-tab :value="1" color="#B0A695">My Weekly Diary</v-tab>
+        <v-tab :value="2" color="#B0A695">My Total Diary</v-tab>
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item v-for="n in 2" :key="n" :value="n">
