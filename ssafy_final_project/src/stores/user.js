@@ -121,14 +121,17 @@ export const useUserStore = defineStore('user', () => {
         axios
             .put(`${REST_USER_API}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'access-token': sessionStorage.getItem('access-token')
                 }
             })
             .then(() => {
                 alert('정보수정에 성공하였습니다!');
                 // localStorage에 저장된 정보도 변경하기
                 const localUser = JSON.parse(localStorage.getItem('loginUser'))
-                axios.get(`${REST_USER_API}/${localUser.userId}`)
+                axios.get(`${REST_USER_API}/${localUser.userId}`, {headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }})
                     .then((res) => {
                         let dbUser = res.data;
                         localStorage.setItem('loginUser', JSON.stringify(dbUser));
