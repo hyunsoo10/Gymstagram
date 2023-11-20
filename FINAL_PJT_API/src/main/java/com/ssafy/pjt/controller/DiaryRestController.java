@@ -81,7 +81,7 @@ public class DiaryRestController {
 		}
 	}
 
-	// diaryId로 diary한개 가져오기
+	// diaryId로 diary한 개 가져오기
 	@GetMapping("/diary/{diaryId}")
 	@ApiOperation(value = "diaryId에 해당하는 diary 반환", response = Diary.class)
 	public ResponseEntity<?> selectOne(HttpServletRequest req, HttpServletResponse res, HttpSession session,

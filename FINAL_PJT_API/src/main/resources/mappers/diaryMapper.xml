@@ -73,7 +73,7 @@
 	<!-- 다이어리 수정 -->
 	<update id="updateDiary" parameterType="Diary">
 			UPDATE diary
-			SET image = #{image}, title = #{title}, content = #{content}, update_date = #{updateDate}
+			SET original_image = #{originalImage}, save_image = #{saveImage}, title = #{title}, content = #{content}, update_date = #{updateDate}
 			WHERE diary_id = #{diaryId}
 	</update>
 	

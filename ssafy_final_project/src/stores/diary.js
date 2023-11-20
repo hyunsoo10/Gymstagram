@@ -194,10 +194,7 @@ export const useDiaryStore = defineStore('diary', () => {
             console.log('좋아요해제')
         })
     }
-
-    const updateDiary = function() {
-        
-    }
+    
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -235,5 +232,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike }
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike}
 })
