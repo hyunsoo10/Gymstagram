@@ -27,6 +27,11 @@
                     class="activate-btn"
                     @click="ableUser()"
                   ></v-btn>
+                  <v-btn
+                    text="홈으로 가기"
+                    class="home-btn"
+                    @click="gohome()"
+                  ></v-btn>
                 </v-card-actions>
               </v-card>
             </template>
@@ -141,6 +146,10 @@ const ableUser = () =>{
       }
 }
 
+const gohome = () =>{
+  router.push("/")
+}
+
 </script>
   
 <style scoped>
@@ -176,6 +185,16 @@ div {
     margin: 10px;
     background: #8EAEEC;
     border: 1px #8EAEEC;
+    font-size: 15px;
+    height: 2.5em !important;
+    font-weight: 900;
+}
+
+.home-btn{
+    width: 120px;
+    margin: 10px;
+    background: #8ee4ec;
+    border: 1px #8ee4ec;
     font-size: 15px;
     height: 2.5em !important;
     font-weight: 900;
