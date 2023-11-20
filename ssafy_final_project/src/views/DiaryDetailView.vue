@@ -19,7 +19,7 @@
                 <p class="card-text" style="display: flex; justify-content: space-around;   align-items: center; width: 70%; margin: 5px auto;" >
                     <div ><i class="fas fa-user-circle"  style="color: #727479;"></i> {{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
                     <small class="text-body-secondary"><i class="fas fa-eye" style="color: #727479;"></i> <strong>{{diaryStore.diary.viewCount}}</strong></small>
-                    <small class="text-body-secondary"><i class="fa-regular fa-thumbs-up" style="color: #727479;"></i> <strong>{{diaryStore.likeCount(diaryId)}}</strong> </small>
+                    <small class="text-body-secondary"><i class="fa-regular fa-thumbs-up" style="color: #727479;"></i> <strong>{{diaryStore.diary.likeCount}}</strong> </small>
                     <small class="card-text"><i class="fas fa-calendar-alt" style="color: #727479;"></i> {{diaryStore.diary.createDate}} </small>
                 </p>
                 <div style="width: 70%; margin: 20px auto;">{{ diaryStore.diary.content }}</div>
@@ -137,6 +137,7 @@
         // console.log(diaryId.value)
         likeInfo.value.userId = userStore.loginUser.userId
         likeInfo.value.diaryId = diaryId.value
+        diaryStore.diary.likeCount++;
         diaryStore.like(likeInfo.value)
         likeInfo.value.userId = ''
         likeInfo.value.diaryId = ''
@@ -148,6 +149,7 @@
         // console.log(diaryId.value)
         likeInfo.value.userId = userStore.loginUser.userId
         likeInfo.value.diaryId = diaryId.value
+        diaryStore.diary.likeCount--;
         diaryStore.unlike(likeInfo.value)
         likeInfo.value.userId = ''
         likeInfo.value.diaryId = ''

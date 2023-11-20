@@ -55,6 +55,7 @@ public interface DiaryDao {
 	//다이어리 좋아요
 	int like(LikeDiary like);
 	
+
 	//다이어리 좋아요 해제
 	int unLike(LikeDiary like);
 	
@@ -62,6 +63,12 @@ public interface DiaryDao {
 	int selectLike(LikeDiary like);
 	
 	List<LikeDiary> selectAllLike();
+
+	// 좋아요 수 증가
+	int increaseLikeCount(int diaryId);
+	
+	// 좋아요 수 감소
+	int decreaseLikeCount(int diaryId);
 
 	
 }

@@ -101,5 +101,16 @@ public class DiaryServiceImpl implements DiaryService{
 		return diaryDao.selectAllComment();
 	}
 
+	@Override
+	public int increaseLikeCount(int diaryId) {
+		return diaryDao.increaseLikeCount(diaryId);
+		
+	}
+
+	@Override
+	public int decreaseLikeCount(int diaryId) {
+		return diaryDao.decreaseLikeCount(diaryId);
+	}
+
 
 }

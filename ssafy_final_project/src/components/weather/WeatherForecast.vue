@@ -9,59 +9,42 @@
     </div>
 </template> -->
 <template>
-    <v-card class="mx-auto" max-width="368">
-        <v-card-item :title="location">
-            <template v-slot:subtitle>
-                <v-icon icon="mdi-alert" size="18" color="error" class="me-1 pb-1"></v-icon>
-                Extreme Weather Alert
-            </template>
-        </v-card-item>
-
-        <v-card-text class="py-0">
-            <v-row align="center" no-gutters>
-                <v-col class="text-h2" cols="6">
-                    {{ tmp }} ℃
-                </v-col>
-
-                <v-col cols="6" class="text-right">
-                    <v-icon color="error" icon="mdi-weather-hurricane" size="88"></v-icon>
-                </v-col>
-            </v-row>
-        </v-card-text>
-
-        <div class="d-flex py-3 justify-space-between">
-            <v-list-item density="compact" prepend-icon="mdi-weather-windy">
-                <v-list-item-subtitle>{{ wsd }} m/s</v-list-item-subtitle>
-            </v-list-item>
-
-            <v-list-item density="compact" prepend-icon="mdi-weather-pouring">
-                <v-list-item-subtitle>{{ pop }}%</v-list-item-subtitle>
-            </v-list-item>
-        </div>
-
-        <v-expand-transition>
-            <div v-if="expand">
-                <div class="py-2">
-                    <v-slider v-model="time" :max="6" :step="1" :ticks="labels" class="mx-4" color="primary"
-                        density="compact" hide-details show-ticks="always" thumb-size="10"></v-slider>
+    <div class="home-weather-info">
+        <v-card class="weather-info" max-width="500">
+            <v-card-item :title="location">
+                <div class="today-date">
+                    <p v-html="timeContent"></p>
+                    <br>
                 </div>
+            </v-card-item>
+            <v-card-text class="py-0">
+                <v-row align="center" no-gutters>
+                    <v-col cols="6" class="text-center">
+                        <div class="weather-icon">
+                            <p v-html="weatherIcon"></p>
+                            <br>
+                        </div>
+                    </v-col>
+                    <v-col class="text-center text-h3" cols="6">
+                        &nbsp;{{ tmp }} ℃
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <br>
+            <div class="d-flex py-3 justify-space-around">
+                <v-list-item density="compact" prepend-icon="mdi-weather-windy">
+                    <v-list-item-subtitle>{{ wsd }} m/s</v-list-item-subtitle>
+                </v-list-item>
 
-                <v-list class="bg-transparent">
-                    <v-list-item v-for="item in forecast" :key="item.day" :title="item.day" :append-icon="item.icon"
-                        :subtitle="item.temp">
-                    </v-list-item>
-                </v-list>
+                <v-list-item density="compact" prepend-icon="mdi-weather-pouring">
+                    <v-list-item-subtitle>{{ pop }}%</v-list-item-subtitle>
+                </v-list-item>
             </div>
-        </v-expand-transition>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-            <v-btn @click="expand = !expand">
-                {{ !expand ? 'Full Report' : 'Hide Report' }}
-            </v-btn>
-        </v-card-actions>
-    </v-card>
+        </v-card>
+        <v-card>
+            안녕 오늘은 무슨 운동이 추천이야 ~~~~~~~!~~~~
+        </v-card>
+    </div>
 </template>
 
   
@@ -82,14 +65,91 @@ const sky = ref(null); // 하늘 상태
 const pty = ref(null); // 강수 형태
 const pop = ref(0); // 강수 확률
 const wsd = ref(0); // 풍속
-onMounted(() => {
+const weatherIcon = ref('');
 
+// 실시간 정보
+let days = ['일', '월', '화', '수', '목', '금', '토'];
+let today = new Date();
+let year = String(today.getFullYear());
+let month = String(today.getMonth() + 1)
+let date = String(today.getDate())
+let day = String(days[today.getDay()])
+let hour = String(today.getHours()).padStart(2, "0");
+let minute = String(today.getMinutes()).padStart(2, "0");
+let seconds = String(today.getSeconds()).padStart(2, "0");
+let timeContent = ref(`<div class="today-date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`)
+
+const getClock = function () {
+    today = new Date();
+    year = String(today.getFullYear());
+    month = String(today.getMonth() + 1)
+    date = String(today.getDate())
+    day = String(days[today.getDay()])
+    hour = String(today.getHours()).padStart(2, "0");
+    minute = String(today.getMinutes()).padStart(2, "0");
+    seconds = String(today.getSeconds()).padStart(2, "0");
+    timeContent.value = `<div class="today-date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`;
+}
+
+getClock;
+setInterval(getClock, 1000); //1초 주기로 새로실행
+
+
+// 시간 맞춰서 날씨 예보 받아오기
+let basetime = ''
+const timeChange = function (hour) {
+    switch (hour) {
+        case "02":
+        case "03":
+        case "04":
+            basetime = "0200";
+            break;
+        case "05":
+        case "06":
+        case "07":
+            basetime = "0500";
+            break;
+        case "08":
+        case "09":
+        case "10":
+            basetime = "0800";
+            break;
+        case "11":
+        case "12":
+        case "13":
+            basetime = "1100";
+            break;
+        case "14":
+        case "15":
+        case "16":
+            basetime = "1400";
+            break;
+        case "17":
+        case "18":
+        case "19":
+            basetime = "1700";
+            break;
+        case "20":
+        case "21":
+        case "22":
+            basetime = "2000";
+            break;
+        case "23":
+        case "00":
+        case "01":
+            basetime = "2300";
+            break;
+    }
+    return basetime
+}
+
+onMounted(() => {
     // 내 위치정보 구하기
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
             latitude.value = position.coords.latitude; // 위도
             longitude.value = position.coords.longitude; // 경도
-            console.log("위도, 경도 : " + latitude.value + " " + longitude.value)
+            // console.log("위도, 경도 : " + latitude.value + " " + longitude.value)
             // 내 위치(경도, 위도) -> 법정동
             const Location_API_URL = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude.value}&y=${latitude.value}`;
             axios
@@ -99,9 +159,8 @@ onMounted(() => {
                     }
                 }).then((response) => {
                     //법정동 기준으로 동단위의 값을 가져온다
-                    console.log(response)
-                    location.value = response.data.documents[0].address_name;
-                    console.log(location.value)
+                    location.value = '🗺️ ' + response.data.documents[0].address_name;
+                    // console.log(location.value)
                 })
 
             // 좌표로 행정구역 정보 받기
@@ -148,36 +207,28 @@ onMounted(() => {
             }
             let x = dfs_xy_conv(latitude.value, longitude.value)['x']
             let y = dfs_xy_conv(latitude.value, longitude.value)['y']
-            console.log("기상청 좌표 : " + x + " " + y)
+            // console.log("기상청 좌표 : " + x + " " + y)
 
             // 공공데이터에서 요청 날리라고 한 URL
             const Weather_API_URL = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`;
 
-            // 매일 날짜 갱신을 위해서 !
-            const today = new Date();
-            let year = today.getFullYear();
-            let month = today.getMonth() + 1;
-            let day = today.getDate();
             month = month < 10 ? "0" + month : month;
-            day = day < 10 ? "0" + day : day;
-            const todayStr = `${year}${month}${day}`;
-            console.log(todayStr);
-            //발표시간을 전부 넣어둬
-            const times = ['0200', '0500',] // 8개넣어
+            date = date < 10 ? "0" + date : date;
+            const todayStr = `${year}${month}${date}`;
+        
             axios
                 .get(Weather_API_URL, {
                     params: {
                         ServiceKey: import.meta.env.VITE_WEATHER_API_KEY,
                         dataType: "JSON",
                         base_date: todayStr, //20231905 형태
-                        base_time: "0200",   //이것은 총 8회 발표 
+                        base_time: timeChange(hour),   //이것은 총 8회 발표 
                         numOfRows: 15,
                         nx: x,
                         ny: y,
                     },
                 })
                 .then((response) => {
-                    console.log(response)
                     return response.data.response.body.items.item;
                 })
                 .then((response) => {
@@ -203,21 +254,37 @@ onMounted(() => {
                             switch (item.fcstValue) {
                                 case "1":
                                     sky.value = "맑음";
+                                    weatherIcon.value = "☀";
                                     break;
                                 case "3":
                                     sky.value = "구름많음";
+                                    weatherIcon.value = "⛅";
                                     break;
                                 case "4":
                                     sky.value = "흐림";
+                                    weatherIcon.value = "☁";
                                     break;
                             }
                         } else if (item.category === "PTY") {
-                            pty.value = item.fcstValue;
+                            // pty.value = item.fcstValue;
+                            switch (item.fcstValue) {
+                                case "1":
+                                    weatherIcon.value = "☔";
+                                    break;
+                                case "2":
+                                    weatherIcon.value = "❄";
+                                    break;
+                                case "3":
+                                    weatherIcon.value = "❄";
+                                    break;
+                                case "4":
+                                    weatherIcon.value = "☔";
+                                    break;
+                            }
                         } else if (item.category === "POP") {
                             pop.value = item.fcstValue;
-                        } else if(item.category === "WSD") {
+                        } else if (item.category === "WSD") {
                             wsd.value = item.fcstValue;
-
                         }
                     });
                 });
@@ -226,5 +293,22 @@ onMounted(() => {
 });
 </script>
   
-<style scoped></style>
+<style scoped>
+.home-weather-info {
+    margin: 0 20em;
+    display: flex;
+    justify-content: center;
+}
+
+.weather-info {
+    width: 30em
+}
+.today-date p {
+    font-size: 15px;
+}
+
+.weather-icon p {
+    font-size: 80px;
+}
+</style>
   
