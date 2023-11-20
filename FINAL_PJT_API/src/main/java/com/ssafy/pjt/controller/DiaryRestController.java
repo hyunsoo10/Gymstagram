@@ -89,6 +89,8 @@ public class DiaryRestController {
 		try {
 			// diary가져오기
 			Diary diary = diaryService.getOneDiary(diaryId);
+			//diary 조회수 증가
+			diaryService.updateViewCount(diaryId);
 //			viewCountUp(req, res, session, diaryId);
 			if (diary != null) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
