@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto" width="300" height="400">
-    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`"
-      cover>
+    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
+      cover >
       <v-card-title>{{ diary.title }}</v-card-title>
     </v-img>
 
