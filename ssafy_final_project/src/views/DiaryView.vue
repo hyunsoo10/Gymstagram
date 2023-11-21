@@ -1,7 +1,7 @@
 <template>
   <div>
         <div class="avty-btn-box">
-          <div class="button-container" v-if="userStore.loginUser.avtyCode !== 8">
+          <div class="button-container">
             <button class="btn btn-outline-all btn-layer-2_0 active" value="전체보기" @click="router.go(), changeBtn($event)">
                 전체보기
             </button>
