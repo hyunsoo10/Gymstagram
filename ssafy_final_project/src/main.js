@@ -15,6 +15,9 @@ import "@mdi/font/css/materialdesignicons.css";
 // v-calendar
 import VCalendar from 'v-calendar';
 import 'v-calendar/style.css';
+// infinite-scroll
+import InfiniteLoading from "v3-infinite-loading";
+import "v3-infinite-loading/lib/style.css";
 
 const vuetify = createVuetify({
   components,
@@ -35,4 +38,5 @@ app.use(router);
 app.use(vuetify);
 app.use(VCalendar, {})
 
+app.component("infinite-loading", InfiniteLoading);
 app.mount("#app");

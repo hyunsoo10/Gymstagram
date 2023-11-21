@@ -57,7 +57,7 @@
           <v-container fluid>
             <template v-if="n == 1">
               <h1>My Weekly Diary</h1>
-              <MyWeeklyDiary v-for="diary in diaryStore.weeklyDiary" :key="diary.diaryId" :diary="diary" />
+              <MyWeeklyDiary/>
             </template>
             <template v-if="n == 2">
               <h1>My Total Diary</h1>

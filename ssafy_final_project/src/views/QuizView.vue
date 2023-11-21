@@ -288,7 +288,7 @@ function setResult() {
 .avty-test {
     margin: 20px;
     width: 700px;
-    height: 700px;
+    height: 40em;
 }
 
 #main {
@@ -315,8 +315,9 @@ p {
 
 .qBox {
     text-align: center;
-    font-size: 23px;
-    width: 80%
+    font-size: 22px;
+    width: 80%;
+    font-weight: bolder;
 }
 
 .answerBox {

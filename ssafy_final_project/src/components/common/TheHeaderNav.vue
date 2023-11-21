@@ -10,7 +10,7 @@
                                         <!-- <li>
                                                 <RouterLink to="/">홈</RouterLink>
                                         </li> -->
-                                        <li>
+                                        <li v-if="store.loginUser != null">
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
                                         <li>

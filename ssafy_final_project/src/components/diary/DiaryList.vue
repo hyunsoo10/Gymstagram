@@ -1,7 +1,6 @@
 <template>
-  <v-card class="mx-auto" width="300" height="400">
-    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
-      cover >
+  <v-card class="card" width="300" height="400" :to="`/detail/${diary.diaryId}`" :diary="diary">
+    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`" cover>
     </v-img>
     <v-card-title>{{ diary.title }}</v-card-title>
 
@@ -99,6 +98,9 @@ const getComments = (diaryId) => {
 
 <style  scoped>
 
+.v-card{
+  margin: 1em 0.5em;
+}
 .v-card-title {
   font-size: 1.2em;
   font-weight: 700;
