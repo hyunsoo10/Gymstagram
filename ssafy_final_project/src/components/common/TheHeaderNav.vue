@@ -13,7 +13,7 @@
                                         <li v-if="store.loginUser != null">
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
-                                        <li>
+                                        <li v-if="store.loginUser != null">
                                                 <RouterLink to="/diary">Diary</RouterLink>
                                         </li>
 

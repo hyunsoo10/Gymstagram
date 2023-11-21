@@ -112,7 +112,7 @@ let day = String(days[today.getDay()])
 let hour = String(today.getHours()).padStart(2, "0");
 let minute = String(today.getMinutes()).padStart(2, "0");
 let seconds = String(today.getSeconds()).padStart(2, "0");
-let timeContent = ref(`<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`)
+let timeContent = ref(`<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}:${minute}:${seconds}</div>`)
 const recommendContent = ref('')
 
 const getClock = function () {
@@ -124,7 +124,7 @@ const getClock = function () {
     hour = String(today.getHours()).padStart(2, "0");
     minute = String(today.getMinutes()).padStart(2, "0");
     seconds = String(today.getSeconds()).padStart(2, "0");
-    timeContent.value = `<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`;
+    timeContent.value = `<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}:${minute}:${seconds}</div>`;
 }
 
 getClock;
