@@ -154,8 +154,13 @@ form a:hover {
 button {
     width: 150px;
     margin: 10px;
-    background: #8EAEEC;
-    border: 1px #8EAEEC;
+    color: white;
+    font-weight: 900;
+    background: #B0A695;
+}
+button:hover{
+    background: #776B5D;
+
 }
 #custom-login-btn{
     cursor: pointer;
