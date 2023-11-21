@@ -94,7 +94,7 @@ const kakaoGetUserInfo = () =>{
                 userPassword: kakao.userPassword
             }
             userStore.login(kakaoUser)
-            return
+            // return
         }
         else{
             pageFlag.value=true
