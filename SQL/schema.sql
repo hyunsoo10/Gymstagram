@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `user`(
   `user_id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
   `user_password` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
   `user_name` CHAR(5) CHARACTER SET utf8mb4 NOT NULL,
+  `email` VARCHAR(45) CHARACTER SET utf8mb4,
   `nickname` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
   `register_date` DATE NOT NULL DEFAULT (current_date),
   `profile_image` VARCHAR(150),

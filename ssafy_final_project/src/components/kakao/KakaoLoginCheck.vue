@@ -1,12 +1,82 @@
 <template>
-    <div v-show="pageFlag">
-        <KakaoLoginCheck/>
+    <!-- <div style="margin: 20px auto; text-align: center">
+        Kakao Login View
+        <br>
+        <br>
+        {{ kakaoInfo }}
+    </div> -->
+    <div v-show="userStore.loginUser == null">
+        <main class="d-flex flex-column">
+            <div class="signup-title">
+                <h2>추가 정보 입력</h2>
+                <br>
+            </div>
+            <section class="d-flex flex-column">
+                <div class="regist-form">
+                    <div class="form-content">
+                        <label for="userName">
+                            이름
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="text" id="userName" placeholder="이름을 입력해주세요." v-model="user.userName">
+                        <br>
+                        <label for="userId">
+                            아이디
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
+                        <br>
+                        <label for="email">
+                            이메일
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="email" id="email" placeholder="이메일을 입력해주세요.(중복불가능)"
+                                :value="kakaoInfo.email" readonly>
+                        <br>
+                        <label for="userNickname">
+                            닉네임
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="text" id="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)"
+                                v-model="kakaoInfo.nickName">
+                        <br>
+                        <label for="userPassword">
+                            비밀번호
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="password" id="userPassword" placeholder="비밀번호를 입력해주세요." v-model="user.userPassword">
+                        <br>
+                        <label for="userPassword2">
+                            비밀번호확인
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
+                        <br>
+                        <div class="filebox">
+                            <label>
+                                프로필사진
+                            </label>
+                            <input class="upload-name" :value=uploadName placeholder="첨부파일">
+                            <label for="file" id="file-btn">파일찾기</label>
+                            <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
+                        </div>
+                        <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                        <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
+                            aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
+                        <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
+                        <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
+                        <div class="regist-btn">
+                            <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 </template>
 
 <script setup>
-
-import KakaoLoginCheck from '@/components/kakao/KakaoLoginCheck.vue'
 import { ref, onMounted} from 'vue';
 import {useRoute, useRouter} from 'vue-router'
 import axios from 'axios'
@@ -16,9 +86,6 @@ import { useUserStore } from '@/stores/user'
 const route = useRoute().query.code
 const code = ref()
 const accessToken = ref()
-
-
-const pageFlag = ref(false)
 
 const kakaoInfo = ref({
     email: '',
@@ -96,11 +163,42 @@ const kakaoGetUserInfo = () =>{
             userStore.login(kakaoUser)
             return
         }
-        else{
-            pageFlag.value=true
-        }
     })
 }
+
+const kakaoLogin = (user) => {
+        axios.post(`${REST_USER_API}/jwtlogin`, user)
+        .then((response)=>{
+        //   console.log(response.data)
+        //   console.log(atob(response.data['access-token'].split('.')[1]))
+            let message = response.data['message']
+
+            if(message != "success"){
+                alert(message)
+            }
+            else{
+                sessionStorage.setItem('access-token', response.data["access-token"])
+            
+                const token = response.data['access-token'].split('.')
+                let user = token[1]
+                // user = atob(user)
+                //디코딩
+                user = decodeURIComponent(escape(atob(user)));
+                user = JSON.parse(user)
+                user = user["user"]
+                loginUser.value = Object.assign({}, user);
+                console.log(loginUser.value)
+                alert(loginUser.value.userName + "님 환영합니다!");
+            //   localStorage.setItem('loginUser', user);
+                router.push('/');
+            }
+        })
+        .catch(()=>{
+    
+        })
+ }
+
+const REST_USER_API = `http://localhost:8080/user-api/user`
 const router = useRouter();
 
 const user = ref({
