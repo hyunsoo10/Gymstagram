@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1>Diary View</h1>
-    
-    
         <div class="avty-btn-box">
           <div class="button-container">
             <button class="btn btn-outline-all btn-layer-2_0 active" value="전체보기" @click="router.go(), changeBtn($event)">
@@ -143,7 +140,7 @@ h3 {
 .button-container {
   padding: 16px;
   display: flex;
-  margin: 60px auto;
+  margin: 40px auto;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -357,7 +354,7 @@ h3 {
 }
 
 .avty-btn-box{
-  width: 40%;
+  width: 64%;
 }
 
 </style>

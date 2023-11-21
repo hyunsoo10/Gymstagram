@@ -61,11 +61,10 @@ const gohome= () =>{
 .router-link-active{
         font-family:'SaumsungBold'!important;
 }
+
 a {
         text-decoration: none;
         color: var(--text-color);
-        
-        
 }
 .logo-img{
         width: 3rem;
