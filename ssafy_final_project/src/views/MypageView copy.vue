@@ -1,4 +1,5 @@
 <template>
+  
   <template v-if="userStore.loginUser != null && !userStore.loginUser.activate">
     <v-dialog width="auto" v-model="activateDialog" transition="dialog-bottom-transition" persistent>
       <template v-slot:activator="{ props }">
@@ -45,9 +46,6 @@
             </template>
             <template v-if="n == 2">
               <h1>My Total Diary</h1>
-              <div class="calendar">
-                <VCalendar expanded :color="selectedColor" :attributes="attrs" @dayclick="showDiary" view="weekly" />
-              </div>
               <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" />
             </template>
           </v-container>
@@ -74,31 +72,8 @@ const route = useRoute();
 const diaryStore = useDiaryStore();
 const userStore = useUserStore();
 const router = useRouter();
+
 const activateDialog = ref(true)
-
-// v-Calender
-const selectedColor = ref('blue');
-
-const masks = {
-  title: 'YYYY년 MM월',
-  weekdays: 'W',
-  navMonths: 'MMM',
-}
-
-const attrs = ref([
-  {
-    key: 'today',
-    highlight: {
-      color: 'blue',
-      fillMode: 'light',
-    },
-    dates: new Date(),
-  },
-]);
-
-const showDiary = (day, event) => {
-  console.log(day.id)
-}
 
 // 모달창 false
 const dialog = ref(false);
@@ -109,7 +84,6 @@ const close = function () {
 const confirmPassword = ref()
 
 const userId = ref(route.params.userId);
-
 //전체 다이어리 중에 my diary만 가져오기
 //diary 목록 중에 login한 user의 id와 같은 diary들만 filter
 const myDiary = computed(() => {
@@ -222,11 +196,6 @@ div {
   height: 2.5em !important;
   font-weight: 900;
 
-}
-
-.calendar {
-  width: 700px;
-  margin: 2em auto;
 }
 </style>
   
