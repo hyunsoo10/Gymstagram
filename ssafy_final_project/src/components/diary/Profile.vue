@@ -104,6 +104,10 @@ nav {
   margin-left: 20px;
 }
 
+.profile-edit:hover {
+  font-weight: 700;
+  transition: 0.3ms;
+}
 .total-cnt {
   font-size: 16px;
   text-align: start;

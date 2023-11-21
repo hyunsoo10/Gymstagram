@@ -17,9 +17,9 @@
             v-bind="props">
            {{ diary.avty }}
       </v-btn>
-      <v-btn  v-bind="props">
+      <!-- <v-btn  v-bind="props">
           <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
-      </v-btn>
+      </v-btn> -->
       <!-- <v-dialog
         transition="dialog-bottom-transition"
         width="auto"
