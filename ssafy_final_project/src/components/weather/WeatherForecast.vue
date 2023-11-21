@@ -254,7 +254,7 @@ onMounted(() => {
                             switch (item.fcstValue) {
                                 case "1":
                                     sky.value = "맑음";
-                                    weatherIcon.value = "☀";
+                                    weatherIcon.value = "🌞";
                                     break;
                                 case "3":
                                     sky.value = "구름많음";

@@ -55,7 +55,7 @@ const gohome= () =>{
 <style scoped>
 
 .router-link-active{
-        font-family:'GmarketSansTTFBold';
+        font-family:'SaumsungLightBold';
 }
 a {
         text-decoration: none;
@@ -95,7 +95,6 @@ a {
 }
 .navbar-menu li {
         padding-left: 2em;;
-        font-family:'GmarketSansTTFLight';
         color : #776B5D;
       
 }
