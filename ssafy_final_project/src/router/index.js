@@ -10,6 +10,7 @@ import DiaryDetailView from '@/views/DiaryDetailView.vue'
 import UpdateView from '@/views/UpdateView.vue'
 import DiaryCreateView from '@/components/diary/DiaryCreate.vue'
 import DiaryUpdate from '@/components/diary/diaryUpdate.VUE'
+import KakaoLoginView from '@/views/KakaoLoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,6 +84,15 @@ const router = createRouter({
       }
       ]
     },
+    {
+      path: '/kakaoLogin',
+      name: 'kakaoLogin',
+      query:{
+        code: ''
+      },
+      component: KakaoLoginView,
+    },
+
   ]
 })
 

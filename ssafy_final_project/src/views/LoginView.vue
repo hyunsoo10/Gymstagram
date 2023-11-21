@@ -18,7 +18,24 @@
                         <a href="/signup">회원가입</a>
                     </form>
                 </div>
-
+                
+                <!-- <button button type="button" class="btn btn-secondary" @click="kakaoLogin">kakao 로그인</button> -->
+                <!-- <a>
+                    Kakao 로그인
+                </a> -->
+                <!-- <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=01bdd0d43fb0ea7f402dc99e9f0f02d4&redirect_uri=http://localhost:5173">
+                    Kakao 로그인
+                </a> -->
+                <div>
+                    <a id="custom-login-btn" @click="kakaoLogin()">
+                    <img
+                        src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+                        width="222"
+                        alt="카카오 로그인 버튼"
+                    />
+                    </a>
+                <!-- <div @click="kakaoLogout()">로그아웃</div> -->
+            </div>
             </section>
         </main>
     </div>
@@ -29,13 +46,31 @@ import { ref, onMounted } from 'vue';
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { useUserStore } from '@/stores/user'
-
+const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 const id = ref('');
 const password = ref('');
+
 
 const router = useRouter();
 const user = ref(null);
 const store = useUserStore()
+
+// const makeFormData = params => {
+//       const searchParams = new URLSearchParams()
+//       Object.keys(params).forEach(key => {
+//         searchParams.append(key, params[key])
+//       })
+//       return searchParams;
+// }
+
+const kakaoLogin = () =>{
+    console.log("카카오 로그인")
+    const redirect_uri = 'http://localhost:5173/kakaoLogin';
+    const cliendId = '01bdd0d43fb0ea7f402dc99e9f0f02d4';
+    const AuthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${cliendId}&redirect_uri=${redirect_uri}&'scope=account_email profile_nickname'`
+    window.location.href = AuthURL;
+
+}
 
 //jwt 로그인
 const login = () => {
@@ -121,6 +156,9 @@ button {
     margin: 10px;
     background: #8EAEEC;
     border: 1px #8EAEEC;
+}
+#custom-login-btn{
+    cursor: pointer;
 }
 </style>
   

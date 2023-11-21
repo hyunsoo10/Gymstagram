@@ -15,6 +15,8 @@ public class User {
 	/**avty테스트 안한 사람들은 8로 기본값*/
 	private int avtyCode = 8;
 	
+	/**카카오 로그인시 활용할 이메일*/
+	private String email;
 	
 	public User() {
 		
@@ -130,13 +132,27 @@ public class User {
 		this.avtyCode = avtyCode;
 	}
 
-	
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userPassword=" + userPassword + ", userName=" + userName + ", nickName="
 				+ nickName + ", registerDate=" + registerDate + ", profileImage=" + profileImage + ", activate="
-				+ activate + ", permission=" + permission + ", avtyCode=" + avtyCode + "]";
+				+ activate + ", permission=" + permission + ", avtyCode=" + avtyCode + ", email=" + email + "]";
 	}
+	
+	
 
 }

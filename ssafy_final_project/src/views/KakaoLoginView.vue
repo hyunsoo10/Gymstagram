@@ -1,8 +1,14 @@
 <template>
+    <!-- <div style="margin: 20px auto; text-align: center">
+        Kakao Login View
+        <br>
+        <br>
+        {{ kakaoInfo }}
+    </div> -->
     <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h2>회원 정보 입력</h2>
+                <h2>추가 정보 입력</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
@@ -20,13 +26,19 @@
                         </label>
                         <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
                         <br>
-             
+                        <label for="email">
+                            이메일
+                            <img class="icon-star" src="@/assets/icon_star.png" />
+                        </label>
+                        <input type="email" id="email" placeholder="이메일을 입력해주세요.(중복불가능)"
+                                :value="kakaoInfo.email" readonly>
+                        <br>
                         <label for="userNickname">
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
                         <input type="text" id="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)"
-                            v-model="user.nickName">
+                                v-model="kakaoInfo.nickName">
                         <br>
                         <label for="userPassword">
                             비밀번호
@@ -65,9 +77,78 @@
 </template>
 
 <script setup>
+
+
+import { ref, onMounted} from 'vue';
+import {useRoute, useRouter} from 'vue-router'
 import axios from 'axios'
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+
+//인가코드 쿼리로 받아오기
+const route = useRoute().query.code
+const code = ref()
+const accessToken = ref()
+
+const kakaoInfo = ref({
+    email: '',
+    nickName: '',
+})
+
+
+
+onMounted(()=>{
+    code.value = route
+    // console.log(code.value)
+    kakaoGetToken(code.value)
+    
+})
+
+
+
+const kakaoGetToken = () =>{
+    // console.log("카카오 로그인")
+    
+    axios({
+        url: 'https://kauth.kakao.com/oauth/token',
+        method: 'POST',
+        data:{
+            grant_type: "authorization_code",
+            client_id: "01bdd0d43fb0ea7f402dc99e9f0f02d4",
+            redirect_uri: "http://localhost:5173/kakaoLogin",
+            code: code.value
+        },
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        // console.log(res.data['access_token'])
+        accessToken.value = res.data['access_token']
+        //유저 정보 받아오기
+        kakaoGetUserInfo()
+    })
+}
+
+const kakaoGetUserInfo = () =>{
+    // console.log(accessToken.value)
+    axios({
+        url: 'https://kapi.kakao.com/v2/user/me',
+        method: 'GET',
+        headers: {
+            'Authorization' : `Bearer ${accessToken.value}`
+        }
+    })
+    .then((res)=>{
+        // console.log(res.data)
+        // console.log(res.data["kakao_account"]["email"])
+        // console.log(res.data["kakao_account"]["profile"].nickname)
+        kakaoInfo.value.email = res.data["kakao_account"]["email"]
+        kakaoInfo.value.nickName = res.data["kakao_account"]["profile"].nickname
+    })
+}
+
+
+
 
 const router = useRouter();
 
@@ -93,14 +174,15 @@ const upload = function (event) {
     uploadName.value = image.value.name;
 }
 
-const errorMessage = ref('');
-
 
 const checkId = ref(false)
 const nickNameCheck = ref(false)
 
 const regist = function (event) {
-    // 유효성 검사
+    //카카오 에서 받아온 정보 넣어주기
+    user.value.email = kakaoInfo.value.email
+    user.value.nickName = kakaoInfo.value.nickName
+        // 유효성 검사
     // 1. 비밀번호 입력과 비밀번호 확인 입력의 일치 여부
     if (user.value.userPassword != password2.value) {
         alert('비밀번호가 일치하지 않습니다.').
@@ -171,7 +253,6 @@ const regist = function (event) {
     
 };
 </script>
-
 
 <style scoped>
 li,

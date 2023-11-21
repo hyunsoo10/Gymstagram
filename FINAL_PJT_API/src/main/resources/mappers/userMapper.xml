@@ -27,8 +27,8 @@
 
 	<!-- 회원 가입 -->
 	<insert id="insertUser" parameterType="User">
-		INSERT INTO user(user_id, user_password, user_name, nickname, profile_image)
-			VALUE (#{userId}, #{userPassword}, #{userName}, #{nickName}, #{profileImage})
+		INSERT INTO user(user_id, user_password, user_name, nickname, profile_image, email)
+			VALUE (#{userId}, #{userPassword}, #{userName}, #{nickName}, #{profileImage}, #{email})
 	</insert>
 
 	<!-- 회원 수정 -->
