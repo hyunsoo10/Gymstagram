@@ -68,15 +68,13 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <label for="floatingInputValue"></label>
-                <input type="text" class="form-control" id="floatingInputValue" v-model.trim="newContent"
+                <input type="text" class="form-control" id="comment-content" v-model.trim="newContent"
                     placeholder="댓글을 작성해주세요" @keyup.enter="createComment" />
             </div>
 
-            <div class="col-auto"></div>
+
             <div class="col-auto">
-                <button type="button" @click="createComment" class="btn btn-outline-success"><i class="far fa-paper-plane"
-                        style="color: #7CB342;"></i></button>
+                <button type="button" @click="createComment" class="btn"><i class="fa-regular fa-paper-plane fa-bounce" style="color: #109452;"></i></button>
             </div>
         </form>
         <!-- <template v-if="diaryStore.comments.length>0"> -->
@@ -394,10 +392,13 @@ const back = () => { router.go(-1) }
     justify-content: space-between;
 }
 
-.comment-box,
 #commentForm {
     margin: 10px auto;
     width: 80%;
+}
+.comment-box {
+    margin: 10px auto;
+    width: 65%;
 }
 
 .reviews {
@@ -411,7 +412,9 @@ const back = () => { router.go(-1) }
     margin: 5px;
 }
 
-.comment-date,
+#comment-content::placeholder {
+    font-size: 13px;
+}
 .comment-btn {
     text-align: end;
 }

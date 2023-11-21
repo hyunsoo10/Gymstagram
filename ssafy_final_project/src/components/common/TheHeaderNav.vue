@@ -3,7 +3,7 @@
                 <header>
                         <nav class="navbar fixed-top">
                                 <div class="navbar-logo">
-                                <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
+                                <img @click="gohome" class="logo-img" src="@/assets/Gymstagram2.png" />
                                 <RouterLink to="/">&nbsp; GYM STAGRAM</RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
