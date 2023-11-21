@@ -73,7 +73,7 @@
 	<!-- 다이어리 수정 -->
 	<update id="updateDiary" parameterType="Diary">
 			UPDATE diary
-			SET image = #{image}, title = #{title}, content = #{content}, update_date = #{updateDate}
+			SET original_image = #{originalImage}, save_image = #{saveImage}, title = #{title}, content = #{content}, update_date = #{updateDate}
 			WHERE diary_id = #{diaryId}
 	</update>
 	
@@ -87,15 +87,15 @@
 	<!-- 다이어리 조회수 업데이트 -->
 	<update id="updateDiaryViewCount" parameterType="int">
 			UPDATE diary
-			SET view_count = view_count + 1
-			WHERE diary_id = #{diaryId}
+				SET view_count = view_count + 1
+				WHERE diary_id = #{diaryId}
 	</update>
 	
 	<!-- 좋아요 수 증가 -->
 	<update id="increaseLikeCount" parameterType="int">
 			UPDATE diary
-			SET like_count = like_count + 1
-			WHERE diary_id = #{diaryId}
+				SET like_count = like_count + 1
+				WHERE diary_id = #{diaryId}
 	</update>
 	
 		<!-- 좋아요 수 감소 -->

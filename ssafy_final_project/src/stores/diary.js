@@ -194,55 +194,7 @@ export const useDiaryStore = defineStore('diary', () => {
             console.log('좋아요해제')
         })
     }
-
-   // 정보수정
-   const updateDiary = (formData, newPassword) => {
-    axios
-        .put(`${REST_USER_API}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'access-token': sessionStorage.getItem('access-token')
-            }
-        })
-        .then(() => {
-            alert('정보수정에 성공하였습니다!');
-            // localStorage에 저장된 정보도 변경하기
-            // const localUser = JSON.parse(localStorage.getItem('loginUser'))
-            axios.get(`${REST_USER_API}/${loginUser.value.userId}`, {headers: {
-            'access-token': sessionStorage.getItem('access-token')
-        }})
-        .then((res) => {
-            //업데이트 했던 비밀번호 넘겨줘야됌
-            let user =  {
-                userId: loginUser.value.userId,
-                userPassword: newPassword
-            }
-            console.log(user)
-            axios.post(`${REST_USER_API}/jwtlogin`, user)
-            .then((response)=>{
-              console.log(response.data)
-            //   console.log(atob(response.data['access-token'].split('.')[1]))
-              sessionStorage.setItem('access-token', response.data["access-token"])
-        
-              const token = response.data['access-token'].split('.')
-              let user = token[1]
-              // user = atob(user)
-              //디코딩
-              user = decodeURIComponent(escape(atob(user)));
-              user = JSON.parse(user)
-              user = user["user"]
-              console.log(user)
-              loginUser.value = Object.assign({}, user);
-        
-            })
-            router.push('/');
-            // loginUser.value = dbUser;
-        })
-        })
-        .catch(() => {
-            console.log("정보수정에 실패하였습니다!")
-        })
-}
+    
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -280,5 +232,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike }
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike}
 })

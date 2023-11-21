@@ -1,16 +1,15 @@
 <template>
         <div>
                 <header>
-                        <nav class="navbar">
+                        <nav class="navbar fixed-top">
                                 <div class="navbar-logo">
                                 <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
-                                <!-- <i class="fab fa-instagram"></i> -->
-                                <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
+                                <RouterLink to="/">&nbsp; <strong style="color:#776B5D"> GYM STAGRAM</strong></RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
-                                        <li>
+                                        <!-- <li>
                                                 <RouterLink to="/">홈</RouterLink>
-                                        </li>
+                                        </li> -->
                                         <li>
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
@@ -18,7 +17,7 @@
                                                 <RouterLink to="/diary">Diary</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser != null">
-                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My page({{
+                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My Diary({{
                                                         store.loginUser.userName }})</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser != null">
@@ -31,7 +30,6 @@
                                                 <RouterLink to="/signup">회원가입</RouterLink>
                                         </li>
                                 </ul>
-                                <a href="#" class="navbar--toggle-btn"> <i class=""></i></a>
                         </nav>
                 </header>
         </div>
@@ -51,12 +49,18 @@ const logout = () => {
 const gohome= () =>{
         router.push('/')
 }
+
 </script>
   
 <style scoped>
+
+.router-link-active{
+        font-family:'GmarketSansTTFBold';
+}
 a {
         text-decoration: none;
         color: var(--text-color);
+        
 }
 .logo-img{
         width: 3rem;
@@ -68,9 +72,11 @@ a {
         justify-content: space-evenly;
         align-items: center;
         background-color: var(--background-color);
-        padding: 8px 12px;
+        padding: 12px 12px;
         font-family: 'Source Sans Pro', sans-serif;
+        background-color: #EBE3D5
 }
+
 
 .navbar-logo {
         font-size: 24px;
@@ -85,10 +91,13 @@ a {
         display: flex;
         list-style: none;
         padding-left: 0;
+        margin-bottom: 0 !important;
 }
-
 .navbar-menu li {
-        padding: 8px 12px 30px;
+        padding-left: 2em;;
+        font-family:'GmarketSansTTFLight';
+        color : #776B5D;
+      
 }
 
 .navbar-menu li:hover {
@@ -96,15 +105,18 @@ a {
         border-radius: 4px;
 }
 
-.navbar-toggle-btn {
+
+
+
+/* .navbar-toggle-btn {
         display: none;
         position: absolute;
         right: 32px;
         font-size: 24px;
         color: var(--accent-color);
-}
+} */
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
         .navbar {
                 flex-direction: column;
                 align-items: flex-start;
@@ -130,5 +142,6 @@ a {
         .navbar-menu.active {
                 display: flex;
         }
-}</style>
+} */
+</style>
   

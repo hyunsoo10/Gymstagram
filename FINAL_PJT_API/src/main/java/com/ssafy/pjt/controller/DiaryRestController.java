@@ -81,7 +81,7 @@ public class DiaryRestController {
 		}
 	}
 
-	// diaryId로 diary한개 가져오기
+	// diaryId로 diary한 개 가져오기
 	@GetMapping("/diary/{diaryId}")
 	@ApiOperation(value = "diaryId에 해당하는 diary 반환", response = Diary.class)
 	public ResponseEntity<?> selectOne(HttpServletRequest req, HttpServletResponse res, HttpSession session,
@@ -89,6 +89,8 @@ public class DiaryRestController {
 		try {
 			// diary가져오기
 			Diary diary = diaryService.getOneDiary(diaryId);
+			//diary 조회수 증가
+			diaryService.updateViewCount(diaryId);
 //			viewCountUp(req, res, session, diaryId);
 			if (diary != null) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);

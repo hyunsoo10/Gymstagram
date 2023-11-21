@@ -14,7 +14,7 @@
                 <h3 class="card-title">{{diaryStore.diary.title}}</h3>
                 <img class="card-img-top diray-img" width="500" height=""  :src="`../src/assets/diary_image/${diaryStore.diary.userId}/${diaryStore.diary.saveImage}`" onerror="this.src='https://cdn.pixabay.com/photo/2023/06/20/01/30/ai-generated-8075768_640.jpg'"/>
                 <p class="card-text" style="display: flex; justify-content: space-around;   align-items: center; width: 70%; margin: 5px auto;" >
-                    <div ><i class="fas fa-user-circle"  style="color: #727479;"></i> {{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
+                    <div><i class="fas fa-user-circle"  style="color: #727479;"></i> {{diaryStore.diary.userId}} &nbsp;&nbsp;</div>
                     <small class="text-body-secondary"><i class="fas fa-eye" style="color: #727479;"></i> <strong>{{diaryStore.diary.viewCount}}</strong></small>
                     <small class="text-body-secondary"><i class="fa-regular fa-thumbs-up" style="color: #727479;"></i> <strong>{{diaryStore.diary.likeCount}}</strong> </small>
                     <small class="card-text"><i class="fas fa-calendar-alt" style="color: #727479;"></i> {{diaryStore.diary.createDate}} </small>

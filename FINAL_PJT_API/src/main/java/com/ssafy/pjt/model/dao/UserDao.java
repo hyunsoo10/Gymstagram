@@ -25,5 +25,8 @@ public interface UserDao {
 
 	// avty 코드 수정
 	int updateAvty(User user);
+	
+	// 유저 활성화 비활성화
+	int updateUserAct(String userId);
 
 }
