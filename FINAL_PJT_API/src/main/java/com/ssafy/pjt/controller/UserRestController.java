@@ -253,6 +253,7 @@ public class UserRestController {
 					user.setRegisterDate(dbUser.getRegisterDate());
 					user.setUserName(dbUser.getUserName());
 					user.setActivate(dbUser.isActivate());
+					user.setEmail(user.getEmail());
 					//세션 스토리지에 유저의 비밀번호를 저장하고 싶지 않을 때 읨의로 set해서 프론트쪽에 보낼 수 있다
 //					user.setUserPassword("TOP-SECRET");
 					user.setUserPassword(dbUser.getUserPassword());
