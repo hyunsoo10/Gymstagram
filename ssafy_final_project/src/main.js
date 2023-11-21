@@ -36,7 +36,16 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(vuetify);
-app.use(VCalendar, {})
+app.use(VCalendar, {
+  masks: {
+    title: 'YYYY-MM',
+    weekdays: 'W',
+    navMonths: 'MMM',
+    input: ['L', 'YYYY-MM-DD', 'YYYY/MM/DD'],
+    dayPopover: 'L',
+    data: ['L', 'YYYY-MM-DD', 'YYYY/MM/DD']
+  }
+})
 
 app.component("infinite-loading", InfiniteLoading);
 app.mount("#app");
