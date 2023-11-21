@@ -26,12 +26,9 @@ const props = defineProps({
 });
 const videoURL = computed(() => {
   const videoId = props.video.id.videoId;
-  return `https://www.youtube.com/embed/${videoId}?start=45&end=65&autoplay=1&mute=0`;
+  return `https://www.youtube.com/embed/${videoId}?start=80&end=100&autoplay=1&mute=0`;
 });
 
-const videoTitle = computed(() => {
-  return _.unescape(props.video.snippet.title);
-});
 </script>
 
 <style scoped>

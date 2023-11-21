@@ -1,30 +1,25 @@
 <template>
-  <v-card class="mx-auto" width="300" height="400">
-    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
-      cover >
-      <v-card-title>{{ diary.title }}</v-card-title>
+  <v-card class="card" width="300" height="400" :to="`/detail/${diary.diaryId}`" :diary="diary">
+    <v-img class="align-end text-white" height="200" :src="`src/assets/diary_image/${diary.userId}/${diary.saveImage}`" cover>
     </v-img>
+    <v-card-title>{{ diary.title }}</v-card-title>
 
     <v-card-subtitle class="pt-4">
-      {{ diary.createDate }}
+      <div>{{ diary.createDate }}</div>
     </v-card-subtitle>
-
+    
     <v-card-text>
-      <div>{{ diary.title }}</div>
-
       <div class="text-truncate">{{ diary.content }}</div>
     </v-card-text>
     <v-card-actions>
-      <v-btn
-            color="primary"
-            v-bind="props">
-          <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
-      </v-btn>
       <v-btn 
             :class="diary.avty"
             v-bind="props">
            {{ diary.avty }}
       </v-btn>
+      <!-- <v-btn  v-bind="props">
+          <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
+      </v-btn> -->
       <!-- <v-dialog
         transition="dialog-bottom-transition"
         width="auto"
@@ -102,9 +97,17 @@ const getComments = (diaryId) => {
 </script>
 
 <style  scoped>
+
+.v-card{
+  margin: 1em 0.5em;
+}
+.v-card-title {
+  font-size: 1.2em;
+  font-weight: 700;
+}
 .v-btn__content a{
   text-decoration: none;
-  color: #EC407A;
+  color: #776B5D;
   font-weight: 700;
 }
 .v-card-actions{
@@ -114,40 +117,49 @@ const getComments = (diaryId) => {
   font-weight: 900;
   border: 1px solid #A099FB;
   color : #A099FB;
+  background: #a099fb3b;
 }
 .ENP{
   font-weight: 900;
   border: 1px solid #FE79AB;
   color : #FE79AB;
+  background:  #fe79ac36;
 }
 .ESJ{
   font-weight: 900;
   border: 1px solid #01CECB;
   color : #01CECB;
+  background: #01cecb3a;
 }
 .ESP{
   font-weight: 900;
   border: 1px solid #f32c52;
   color : #f32c52;
+  background: #f32c502d;
 }
 .INJ{
   font-weight: 900;
   border: 1px solid #FCE38A;
   color : #FCE38A;
+  background: #fce38a2c;
 }
 .INP{
   font-weight: 900;
   border: 1px solid #79AC78;
   color : #79AC78;
+  background: #79ac782a;
 }
 .ISJ{
   font-weight: 900;
   border: 1px solid #96B6C5;
   color : #96B6C5;
+  background:  #96b6c531;
 }
 .ISP{
   font-weight: 900;
   border: 1px solid #B3A492;
   color : #B3A492;
+  background: #b3a49249;
 }
+
 </style>

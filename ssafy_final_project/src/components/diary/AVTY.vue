@@ -24,14 +24,14 @@
       <!-- <div class="my-4 text-subtitle-1">
         $ • Italian, Cafe
       </div> -->
-      <div v-for ="info in infoList[userStore.loginUser.avtyCode].desc" style="text-align: left !important">
+      <div v-for ="info in infoList[userStore.loginUser.avtyCode].desc" style="text-align:left !important">
           <div style="margin: 1.5em;"> {{ info }} </div>
       </div>
     </v-card-text>
 
     <v-divider class="mx-4 mb-1"></v-divider>
 
-    <v-card-title>Your cup of tea 🎙️</v-card-title>
+    <v-card-title>🎙️추천 노래🎙️</v-card-title>
         
     <div class="px-4" style="margin-bottom: 2em;;">
       <v-chip-group v-model="selection" selected-class="text-deep-purple-accent-4"  style="justify-content: center;">

@@ -80,7 +80,7 @@ export const useUserStore = defineStore('user', () => {
                 user = user["user"]
                 loginUser.value = Object.assign({}, user);
                 console.log(loginUser.value)
-                alert(loginUser.value.userName + "님 환영합니다!");
+                // alert(loginUser.value.userName + "님 환영합니다!");
             //   localStorage.setItem('loginUser', user);
                 router.push('/');
             }

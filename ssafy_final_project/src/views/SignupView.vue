@@ -20,6 +20,7 @@
                         </label>
                         <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
                         <br>
+             
                         <label for="userNickname">
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
@@ -76,6 +77,7 @@ const user = ref({
     nickName: '',
     userPassword: '',
     profileImage: '',
+    email: '',
 })
 
 const image = ref('');
@@ -93,6 +95,10 @@ const upload = function (event) {
 
 const errorMessage = ref('');
 
+
+const checkId = ref(false)
+const nickNameCheck = ref(false)
+
 const regist = function (event) {
     // 유효성 검사
     // 1. 비밀번호 입력과 비밀번호 확인 입력의 일치 여부
@@ -106,40 +112,50 @@ const regist = function (event) {
         alert('비밀번호는 8자리 이상, 16자리 이하이며, 특수문자(!@#$%^&*)를 포함해야 합니다.')
         return
     }
+
     // 3. 이미 등록된 ID, 닉네임인지 중복 여부 확인
     axios
         .get("http://localhost:8080/user-api/user")
         .then((res) => {
-            let checkId = res.data.find(
+            checkId.value = res.data.find(
                 (u) => u.userId === user.value.userId
             );
-            let nickNameCheck = res.data.find(
+            nickNameCheck.value = res.data.find(
                 (u) => u.nickName === user.value.nickName
             );
-            if (checkId) {
+        })
+        .then(()=>{
+            console.log(checkId.value)
+            console.log(nickNameCheck.value)
+            if (checkId.value) {
                 alert('이미 존재하는 ID입니다.');
-                router.push('/signup');
+                // router.push('/signup');
+                return
             }
-            if (nickNameCheck) {
+            if (nickNameCheck.value) {
                 alert('이미 존재하는 닉네임입니다.');
-                router.push('/signup');
+                // router.push('/signup');
+                return
             }
-        });
+            signup()
+        })
+    
+    const signup = () =>{
 
-    // 모든 유효성 검사를 통과했으면 회원 등록 가능
-    console.log(user)
-    console.log(image.value)
-    let formData = new FormData()
-    if (image.value != null) {
-        // console.log('1')
-        user.value.profileImage = image.value.name;
-        formData.append('image', image.value)
-        formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
-    } else {
-        formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
-    }
+        // 모든 유효성 검사를 통과했으면 회원 등록 가능
+        // console.log(user)
+        // console.log(image.value)
+        let formData = new FormData()
+        if (image.value != null) {
+            // console.log('1')
+            user.value.profileImage = image.value.name;
+            formData.append('image', image.value)
+            formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
+        } else {
+            formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));
+        }
 
-    axios
+        axios
         .post("http://localhost:8080/user-api/user", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -151,6 +167,8 @@ const regist = function (event) {
         }).catch(() => {
             console.log("회원가입에 실패하였습니다!")
         })
+    }
+    
 };
 </script>
 
@@ -204,12 +222,24 @@ main {
     text-align: end;
 }
 
-button {
+/* button {
     width: 120px;
     margin: 10px;
     background: #8EAEEC;
     border: 1px #8EAEEC;
     font-size: 15px;
+} */
+
+button {
+    width: 150px;
+    margin: 10px;
+    color: white;
+    font-weight: 900;
+    background: #B0A695;
+}
+button:hover{
+    background: #776B5D;
+
 }
 
 body {

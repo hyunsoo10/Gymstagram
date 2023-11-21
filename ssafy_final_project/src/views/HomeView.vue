@@ -1,78 +1,349 @@
 <template>
   <div>
-    <WeatherForecast />
-    <div class=home-content>
-    <p>
-      <span style="font-size: 0.8em;">Enjoy</span>
-      <span class="light">GYM</span>
-      <span>WITH</span>
-      <span class="light">GYM STAGRAM</span>
-    </p>
-  </div>
+    <div class="home">
+      <div class="home-content">
+        <div class="home-desc">
+          <span class="avty-test-underline">AVTY 테스트</span>
+          <span>하고,</span>
+          <br>
+          <span>하루를 기록해보세요</span>
+        </div>
+
+        <div class="quiz-container">
+            <div class="chevron"></div>
+            <div class="chevron"></div>
+            <div class="chevron"></div>
+        </div>
+
+        <!-- <div class="home-img-box" v-show="show">
+          <img id="home-quiz-img" src="@/assets/home-quiz.jpg" alt="">
+        </div> -->
+
+        <div class="home-img-box" v-show="show">
+          <figure class="snip1445">
+              <img src="@/assets/home-quiz.jpg" alt="sample84" />
+              <figcaption>
+                <div>
+                  <h2>QUIZ</h2>
+                  <h4>START</h4>
+                </div>
+              </figcaption>
+              <template v-if="userStore.loginUser != null">
+                   <RouterLink to="/quiz"></RouterLink>
+              </template>
+              <template v-else>
+                   <RouterLink to="/login"></RouterLink>
+              </template>
+            </figure>
+        </div>
+        
+      </div>
+      <div class="weather-content">
+        <WeatherForecast class="weather-content"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import WeatherForecast from '@/components/weather/WeatherForecast.vue'
+import {ref} from 'vue'
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore()
+
+const show = ref(false)
+
+setTimeout(()=>{
+  show.value = true
+}, 1500)
+
 </script>
 
 <style scoped>
-.home-content {
-  width: 80%;
-  margin: 30px auto;
-  /* text-align: center; */
-  background: #776B5D;
-  padding: 2rem;
-  /* height: 100vh; */
+/* @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap"); */
+
+* {
+  padding: 0;
+  margin: 0;
 }
 
+.home {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 60%;
+  margin: auto;
+}
 
-p {
-  font-family: "Arial";
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 5rem;
-  line-height: 0.75;
-  margin-left: 30px;
+.home-content {
+  width: 70%;
+  font-size: 3em;
+  text-align: start;
+  transform: scale(0.94);
+  animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
+}
+
+.home-desc{
+  padding-top: 2em;
+  font-weight: 600;
+}
+
+.weather-content{
+  padding-top: 3em;
+}
+
+.avty-test-underline {
+  background: linear-gradient(to top, #EBE3D5 20%, transparent 30%);
 }
 
 span {
-  display: block;
-}
-
-span:not(.light) {
-  opacity: 0;
-  animation: flashText 0.5s ease-out alternate infinite;
-}
-
-span.light {
-  position: relative;
   display: inline-block;
-}
-
-span.light:before {
-  position: absolute;
-  left: 0;
-  top: -10%;
-  width: 100%;
-  height: 120%;
-  background: #fff;
-  filter: blur(10px);
-  content: "";
   opacity: 0;
-  animation: flash 0.7s ease-out alternate infinite;
+  filter: blur(4px);
 }
 
-@keyframes flash {
-  to {
+span:nth-child(1) {
+  animation: fade-in 0.8s 0.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+}
+
+span:nth-child(2) {
+  animation: fade-in 0.8s 0.2s forwards cubic-bezier(0.11, 0, 0.5, 0);
+}
+
+span:nth-child(3) {
+  animation: fade-in 0.8s 0.3s forwards cubic-bezier(0.11, 0, 0.5, 0);
+}
+
+span:nth-child(4) {
+  animation: fade-in 0.8s 0.4s forwards cubic-bezier(0.11, 0, 0.5, 0);
+}
+
+@keyframes scale {
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes img-fade-in {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;;
+  }
+}
+@-webkit-keyframes fade-in {
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.quiz-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chevron {
+  position: absolute;
+  width: 2.1rem;
+  height: 0.48rem;
+  opacity: 0;
+  transform: scale(0.3);
+  animation: move-chevron 3s ease-out infinite;
+}
+
+.chevron:first-child {
+  animation: move-chevron 3s ease-out 1s infinite;
+}
+
+.chevron:nth-child(2) {
+  animation: move-chevron 3s ease-out 2s infinite;
+}
+
+.chevron:before,
+.chevron:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: #776B5D;
+}
+
+.chevron:before {
+  left: 0;
+  transform: skewY(30deg);
+}
+
+.chevron:after {
+  right: 0;
+  width: 50%;
+  transform: skewY(-30deg);
+}
+
+@keyframes move-chevron {
+  25% {
     opacity: 1;
   }
-}
-
-@keyframes flashText {
-  to {
-    opacity: 0.15;
+  33.3% {
+    opacity: 1;
+    transform: translateY(2.28rem);
+  }
+  66.6% {
+    opacity: 1;
+    transform: translateY(3.12rem);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(4.8rem) scale(0.5);
   }
 }
+
+
+#home-quiz-img{
+  width: 8em;
+  height: 8em;
+  animation: img-fade-in 2.5s forwards cubic-bezier(0.5, 1, 0.89, 1);
+  padding-top: 2.5em;;
+}
+
+.home-img-box {
+  text-align: center;
+  padding-top: 2em;
+
+}
+
+
+/* quiz 바로가기 화면 */
+.snip1445 {
+  font-family: 'Raleway', Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+  margin: 1em auto;
+  min-width: 230px;
+  max-width: 315px;
+  width: 100%;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  background-color: #000000;
+}
+.snip1445 *,
+.snip1445 *:before,
+.snip1445 *:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.55s ease;
+  transition: all 0.55s ease;
+}
+.snip1445 img {
+  max-width: 100%;
+  backface-visibility: hidden;
+  vertical-align: top;
+}
+.snip1445 figcaption {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  padding: 5px 10px 10px;
+}
+.snip1445 figcaption:before,
+.snip1445 figcaption:after {
+  height: 2px;
+  width: 400px;
+  position: absolute;
+  content: '';
+  background-color: #ffffff;
+}
+.snip1445 figcaption:before {
+  top: 0;
+  left: 0;
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+.snip1445 figcaption:after {
+  bottom: 0;
+  right: 0;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+.snip1445 figcaption div:before,
+.snip1445 figcaption div:after {
+  width: 2px;
+  height: 300px;
+  position: absolute;
+  content: '';
+  background-color: #ffffff;
+}
+.snip1445 figcaption div:before {
+  top: 0;
+  left: 0;
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+}
+.snip1445 figcaption div:after {
+  bottom: 0;
+  right: 0;
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.snip1445 h2,
+.snip1445 h4 {
+  margin: 0;
+  text-transform: uppercase;
+}
+.snip1445 h2 {
+  font-weight: 400;
+}
+.snip1445 h4 {
+  display: block;
+  font-weight: 700;
+  background-color: #ffffff;
+  padding: 5px 10px;
+  color: #000000;
+}
+.snip1445 a {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.snip1445:hover img,
+.snip1445.hover img {
+  zoom: 1;
+  filter: alpha(opacity=50);
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
+}
+.snip1445:hover figcaption:before,
+.snip1445.hover figcaption:before,
+.snip1445:hover figcaption:after,
+.snip1445.hover figcaption:after,
+.snip1445:hover figcaption div:before,
+.snip1445.hover figcaption div:before,
+.snip1445:hover figcaption div:after,
+.snip1445.hover figcaption div:after {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.snip1445:hover figcaption:before,
+.snip1445.hover figcaption:before,
+.snip1445:hover figcaption:after,
+.snip1445.hover figcaption:after {
+  -webkit-transition-delay: 0.15s;
+  transition-delay: 0.15s;
+}
+
 </style>

@@ -282,12 +282,13 @@ function setResult() {
 <style>
 #outer {
     margin-bottom: 10rem;
+    font-family:'SaumsungLightBold' !important;
 }
 
 .avty-test {
     margin: 20px;
     width: 700px;
-    height: 700px;
+    height: 40em;
 }
 
 #main {
@@ -314,8 +315,9 @@ p {
 
 .qBox {
     text-align: center;
-    font-size: 23px;
-    width: 80%
+    font-size: 22px;
+    width: 80%;
+    font-weight: bolder;
 }
 
 .answerBox {
@@ -324,7 +326,7 @@ p {
 
 .answerList {
     margin: 20px auto;
-    background-color: whitesmoke;
+    background-color: #EBE3D5;
     border-radius: 20px;
     display: block;
     width: 80%;
@@ -335,8 +337,9 @@ p {
 
 .answerList:hover,
 focus {
-    background-color: pink;
-    color: whitesmoke;
+    background-color: #c5bba9;
+    font-weight: bolder;
+    transition: 0.5s;
 }
 
 .status {
@@ -350,15 +353,15 @@ focus {
     height: 100%;
     border-radius: 20px;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#febbbb+0,fe9090+52,ff5c5c+100;Red+3D+%231 */
-    background: #febbbb;
+    background: #EBE3D5;
     /* Old browsers */
-    background: -moz-linear-gradient(top, #febbbb 0%, #fe9090 52%, #ff5c5c 100%);
+    background: -moz-linear-gradient(top,#EBE3D5 0%,#c5bba9 52%, #776B5D 100%);
     /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #febbbb 0%, #fe9090 52%, #ff5c5c 100%);
+    background: -webkit-linear-gradient(top, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #febbbb 0%, #fe9090 52%, #ff5c5c 100%);
+    background: linear-gradient(to bottom, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#febbbb', endColorstr='#ff5c5c', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EBE3D5', endColorstr='#776B5D', GradientType=0);
     /* IE6-9 */
 }
 

@@ -11,13 +11,13 @@
 <template>
     <div class="home-weather-info">
         <v-card class="weather-info" max-width="500">
-            <v-card-item :title="location">
-                <div class="today-date">
-                    <p v-html="timeContent"></p>
-                    <br>
-                </div>
-            </v-card-item>
-            <v-card-text class="py-0">
+            <v-card-title class="font-weight-bold">
+                {{ location }}
+            </v-card-title>
+            <v-card-subtitle>
+                <p class="text-subtitle-2 font-weight-bold" v-html="timeContent"></p>
+            </v-card-subtitle>
+            <v-card-text class="mt-6">
                 <v-row align="center" no-gutters>
                     <v-col cols="6" class="text-center">
                         <div class="weather-icon">
@@ -41,10 +41,44 @@
                 </v-list-item>
             </div>
         </v-card>
-        <v-card>
-            안녕 오늘은 무슨 운동이 추천이야 ~~~~~~~!~~~~
-        </v-card>
     </div>
+    <v-card class="workout-info" max-width="500">
+        <v-card-title class="font-weight-bold">
+                오늘 날씨에 어울리는 운동 추천
+            </v-card-title>
+            <v-card-subtitle class="text-subtitle-2 font-weight-bold">
+                <p class="text-subtitle-2 font-weight-bold" v-html="recommendContent"></p>
+            </v-card-subtitle>
+            <v-card-text class="mt-6">
+                <v-row align="center" no-gutters>
+                    <v-col cols="3" class="text-center">
+                        <div class="recommend-icon">
+                            <p v-html="recommendIcon[0]"></p>
+                            <br>
+                        </div>
+                    </v-col>
+                    <v-col cols="3" class="text-center">
+                        <div class="recommend-icon">
+                            <p v-html="recommendIcon[1]"></p>
+                            <br>
+                        </div>
+                    </v-col>
+                    <v-col cols="3" class="text-center">
+                        <div class="recommend-icon">
+                            <p v-html="recommendIcon[2]"></p>
+                            <br>
+                        </div>
+                    </v-col>
+                    <v-col cols="3" class="text-center">
+                        <div class="recommend-icon">
+                            <p v-html="recommendIcon[3]"></p>
+                            <br>
+                        </div>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <br>
+    </v-card>
 </template>
 
   
@@ -66,6 +100,7 @@ const pty = ref(null); // 강수 형태
 const pop = ref(0); // 강수 확률
 const wsd = ref(0); // 풍속
 const weatherIcon = ref('');
+const recommendIcon = ref([]);
 
 // 실시간 정보
 let days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -77,7 +112,8 @@ let day = String(days[today.getDay()])
 let hour = String(today.getHours()).padStart(2, "0");
 let minute = String(today.getMinutes()).padStart(2, "0");
 let seconds = String(today.getSeconds()).padStart(2, "0");
-let timeContent = ref(`<div class="today-date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`)
+let timeContent = ref(`<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}:${minute}:${seconds}</div>`)
+const recommendContent = ref('')
 
 const getClock = function () {
     today = new Date();
@@ -88,7 +124,7 @@ const getClock = function () {
     hour = String(today.getHours()).padStart(2, "0");
     minute = String(today.getMinutes()).padStart(2, "0");
     seconds = String(today.getSeconds()).padStart(2, "0");
-    timeContent.value = `<div class="today-date">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${year}년 ${month}월 ${date}일 ${day}요일 ${hour}시 ${minute}분 ${seconds}초</div>`;
+    timeContent.value = `<div class="today-date">${year}년 ${month}월 ${date}일 ${day}요일 ${hour}:${minute}:${seconds}</div>`;
 }
 
 getClock;
@@ -159,7 +195,7 @@ onMounted(() => {
                     }
                 }).then((response) => {
                     //법정동 기준으로 동단위의 값을 가져온다
-                    location.value = '🗺️ ' + response.data.documents[0].address_name;
+                    location.value = response.data.documents[0].address_name;
                     // console.log(location.value)
                 })
 
@@ -215,7 +251,7 @@ onMounted(() => {
             month = month < 10 ? "0" + month : month;
             date = date < 10 ? "0" + date : date;
             const todayStr = `${year}${month}${date}`;
-        
+
             axios
                 .get(Weather_API_URL, {
                     params: {
@@ -254,31 +290,66 @@ onMounted(() => {
                             switch (item.fcstValue) {
                                 case "1":
                                     sky.value = "맑음";
-                                    weatherIcon.value = "☀";
+                                    weatherIcon.value = "☀️";
+                                    recommendContent.value = '<div class="today-recommend">테니스, 축구, 등산, 야구</div>'
+                                    recommendIcon.value[0] = '🎾'
+                                    recommendIcon.value[1] = '⚽'
+                                    recommendIcon.value[2] = '⛰️'
+                                    recommendIcon.value[3] = '⚾️'
                                     break;
                                 case "3":
                                     sky.value = "구름많음";
                                     weatherIcon.value = "⛅";
+                                    recommendContent.value = '<div class="today-recommend">농구, 배구, 골프, 배드민턴</div>'
+                                    recommendIcon.value[0] = '⛹️'
+                                    recommendIcon.value[1] = '🏐'
+                                    recommendIcon.value[2] = '⛳'
+                                    recommendIcon.value[3] = '🏸'
                                     break;
                                 case "4":
                                     sky.value = "흐림";
-                                    weatherIcon.value = "☁";
+                                    weatherIcon.value = "☁️";
+                                    recommendContent.value = '<div class="today-recommend">탁구, 러닝, 축구, 등산</div>'
+                                    recommendIcon.value[0] = '🏓'
+                                    recommendIcon.value[1] = '🏃‍♀'
+                                    recommendIcon.value[2] = '⚽'
+                                    recommendIcon.value[3] = '⛰️'
                                     break;
                             }
                         } else if (item.category === "PTY") {
                             // pty.value = item.fcstValue;
                             switch (item.fcstValue) {
                                 case "1":
-                                    weatherIcon.value = "☔";
+                                    weatherIcon.value = "🌧️";
+                                    recommendContent.value = '<div class="today-recommend">수영, 클라이밍, 요가, 볼링</div>'
+                                    recommendIcon.value[0] = '🏊‍♀️'
+                                    recommendIcon.value[1] = '🧗‍♂'
+                                    recommendIcon.value[2] = '🧘🏻‍♀️'
+                                    recommendIcon.value[3] = '🎳'
                                     break;
                                 case "2":
-                                    weatherIcon.value = "❄";
+                                    weatherIcon.value = "❄️";
+                                    recommendContent.value = '<div class="today-recommend">스키, 스노보드, 컬링, 볼링</div>'
+                                    recommendIcon.value[0] = '🎿'
+                                    recommendIcon.value[1] = '🏂'
+                                    recommendIcon.value[2] = '🥌'
+                                    recommendIcon.value[3] = '🎳'
                                     break;
                                 case "3":
-                                    weatherIcon.value = "❄";
+                                weatherIcon.value = "❄️";
+                                    recommendContent.value = '<div class="today-recommend">스키, 스노보드, 컬링, 볼링</div>'
+                                    recommendIcon.value[0] = '🎿'
+                                    recommendIcon.value[1] = '🏂'
+                                    recommendIcon.value[2] = '🥌'
+                                    recommendIcon.value[3] = '🎳'
                                     break;
                                 case "4":
-                                    weatherIcon.value = "☔";
+                                    weatherIcon.value = "🌧️";
+                                    recommendContent.value = '<div class="today-recommend">수영, 클라이밍, 요가, 볼링</div>'
+                                    recommendIcon.value[0] = '🏊‍♀️'
+                                    recommendIcon.value[1] = '🧗‍♂'
+                                    recommendIcon.value[2] = '🧘🏻‍♀️'
+                                    recommendIcon.value[3] = '🎳'
                                     break;
                             }
                         } else if (item.category === "POP") {
@@ -295,13 +366,19 @@ onMounted(() => {
   
 <style scoped>
 .home-weather-info {
-    margin: 0 5em;
+    margin: 2em 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
 .weather-info {
-    width: 30em;
+    width: 25em;
+   
+}
+
+.workout-info{
+    width: 25em;
 }
 .today-date p {
     font-size: 1em;
@@ -309,6 +386,10 @@ onMounted(() => {
 
 .weather-icon p {
     font-size: 6em;
+}
+
+.recommend-icon p {
+    font-size: 2.5em;
 }
 
 .tmp-info {

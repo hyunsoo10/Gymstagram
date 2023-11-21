@@ -1,9 +1,8 @@
 <template>
   <div>
-    <TheHeaderNav />
+    <TheHeaderNav/>
     <RouterView />
     <TheFooter />
-
   </div>
 </template>
 
@@ -26,9 +25,21 @@ import TheFooter from './components/common/TheFooter.vue';
   font-family:'GmarketSansTTFMedium';
   src: url('assets/fonts/GmarketSansTTFMedium.ttf') format('truetype');
 }
-/* * {
-  font-family:'GmarketSansTTFMedium' !important;
-} */
+@font-face {
+  font-family:'SaumsungLight';
+  src: url('assets/fonts/SamsungOne-400.ttf') format('truetype');
+}
+@font-face {
+  font-family:'SaumsungMedium';
+  src: url('assets/fonts/SamsungOne-700.ttf') format('truetype');
+}
+@font-face {
+  font-family:'SaumsungBold';
+  src: url('assets/fonts/SamsungSharpSans-Bold.ttf') format('truetype');
+}
+* {
+  font-family:'SaumsungMedium' !important;
+}
 
 /* h1 {
   font-family:'GmarketSansTTFBold';

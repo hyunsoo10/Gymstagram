@@ -87,15 +87,15 @@
 	<!-- 다이어리 조회수 업데이트 -->
 	<update id="updateDiaryViewCount" parameterType="int">
 			UPDATE diary
-			SET view_count = view_count + 1
-			WHERE diary_id = #{diaryId}
+				SET view_count = view_count + 1
+				WHERE diary_id = #{diaryId}
 	</update>
 	
 	<!-- 좋아요 수 증가 -->
 	<update id="increaseLikeCount" parameterType="int">
 			UPDATE diary
-			SET like_count = like_count + 1
-			WHERE diary_id = #{diaryId}
+				SET like_count = like_count + 1
+				WHERE diary_id = #{diaryId}
 	</update>
 	
 		<!-- 좋아요 수 감소 -->
@@ -170,4 +170,11 @@
 			WHERE parent_comment = #{commentId}
 	</select>
 	
+		<!-- 댓글 비활성화 -->
+	<update id="unComment" parameterType="int">
+		UPDATE comment
+			SET is_deleted = NOT is_deleted
+			WHERE comment_id = #{commentId}
+	</update>
+
 </mapper>

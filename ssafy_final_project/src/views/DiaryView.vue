@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1>Diary View</h1>
-    
-    
         <div class="avty-btn-box">
           <div class="button-container">
             <button class="btn btn-outline-all btn-layer-2_0 active" value="전체보기" @click="router.go(), changeBtn($event)">
@@ -55,15 +52,18 @@
 <script setup>
   import { ref, onMounted, computed } from 'vue';
   import DiaryList from '@/components/diary/DiaryList.vue';
-  import { useDiaryStore } from '@/stores/diary'
+  import { useDiaryStore }from '@/stores/diary.js'
+  import { useUserStore }from '@/stores/user.js'
   import {useRouter} from 'vue-router'
 
   const router = useRouter()
 
-  const store = useDiaryStore();
+  const userStore = useUserStore();
+  const diaryStore = useDiaryStore();
 
   onMounted(() => {
-    store.getAllDiary();
+    diaryStore.getAllDiary();
+    userStore.loginUser;
   })
 
   const isActive = ref(false)
@@ -72,14 +72,14 @@
   const currentPage = ref(1)
 
   const pageCount = computed(() => {
-      return Math.ceil(store.allDiary.length / perPage)
+      return Math.ceil(diaryStore.allDiary.length / perPage)
   })
   const clickPage = function (page) {
       currentPage.value = page
   }
 
   const currentPageDiaryList = computed(() => {
-      return store.avtyDiary.slice(
+      return diaryStore.avtyDiary.slice(
           (currentPage.value - 1) * perPage,
           currentPage.value * perPage
       )
@@ -90,7 +90,7 @@
   const avtyDiary = function(e){
     // router.go()
     // console.log(e.currentTarget.value)
-    store.getAvtyDiary(e.currentTarget.value)
+    diaryStore.getAvtyDiary(e.currentTarget.value)
     // console.log(store.allDiary)
     // console.log(store.avtyDiary)
     
@@ -143,7 +143,7 @@ h3 {
 .button-container {
   padding: 16px;
   display: flex;
-  margin: 60px auto;
+  margin: 40px auto;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -357,7 +357,7 @@ h3 {
 }
 
 .avty-btn-box{
-  width: 40%;
+  width: 64%;
 }
 
 </style>

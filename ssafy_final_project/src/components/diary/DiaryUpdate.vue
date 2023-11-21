@@ -1,10 +1,10 @@
 <template>
-    <v-dialog v-model="dialog" max-width="500">
+    <v-dialog class="dialog" v-model="dialog" max-width="800">
         <v-card>
             <div class="update">
                 <div class="update-form">
                     <br>
-                    <h4>다이어리 수정하기</h4>
+                    <p class="form-title">다이어리 수정하기</p>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요." v-model="diaryStore.diary.title">
                         <label for="title">제목</label>
@@ -14,19 +14,23 @@
                             v-model="diaryStore.diary.content"></textarea>
                         <label for="content"> 내용 </label>
                     </div>
-                    <div class="filebox">
+                    <!-- <div class="filebox">
                         <input class="upload-name" v-model="diaryStore.diary.saveImage" placeholder="첨부파일">
                         <label for="file" id="file-btn">파일찾기</label>
                         <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
+                    </div> -->
+                    <div class="input-group">
+                        <input type="file" class="form-control" @change="upload" :ref="image" accept="image/.*">
                     </div>
-                    <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                    <div style="text-align: center;">
+                        <img class="image-ex" :src="imageUploaded" />
+                    </div>
                     <div class="d-flex justify-content-center " style="margin-top: 10px;">
                         <v-btn class="update-btn" @click="updateDiary($event)">수정</v-btn>
                         <v-btn class="close-btn" @click="close">닫기</v-btn>
                     </div>
                 </div>
             </div>
-
         </v-card>
     </v-dialog>
 </template>
@@ -127,6 +131,16 @@ const updateDiary = function (event) {
 </script>
 
 <style scoped>
+
+.dialog{
+    font-family:'SaumsungBold'!important;
+    text-align: center;
+
+}
+.form-title {
+    font-size: 20px;
+    font-weight: 700;
+}
 .update {
     display: flex;
     justify-content: center;
@@ -139,8 +153,31 @@ const updateDiary = function (event) {
 
 .update-btn {
     margin-right: 1em;
+    background:  #c9c9c9;
+    color: #776B5D;
+    font-weight: 500;
 }
 
+.update-btn:hover {
+    margin-right: 1em;
+    background:  #b5b5b5;
+    color: #776B5D;
+    font-weight: bold;
+}
+
+.close-btn {
+    margin-right: 1em;
+    background: rgba(255, 0, 0, 0.533);
+    color: #776B5D;
+    font-weight: 500;
+}
+
+.close-btn:hover {
+    margin-right: 1em;
+    background: rgba(255, 0, 0, 0.533);
+    color: #776B5D;
+    font-weight: bold;
+}
 .filebox .upload-name {
     display: inline-block;
     font-size: 12px;

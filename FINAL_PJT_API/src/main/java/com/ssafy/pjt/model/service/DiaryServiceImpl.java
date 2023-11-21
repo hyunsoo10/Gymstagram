@@ -112,5 +112,9 @@ public class DiaryServiceImpl implements DiaryService{
 		return diaryDao.decreaseLikeCount(diaryId);
 	}
 
+	@Override
+	public int unComment(int commentId) {
+		return diaryDao.unComment(commentId);
+	}
 
 }

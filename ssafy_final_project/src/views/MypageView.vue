@@ -1,56 +1,41 @@
 <template>
-  <template v-if="userStore.loginUser!=null && !userStore.loginUser.activate">
-        <v-dialog width="auto" v-model="activateDialog"  transition="dialog-bottom-transition" persistent >
-            <template v-slot:activator="{ props}">
-              <!-- <v-btn v-bind="props" text="Open Dialog"></v-btn> -->
-            </template>
-
-            <template v-slot:default="{ isActive}">
-              <v-card title="계정 비활성화 상태">
-                <v-card-text>
-                  현재 계정이 비활성화 된 상태입니다. 
-                </v-card-text>
-                <small style="color:red">다시 활성화 하시려면 비밀번호를 입력해주세요</small>
-                <v-col cols="12">
-                <v-text-field
-                  label="비밀번호*"
-                  type="password"
-                  required
-                  v-model="confirmPassword"
-                ></v-text-field>
-                </v-col>
-
-                <v-card-actions>
-        
-                  <v-btn
-                    text="계정 활성화"
-                    class="activate-btn"
-                    @click="ableUser()"
-                  ></v-btn>
-                  <v-btn
-                    text="홈으로 가기"
-                    class="home-btn"
-                    @click="gohome()"
-                  ></v-btn>
-                </v-card-actions>
-              </v-card>
-            </template>
-          </v-dialog>
+  
+  <template v-if="userStore.loginUser != null && !userStore.loginUser.activate">
+    <v-dialog width="auto" v-model="activateDialog" transition="dialog-bottom-transition" persistent>
+      <template v-slot:activator="{ props }">
+        <!-- <v-btn v-bind="props" text="Open Dialog"></v-btn> -->
+      </template>
+      <template v-slot:default="{ isActive }">
+        <v-card title="계정 비활성화 상태">
+          <v-card-text>
+            현재 계정이 비활성화 된 상태입니다.
+          </v-card-text>
+          <small style="color:red">비활성화를 해제하시려면 비밀번호를 입력해주세요</small>
+          <v-col cols="12">
+            <v-text-field label="비밀번호*" type="password" required v-model="confirmPassword"></v-text-field>
+          </v-col>
+          <v-card-actions>
+            <v-btn text="계정 활성화" class="activate-btn" @click="ableUser()"></v-btn>
+            <v-btn text="홈으로 가기" class="home-btn" @click="gohome()"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
   </template>
   <div id="my-page">
     <div class="profile-box" v-if="userStore.loginUser != null">
       <Profile :total-cnt="myDiary.length" :weekly-cnt="diaryStore.weeklyDiary.length" :my-id="userId" />
       <!-- <RouterLink to="/create">다이어리 작성하기</RouterLink> -->
-      <v-btn color="accent" @click.stop="dialog = true">
+      <v-btn class="write-btn" @click.stop="dialog = true">
         다이어리 작성하기
       </v-btn>
       <DiaryCreate @close-Dialog="close" :dialog="dialog" v-model="dialog"></DiaryCreate>
-      <AVTY/>
+      <AVTY />
     </div>
     <v-card width=60% v-if="userStore.loginUser != null">
       <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-        <v-tab :value="1">My Weekly Diary</v-tab>
-        <v-tab :value="2">My Total Diary</v-tab>
+        <v-tab :value="1" color="#B0A695">My Weekly Diary</v-tab>
+        <v-tab :value="2" color="#B0A695">My Total Diary</v-tab>
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item v-for="n in 2" :key="n" :value="n">
@@ -67,13 +52,13 @@
         </v-window-item>
       </v-window>
     </v-card>
-  
+
   </div>
 </template>
   
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useRoute,  useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDiaryStore } from '@/stores/diary'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios';
@@ -117,36 +102,36 @@ onMounted(() => {
   diaryStore.getWeeklyDiary(loginUser.value.userId);
 })
 
-const ableUser = () =>{
-    // console.log("계정 활성화")
-    if(confirmPassword.value === userStore.loginUser.userPassword){
+const ableUser = () => {
+  // console.log("계정 활성화")
+  if (confirmPassword.value === userStore.loginUser.userPassword) {
     axios({
-            url: `http://localhost:8080/user-api/user/activate/${userStore.loginUser.userId}`,
-            method: 'PUT',
-            headers: {
-                'access-token': sessionStorage.getItem('access-token')
-            }
-        })
-        .then((res) => {
-          let user = {
-            userId : userStore.loginUser.userId,
-            userPassword : confirmPassword.value
-            // alert(res.data)
-          }
-          userStore.refreshLogin(user)
-          // activateDialog.value = false
-          alert("계정이 활성화 되었습니다.")
-          router.go()
-        })
+      url: `http://localhost:8080/user-api/user/activate/${userStore.loginUser.userId}`,
+      method: 'PUT',
+      headers: {
+        'access-token': sessionStorage.getItem('access-token')
       }
-      else{
-        alert("비밀번호가 일치 하지 않습니다.")
-        activateDialog.value = true
-        confirmPassword.value =''
-      }
+    })
+      .then((res) => {
+        let user = {
+          userId: userStore.loginUser.userId,
+          userPassword: confirmPassword.value
+          // alert(res.data)
+        }
+        userStore.refreshLogin(user)
+        // activateDialog.value = false
+        alert("계정이 활성화 되었습니다.")
+        router.go()
+      })
+  }
+  else {
+    alert("비밀번호가 일치 하지 않습니다.")
+    activateDialog.value = true
+    confirmPassword.value = ''
+  }
 }
 
-const gohome = () =>{
+const gohome = () => {
   router.push("/")
 }
 
@@ -175,29 +160,41 @@ div {
   flex-direction: column;
 }
 
+.write-btn {
+  background: #EBE3D5;
+  color: #776B5D;
+  font-size: 16px;
+}
+
+.write-btn:hover {
+  background: #EBE3D5;
+  color: #776B5D;
+  font-weight: 700;
+}
+
 #today-date p {
   font-size: 20px;
   font-weight: Bold;
 }
 
-.activate-btn{
-    width: 120px;
-    margin: 10px;
-    background: #8EAEEC;
-    border: 1px #8EAEEC;
-    font-size: 15px;
-    height: 2.5em !important;
-    font-weight: 900;
+.activate-btn {
+  width: 120px;
+  margin: 10px;
+  background: #8EAEEC;
+  border: 1px #8EAEEC;
+  font-size: 15px;
+  height: 2.5em !important;
+  font-weight: 900;
 }
 
-.home-btn{
-    width: 120px;
-    margin: 10px;
-    background: #8ee4ec;
-    border: 1px #8ee4ec;
-    font-size: 15px;
-    height: 2.5em !important;
-    font-weight: 900;
+.home-btn {
+  width: 120px;
+  margin: 10px;
+  background: #8ee4ec;
+  border: 1px #8ee4ec;
+  font-size: 15px;
+  height: 2.5em !important;
+  font-weight: 900;
 
 }
 </style>

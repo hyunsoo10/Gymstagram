@@ -3,31 +3,32 @@
                 <header>
                         <nav class="navbar fixed-top">
                                 <div class="navbar-logo">
-                                <img @click="gohome" class="logo-img" src="@/assets/gymstagram-logo.png" />
-                                <RouterLink to="/">&nbsp; <strong> GYM STAGRAM</strong></RouterLink>
+                                <img @click="gohome" class="logo-img" src="@/assets/Gymstagram2.png" />
+                                <RouterLink to="/">&nbsp; GYM STAGRAM</RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
-                                        <li>
+                                        <!-- <li>
                                                 <RouterLink to="/">홈</RouterLink>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                                        <li v-if="store.loginUser != null">
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
-                                        <li>
+                                        <li v-if="store.loginUser != null">
                                                 <RouterLink to="/diary">Diary</RouterLink>
                                         </li>
+
                                         <li v-if="store.loginUser != null">
-                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My page({{
+                                                <RouterLink :to="`/mypage/${store.loginUser.userId}`">My Diary({{
                                                         store.loginUser.userName }})</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser != null">
-                                                <a href="" @click="logout"> 로그아웃</a>
+                                                <a href="" @click="logout"> Sign out</a>
                                         </li>
                                         <li v-if="store.loginUser == null">
-                                                <RouterLink to="/login">로그인</RouterLink>
+                                                <RouterLink to="/login">Sign in</RouterLink>
                                         </li>
                                         <li v-if="store.loginUser == null">
-                                                <RouterLink to="/signup">회원가입</RouterLink>
+                                                <RouterLink to="/signup">Sign up</RouterLink>
                                         </li>
                                 </ul>
                         </nav>
@@ -49,13 +50,18 @@ const logout = () => {
 const gohome= () =>{
         router.push('/')
 }
+
 </script>
   
 <style scoped>
 
+/* .router-link-active.router-link-exact-active{
+        font-family:'SaumsungBold'!important;
+} */
 .router-link-active{
-        font-weight: 900;
+        font-family:'SaumsungBold'!important;
 }
+
 a {
         text-decoration: none;
         color: var(--text-color);
@@ -71,14 +77,14 @@ a {
         align-items: center;
         background-color: var(--background-color);
         padding: 12px 12px;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: 'SaumsungLight';
         background-color: #EBE3D5;
 }
 
 
 .navbar-logo {
-        font-size: 24px;
         color: var(--text-color);
+        font-family:'SaumsungMedium' !important;
 }
 
 .navbar-logo i {
@@ -91,8 +97,9 @@ a {
         padding-left: 0;
         margin-bottom: 0 !important;
 }
-.navbar-menu li {
+.navbar-logo, .navbar-menu li {
         padding-left: 2em;;
+        color : #776B5D;
       
 }
 
@@ -100,6 +107,7 @@ a {
         background-color: var(--accent-color);
         border-radius: 4px;
 }
+
 
 
 
