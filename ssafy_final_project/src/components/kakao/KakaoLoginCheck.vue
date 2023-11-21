@@ -165,40 +165,6 @@ const kakaoGetUserInfo = () =>{
         }
     })
 }
-
-const kakaoLogin = (user) => {
-        axios.post(`${REST_USER_API}/jwtlogin`, user)
-        .then((response)=>{
-        //   console.log(response.data)
-        //   console.log(atob(response.data['access-token'].split('.')[1]))
-            let message = response.data['message']
-
-            if(message != "success"){
-                alert(message)
-            }
-            else{
-                sessionStorage.setItem('access-token', response.data["access-token"])
-            
-                const token = response.data['access-token'].split('.')
-                let user = token[1]
-                // user = atob(user)
-                //디코딩
-                user = decodeURIComponent(escape(atob(user)));
-                user = JSON.parse(user)
-                user = user["user"]
-                loginUser.value = Object.assign({}, user);
-                console.log(loginUser.value)
-                alert(loginUser.value.userName + "님 환영합니다!");
-            //   localStorage.setItem('loginUser', user);
-                router.push('/');
-            }
-        })
-        .catch(()=>{
-    
-        })
- }
-
-const REST_USER_API = `http://localhost:8080/user-api/user`
 const router = useRouter();
 
 const user = ref({
