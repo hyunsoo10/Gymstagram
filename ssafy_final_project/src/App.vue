@@ -35,7 +35,7 @@ import TheFooter from './components/common/TheFooter.vue';
   src: url('assets/fonts/SamsungOne-700.ttf') format('truetype');
 }
 @font-face {
-  font-family:'SaumsungLightBold';
+  font-family:'SaumsungBold';
   src: url('assets/fonts/SamsungSharpSans-Bold.ttf') format('truetype');
 }
 * {
