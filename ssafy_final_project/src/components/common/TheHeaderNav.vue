@@ -84,6 +84,7 @@ a {
 
 .navbar-logo {
         color: var(--text-color);
+        font-family:'SaumsungMedium' !important;
 }
 
 .navbar-logo i {

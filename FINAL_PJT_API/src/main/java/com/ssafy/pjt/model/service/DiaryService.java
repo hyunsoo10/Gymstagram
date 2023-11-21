@@ -65,4 +65,7 @@ public interface DiaryService {
 
 	// 전체 댓글 조회
 	List<Comment> getAllComment();
+	
+	// 댓글 비활성화
+	int unComment(int commentId);
 }

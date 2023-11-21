@@ -69,6 +69,9 @@ public interface DiaryDao {
 	
 	// 좋아요 수 감소
 	int decreaseLikeCount(int diaryId);
+	
+	//대댓글 있는 경우 DB에서 삭제하지 않고 isDeleted변수를 true로 만든다
+	int unComment(int commentId);
 
 	
 }

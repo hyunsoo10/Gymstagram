@@ -1,5 +1,5 @@
 <template>
-    <div class="reviews d-flex flex-column">
+    <div class="reviews d-flex flex-column" v-if="!(comment.deleted && diaryStore.getSubCommentLength(comment.commentId) == 0 )">
         <div class="comment-info">
         <div class="writer">
             <strong>👶🏻&nbsp;</strong>{{ comment.userId }}
@@ -7,9 +7,14 @@
         <div class="comment-date">{{ comment.writeDate }} </div>
     </div>
         <p class="comment">
+            <template v-if="!comment.deleted">
             {{ comment.content }}
+            </template>
+            <template v-else>
+                <small>(삭제된 댓글입니다)</small>
+            </template>
             <v-dialog width="500">
-                <template v-slot:activator="{ props }">
+                <template v-slot:activator="{ props }" v-if="!comment.deleted">
                     <v-btn style="float: right;" color="rgb(177, 177, 177)" variant="text" v-bind="props" text="답글 작성하기">
                     </v-btn>
                 </template>
@@ -89,10 +94,10 @@
             </v-expand-transition>
         </p>
 
-        <div class="comment-btn">
+        <div class="comment-btn" v-if="!comment.deleted">
             <template v-if="userStore.loginUser != null && (userStore.loginUser.userId == comment.userId)">
                 <v-dialog width="500">
-                    <template v-slot:activator="{ props }">
+                    <template v-slot:activator="{ props }" >
                         <v-btn class="update-btn" v-bind="props" text="수정"> </v-btn>
                     </template>
 
@@ -170,13 +175,40 @@ const updateComment = function (com) {
 }
 const deleteComment = function (commentId) {
     var flag = confirm("정말로 댓글을 삭제하시겠습니까?")
-    console.log(flag)
+    // console.log(flag)
+
     if (flag) {
-        axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`, {
-            headers: {
-                'access-token': sessionStorage.getItem('access-token')
+
+            //대댓글이 있는 경우 삭제하지 않고 isDeleted 컬럼을 true로 변화시킨다
+            if(diaryStore.getSubCommentLength(commentId) > 0){
+                // console.log("대댓글 있음")           
+                // 아래와 동일한 방법인줄알았는데, 이렇게 작성하면 headers 정보가 잘 넘어가지 않는 것 같다. 이유는 아직 모르겠다.
+                // axios.put(`http://localhost:8080/diary-api/diary/uncomment/${commentId}`, {
+                //     headers: {
+                //         'access-token': sessionStorage.getItem('access-token')
+                //     }
+                // }).then((res)=>{
+                //     console.log(res)
+                // })
+                axios({
+                url: `http://localhost:8080/diary-api/diary/uncomment/${commentId}`,
+                method: 'PUT',
+                headers: {
+                    'access-token': sessionStorage.getItem('access-token')
+                }
+            })
             }
-        })
+
+            else{     
+                //대댓글 없으면 그냥 DB에서 삭제해버린다
+                // console.log("대댓글 없다")
+                axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`, {
+                    headers: {
+                        'access-token': sessionStorage.getItem('access-token')
+                    }
+                })
+            }
+
         router.go()
     }
     // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)

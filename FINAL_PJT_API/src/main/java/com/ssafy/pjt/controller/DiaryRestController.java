@@ -33,6 +33,7 @@ import com.ssafy.pjt.model.dto.Comment;
 import com.ssafy.pjt.model.dto.Diary;
 import com.ssafy.pjt.model.dto.LikeDiary;
 import com.ssafy.pjt.model.dto.SearchCondition;
+import com.ssafy.pjt.model.dto.User;
 import com.ssafy.pjt.model.service.DiaryService;
 
 import io.swagger.annotations.Api;
@@ -391,40 +392,22 @@ public class DiaryRestController {
 			return exceptionHandling(e);
 		}
 	}
+	
+	// 댓글 비활성화
+	@PutMapping("/diary/uncomment/{commentId}")
+	@ApiOperation(value = "{commentId} 댓글 비활성화")
+	public ResponseEntity<String> unComment(@PathVariable int commentId) {
+		try {
+			int result = diaryService.unComment(commentId);
+			if(result > 0) {
+				return new ResponseEntity<String>("댓글이 비활성화 됐습니다.", HttpStatus.OK);
+			}
+			return new ResponseEntity<String>("댓글 상태 변경에 실패했습니다.", HttpStatus.NOT_MODIFIED);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 
-	// 조회수 증가
-//    private void viewCountUp(HttpServletRequest req, HttpServletResponse res, HttpSession session,  int diaryId) {
-//
-//        Cookie oldCookie = null;
-//        User user = (User) session.getAttribute("loginUser");
-//        Cookie[] cookies = req.getCookies();
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("diaryView")) {
-//                    oldCookie = cookie;
-//                }
-//            }
-//        }
-//
-//        if (oldCookie != null) {
-//            if (!oldCookie.getValue().contains("[" + user.getUserId() + "]")) {
-//                diaryService.updateViewCount(diaryId);
-//                oldCookie.setValue(oldCookie.getValue() + "_[" + user.getUserId() + "]");
-//                oldCookie.setPath("/");
-//                oldCookie.setMaxAge(60 * 60 * 24);
-//                res.addCookie(oldCookie);
-//            }
-//            System.out.println("oldCookie 있어");
-//        } else {
-//        	diaryService.updateViewCount(diaryId);
-//            Cookie newCookie = new Cookie("diaryView","[" + user.getUserId() + "]");
-//            newCookie.setPath("/");
-//            newCookie.setMaxAge(60 * 60 * 24);
-//            res.addCookie(newCookie);
-//            System.out.println("oldCookie 없으니까 쿠키 생성해");
-//        }
-//    }
-//	
 
 	// 예외 처리
 	private ResponseEntity<String> exceptionHandling(Exception e) {
