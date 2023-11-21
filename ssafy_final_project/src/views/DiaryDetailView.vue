@@ -4,7 +4,7 @@
             <v-icon start icon="mdi-arrow-left"></v-icon>
             Back
         </v-btn>
-        <v-btn color="accent" @click.stop="dialog = true">
+        <v-btn v-if="diaryStore.diary.userId === userStore.loginUser.userId" color="accent" @click.stop="dialog = true">
             수정하기
         </v-btn>
         <diaryUpdate :diary="diaryStore.diary" @close-Dialog="close" :dialog="dialog" v-model="dialog"></diaryUpdate>
