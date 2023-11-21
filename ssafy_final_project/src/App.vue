@@ -1,9 +1,8 @@
 <template>
   <div>
-    <TheHeaderNav />
+    <TheHeaderNav/>
     <RouterView />
     <TheFooter />
-
   </div>
 </template>
 
