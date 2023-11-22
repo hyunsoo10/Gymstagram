@@ -2,7 +2,7 @@
     <div>
         <main class="d-flex flex-column">
             <div class="login-title">
-                <h2>로그인</h2>
+                <h2>GYM STAGRAM</h2>
             </div>
             <section class="d-flex flex-column">
                 <div class="login-form">
@@ -112,25 +112,31 @@ ui {
 
 main {
     align-items: center;
-    height: 100vh;
+    height: 60vh;
 }
 
+.login-title{
+    color: #776B5D;
+}
 .login-form {
     width: 80%;
     margin: 0 50px;
     padding: 30px 50px;
-    border: 1px solid grey;
-    border-radius: 20px;
+    border: 1px solid #B0A695;
+    border-radius: 10px;
     text-align: center;
+    
 }
 
 .login-form h2 {
     text-align: center;
+    
 }
 
 .login-form input {
     padding: 0.5em;
-    border-radius: 10px;
+    border: 1px solid #B0A695;
+    border-radius: 5px;
 }
 
 form input {
@@ -156,6 +162,7 @@ button {
     margin: 10px;
     color: white;
     font-weight: 900;
+    border: #776B5D;
     background: #B0A695;
 }
 button:hover{

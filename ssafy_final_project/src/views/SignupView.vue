@@ -2,7 +2,7 @@
     <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h2>회원 정보 입력</h2>
+                <h2>GYM STAGRAM</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
@@ -40,20 +40,20 @@
                         </label>
                         <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
                         <br>
-                        <div class="filebox">
+                        <div class="filebox" style="padding-left: 2em;">
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value=uploadName placeholder="첨부파일">
+                            <input class="upload-name" :value=uploadName placeholder="첨부파일" style="border: 1px solid #B0A695;">
                             <label for="file" id="file-btn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
-                        <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                        <img class="image-ex" :src="imageUploaded" style="width: 10em; margin-top: 10px" />
                         <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
                             aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
-                        <div class="regist-btn">
+                        <div class="regist-btn" >
                             <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
                         </div>
                         <br>
@@ -184,11 +184,15 @@ main {
     /* height: 100vh; */
 }
 
+section{
+    width: 50em;
+}
+
 .regist-form {
     margin: 0 50px 50px;
-    padding: 30px 50px;
-    width: 700px;
-    border: 1px solid grey;
+    padding: 2em 2.5em;
+    width: 40em;
+    border: 1px solid #B0A695;
     border-radius: 20px;
     text-align: center;
 }
@@ -197,20 +201,26 @@ main {
 .form-content label {
     display: inline-block;
     text-align: start;
-    width: 140px;
+    /* width: 30px; */
+    width: 7em;
+    font-size: 0.7em;
 }
 
 .form-content input {
-    width: 350px;
-    height: 35px;
+    /* width: 350px; */
+    /* height: 35px; */
+    width: 18rem;
+    height: auto;
+    padding: 0.5em;
     margin: 10px;
-    padding: 0 10px;
-    border: 1px solid rgb(177, 177, 177);
+    /* padding: 0 10px; */
+    border: 1px solid #B0A695;
+    /* border: 1px solid rgb(177, 177, 177); */
     border-radius: 5px;
 }
 
 .form-content input::placeholder {
-    font-size: 12px;
+    font-size: 0.7em;
     color: rgb(177, 177, 177);
 }
 
@@ -235,6 +245,7 @@ button {
     margin: 10px;
     color: white;
     font-weight: 900;
+    border: #B0A695;
     background: #B0A695;
 }
 button:hover{
@@ -289,5 +300,9 @@ body {
     padding: 0;
     overflow: hidden;
     border: 0;
+}
+
+.signup-title{
+    color: #776B5D;
 }
 </style>
