@@ -13,10 +13,12 @@
     <v-card-subtitle>
       {{ diary.createDate }}
     </v-card-subtitle>
-
-    <v-card-actions>
+    <v-card-text class="text-body-2">
+          {{ diary.content }}
+        </v-card-text>
+    <!-- <v-card-actions>
       <v-btn color="black" variant="text"  @click="show = !show">
-        자세히
+        내용보기
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -32,7 +34,7 @@
           {{ diary.content }}
         </v-card-text>
       </div>
-    </v-expand-transition>
+    </v-expand-transition> -->
   </v-card>
 </template>
 

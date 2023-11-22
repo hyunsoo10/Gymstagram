@@ -1,59 +1,72 @@
 <template>
-    <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4"
-        elevation="4" height="auto" rounded max-width="800" width="100%">
-        <div class="avty-test">
-            <section id="main" :style="styleObjMain">
-                <br>
-                <h1 class="text-h3 font-weight-black text-black">🥇AVTY TEST🥇</h1>
-                <br>
-                <img :src=MainImgSrc alt="" id="mainImg" width="400">
-                <p class="text-body-2 my-4">아래 버튼을 눌러 시작해 주세요</p>
-                <v-btn elevation="3" @click="begin">시작하기</v-btn>
-            </section>
-            <section id="qna" :style="styleObjQna">
-                <div class="status mx-auto mt-5">
-                    <div class="statusBar" :style="styleObjStatusBar" />
-                </div>
-                <br>
-                <div class="qBox my-5 py- mx-auto" :style="styleQbox">
-
-                </div>
-                <div class="answerBox">
-
-                </div>
-            </section>
-            <section id="result" :style="styleObjResult">
-                <h3>✨검사 결과✨</h3>
-                <br>
-                <div class="resultName"> 결과 이름 </div>
-                <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
-                <div class="resultDesc">
-                </div>
-
-                <p><strong>추천 음악 들어보세요!</strong></p>
-                <div class="play-box">
-                    <button @click="playMusic(avty), isPlaying = true"><i class="fas fa-volume-up"
-                            style="color: cornflowerblue;"></i></button>
-                    <button @click="isPlaying = false"><i class="fas fa-volume-mute" style="color: tomato;"></i></button>
-
-                </div>
-                <template v-if="isPlaying">
-                    <div class="container">
-                        <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in store.videos"
-                            :key="video.id.videoId" :video="video" :index="index" :current="current" />
+    <div class="avty-main" >
+        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4"
+            elevation="4" height="auto" rounded max-width="800" width="100%">
+            <div class="avty-test">
+                <section id="main" :style="styleObjMain">
+                    <br>
+                    <h1 class="text-h3 font-weight-black text-black">🥇AVTY TEST🥇</h1>
+                    <br>
+                    <img :src=MainImgSrc alt="" id="mainImg" width="400">
+                    <p class="text-body-2 my-4">아래 버튼을 눌러 시작해 주세요</p>
+                    <v-btn elevation="3" @click="begin">시작하기</v-btn>
+                </section>
+                <section id="qna" :style="styleObjQna">
+                    <div class="status mx-auto mt-5">
+                        <div class="statusBar" :style="styleObjStatusBar" />
                     </div>
-                </template>
-            </section>
-        </div>
-    </v-sheet>
+                    <br>
+                    <div class="qBox my-5 py- mx-auto" :style="styleQbox">
+
+                    </div>
+                    <div class="answerBox">
+
+                    </div>
+                </section>
+                <div class="result-page-end">
+                    <section id="result" :style="styleObjResult">
+                        <h3>✨검사 결과✨</h3>
+                        <br>
+                        <div class="resultName"> 결과 이름 </div>
+                        <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
+                        <div class="resultDesc"></div>
+
+                        <p><strong>추천 음악 들어보세요!</strong></p>
+                        <div class="play-box">
+                            <button @click="playMusic(avty), isPlaying = true"><i class="fas fa-volume-up"
+                                    style="color: cornflowerblue;"></i></button>
+                            <button @click="isPlaying = false"><i class="fas fa-volume-mute"
+                                    style="color: tomato;"></i></button>
+
+                        </div>
+                        <template v-if="isPlaying">
+                            <div class="container">
+                                <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in store.videos"
+                                    :key="video.id.videoId" :video="video" :index="index" :current="current" />
+                            </div>
+                        </template>
+                        <button button type="button" class="btn btn-secondary chart-button " @click="showChart">
+                            <i class="fas fa-chart-pie" style="color: white;"></i>&nbsp; AVTY 유저 현황</button>
+                    </section>
+                </div>
+            </div>
+        </v-sheet>
+
+        <template v-if="isChartShowing">
+            <div class="chart">
+                <TheAVTYChart :avtyData="avtyCounts" />
+            </div>
+        </template>
+    </div>
 </template>
 
 <script setup>
 import { qnaList, infoList } from "@/assets/data/data.js";
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
 import { useUserStore } from "@/stores/user";
 import { useYoutubeStore } from "@/stores/youtube";
+import TheAVTYChart from '@/components/common/TheAVTYChart.vue';
 import axios from "axios";
 
 
@@ -77,6 +90,66 @@ const playMusic = (avty) => {
     console.log(avty)
     store.youtubeSearch(avty)
 }
+
+
+
+// const movies = ref([]);
+// const movieCnt = computed(() => movies.value.length);
+
+const avtyCounts = ref({
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+
+});
+const REST_USER_API = `http://localhost:8080/user-api/user`
+const users = ref()
+const isChartShowing = ref(false)
+const showChart = () => {
+    console.log(users.value)
+    users.value.forEach((user) => {
+        if (user.avtyCode != 8) {
+            avtyCounts.value[user.avtyCode]++;
+        }
+    })
+    console.log(avtyCounts)
+    isChartShowing.value = true;
+}
+
+onMounted(() => {
+    axios({
+        url: REST_USER_API,
+        method: 'GET',
+        headers: {
+            'access-token': sessionStorage.getItem('access-token')
+        }
+    })
+        .then((res) => {
+            users.value = res.data
+        })
+
+});
+
+// onMounted(() => {
+//     userStore.getUserList()
+//     userStore.users.forEach((user)=>{
+//         if(!avtyCounts[user.avtyCode]){
+//         avtyCounts[user.avtyCode] = 1;
+//         }
+//         else{
+//         avtyCounts[user.avtyCode] ++;
+//         }
+//     })
+//     console.log(userStore.users)
+//     console.log(avtyCounts)
+
+// });
+
 
 // 질문 9개
 const endPoint = 9;
@@ -249,9 +322,11 @@ function setResult() {
 
     // 검사 결과를 DB에 반영
     axios
-        .put(`http://localhost:8080/user-api/user/${userStore.loginUser.userId}`, userStore.loginUser, {headers: {
+        .put(`http://localhost:8080/user-api/user/${userStore.loginUser.userId}`, userStore.loginUser, {
+            headers: {
                 'access-token': sessionStorage.getItem('access-token')
-            }})
+            }
+        })
         .then(() => {
             console.log('정보수정에 성공하였습니다!');
         }).catch(() => {
@@ -280,9 +355,19 @@ function setResult() {
 </script>
 
 <style>
+
+.avty-main {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
 #outer {
-    margin-bottom: 10rem;
-    font-family:'SaumsungLightBold' !important;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    font-family: 'SaumsungLightBold' !important;
+    text-align: center;
+    padding: 2em;
 }
 
 .avty-test {
@@ -355,7 +440,7 @@ focus {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#febbbb+0,fe9090+52,ff5c5c+100;Red+3D+%231 */
     background: #EBE3D5;
     /* Old browsers */
-    background: -moz-linear-gradient(top,#EBE3D5 0%,#c5bba9 52%, #776B5D 100%);
+    background: -moz-linear-gradient(top, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* Chrome10-25,Safari5.1-6 */
@@ -384,6 +469,21 @@ focus {
     width: 5rem;
     font-size: 1.5rem;
 }
+
+.chart-button {
+    padding: 1em;
+    width: 12em;
+    margin-top: 2em;
+    color: white !important;
+    font-weight: 900;
+    background: #B0A695;
+    border: 1px solid #B0A695;
+}
+
+.chart-button:hover {
+    background: #776B5D;
+}
+
 </style>
 
 

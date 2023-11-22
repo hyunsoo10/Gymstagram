@@ -62,7 +62,7 @@
 		WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )
 	    AND user_id = #{userId}
 	    GROUP BY create_date
-	    ORDER BY create_date;
+	    ORDER BY create_date ASC;
 	</select>
 	<!-- 다이어리 등록 -->
 	<insert id="insertDiary" parameterType="Diary">

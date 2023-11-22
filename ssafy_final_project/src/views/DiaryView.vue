@@ -121,8 +121,8 @@ div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 60%;
-  ;
+  width: 70%;
+  justify-content: space-around;
 }
 
 /* @import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap"); */
@@ -360,5 +360,13 @@ h3 {
   width: 64%;
 }
 
+
+.page-link {
+  color: #A9B388;
+}
+.active>.page-link, .page-link.active {
+  background-color: #5F6F52;
+  color: white;
+}
 </style>
   

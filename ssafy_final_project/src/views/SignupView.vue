@@ -2,7 +2,7 @@
     <div>
         <main class="d-flex flex-column">
             <div class="signup-title">
-                <h2>회원 정보 입력</h2>
+                <h2>GYM STAGRAM</h2>
                 <br>
             </div>
             <section class="d-flex flex-column">
@@ -40,20 +40,50 @@
                         </label>
                         <input type="password" id="userPassword2" placeholder="비밀번호 확인을 위해 다시 입력해주세요." v-model="password2">
                         <br>
-                        <div class="filebox">
+                        <div class="filebox" style="padding-left: 2em;">
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value=uploadName placeholder="첨부파일">
-                            <label for="file" id="file-btn">파일찾기</label>
+                            <input class="upload-name" :value=uploadName placeholder="첨부파일" style="border: 1px solid #B0A695;">
+                            <label for="file" id="file-btn" ref="filebtn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
+
+                            <div class="file-upload-container" 
+                                @dragenter="onDragenter"
+                                @dragover.prevent="onDragover"
+                                @dragleave="onDragleave"
+                                @drop.prevent="onDrop"
+                                @click="$refs.filebtn.click()"
+                                >
+                                <div class="file-upload" :class="isDragged ? 'dragged' : ''">
+                                    Drag and Drop Here
+                                </div>
+                            </div>
+
+                                <!-- 파일 업로드 -->
+                            <!-- <input type="file" ref="fileInput" class="file-upload-input" @change="onFileChange($event)" multiple> -->
+                            <!-- 업로드된 리스트 -->
+                            <!-- <div class="file-upload-list">
+                            <div class="file-upload-list__item" v-for="(file, index) in fileList" :key="index">
+                                <div class="file-upload-list__item__data">
+                                <img class="file-upload-list__item__data-thumbnail" :src="file.src">
+                                <div class="file-upload-list__item__data-name">
+                                    {{ file.name }}
+                                </div>
+                                </div>
+                                <div class="file-upload-list__item__btn-remove" @click="handleRemove(index)">
+                                삭제
+                                </div>
+                            </div>
+                            </div> -->
+
                         </div>
-                        <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
+                        <img class="image-ex" :src="imageUploaded" style="width: 10em; margin-top: 10px" />
                         <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
                             aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
-                        <div class="regist-btn">
+                        <div class="regist-btn" >
                             <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
                         </div>
                         <br>
@@ -61,24 +91,49 @@
                 </div>
             </section>
         </main>
+
     </div>
 </template>
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const user = ref({
-    userName: '',
-    userId: '',
-    nickName: '',
-    userPassword: '',
-    profileImage: '',
-    email: '',
-})
+
+
+
+const isDragged = ref(false)
+
+const onDragenter = function(event){
+    isDragged.value = true
+    console.log("enter")
+}
+
+const onDragleave = function(event){
+    isDragged.value = false
+    console.log("leave")
+}
+
+const onDragover = function(){
+    
+}
+
+const onDrop = function(event){
+    isDragged.value = false
+    const file = event.dataTransfer.files
+    console.log(event)
+    console.log(file)
+    dragUpload(file[0])
+}
+
+// const onFileChange = function(event){
+//     const file = event.target.files
+//     console.log("after: "+file)
+// }
+
 
 const image = ref('');
 const password2 = ref('');
@@ -86,7 +141,16 @@ const imageUploaded = ref("../src/assets/default_profile.png")
 
 const uploadName = ref('첨부파일')
 
+
+const dragUpload = function (file) {
+    console.log(file)
+    image.value = file
+    imageUploaded.value = URL.createObjectURL(image.value)
+    uploadName.value = image.value.name;
+}
+
 const upload = function (event) {
+    console.log(event.target.files[0])
     image.value = event.target.files[0]
     imageUploaded.value = URL.createObjectURL(image.value)
     console.log(URL.createObjectURL(image.value))
@@ -170,10 +234,108 @@ const regist = function (event) {
     }
     
 };
+
+
+const randomNickName= ref('')
+
+//랜덤 닉네임 불러오기
+onMounted(()=>{
+    axios({
+    //cors에러 해결하기 위해서 처리
+     url:`https://cors-anywhere.herokuapp.com/https://nickname.hwanmoo.kr?format=json`, 
+     method: 'GET',
+     headers: {
+        'Access-Control-Allow-Origin' : '*'
+     }
+    })
+    .then((response)=>{
+        // console.log(response['data'].words[0])
+        randomNickName.value = response['data'].words[0]
+        user.nickName = randomNickName.value
+        // console.log(user.nickName)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+
+})
+
+const user = ref({
+    userName: '',
+    userId: '',
+    nickName: randomNickName,
+    userPassword: '',
+    profileImage: '',
+    email: '',
+})
 </script>
 
 
 <style scoped>
+
+.file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.file-upload.dragged {
+  border: 1px dashed powderblue;
+  opacity: 0.6;
+}
+.file-upload-container {
+  width: 20em;
+  height: 10em;
+  padding: 20px;
+  margin: 0 auto;
+  box-shadow: 0 0.625rem 1.25rem #0000001a;
+  border-radius: 20px;
+  
+}
+.file-upload-container:hover{
+    background-color: rgba(214, 209, 209, 0.705);
+    color: white;
+    font-weight: 900;
+}
+.file-upload-input {
+  display: none;
+}
+.file-upload-list {
+  margin-top: 10px;
+  width: 100%;
+}
+.file-upload-list__item {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.file-upload-list__item__data {
+  display: flex;
+  align-items: center;
+}
+.file-upload-list__item__data-thumbnail {
+  margin-right: 10px;
+  border-radius: 20px;
+  width: 120px;
+  height: 120px;
+}
+.file-upload-list__item__btn-remove {
+  cursor: pointer;
+  border: 1px solid powderblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+
+
 li,
 ui {
     list-style-type: none;
@@ -184,11 +346,15 @@ main {
     /* height: 100vh; */
 }
 
+section{
+    width: 50em;
+}
+
 .regist-form {
     margin: 0 50px 50px;
-    padding: 30px 50px;
-    width: 700px;
-    border: 1px solid grey;
+    padding: 2em 2.5em;
+    width: 40em;
+    border: 1px solid #B0A695;
     border-radius: 20px;
     text-align: center;
 }
@@ -197,20 +363,26 @@ main {
 .form-content label {
     display: inline-block;
     text-align: start;
-    width: 140px;
+    /* width: 30px; */
+    width: 7em;
+    font-size: 0.7em;
 }
 
 .form-content input {
-    width: 350px;
-    height: 35px;
+    /* width: 350px; */
+    /* height: 35px; */
+    width: 18rem;
+    height: auto;
+    padding: 0.5em;
     margin: 10px;
-    padding: 0 10px;
-    border: 1px solid rgb(177, 177, 177);
+    /* padding: 0 10px; */
+    border: 1px solid #B0A695;
+    /* border: 1px solid rgb(177, 177, 177); */
     border-radius: 5px;
 }
 
 .form-content input::placeholder {
-    font-size: 12px;
+    font-size: 0.7em;
     color: rgb(177, 177, 177);
 }
 
@@ -235,6 +407,7 @@ button {
     margin: 10px;
     color: white;
     font-weight: 900;
+    border: #B0A695;
     background: #B0A695;
 }
 button:hover{
@@ -289,5 +462,9 @@ body {
     padding: 0;
     overflow: hidden;
     border: 0;
+}
+
+.signup-title{
+    color: #776B5D;
 }
 </style>
