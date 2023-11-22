@@ -272,7 +272,7 @@ const regist = function (event) {
   
 }
 .file-upload-container:hover{
-    background-color: #EBE3D5;
+    background-color: rgba(214, 209, 209, 0.705);
     color: white;
     font-weight: 900;
 }
