@@ -34,9 +34,10 @@ const chartOptions = ref({
     },
     // labels: avtyName.value,
     labels: ['ENJ', 'ENP', 'ESJ', 'ESP', 'INJ', 'INP', 'ISJ', 'ISP'],
-    // fill: {
-    // colors: ["#447b40", "#cc7870", "#e74ce4"]
-    // },
+    colors:["#A099FB", "#FE79AB", "#01CECB", "#f32c52", "#FCE38A", "#79AC78", "#96B6C5", "#B3A492"],
+    fill: {
+    colors: ["#A099FB", "#FE79AB", "#01CECB", "#f32c52", "#FCE38A", "#79AC78", "#96B6C5", "#B3A492"]
+    },
     // backgroundColor: [
     //         "#447b40", "#cc7870", "#e74ce4"
     // ],
