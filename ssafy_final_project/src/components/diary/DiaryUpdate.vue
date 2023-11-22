@@ -6,12 +6,12 @@
                     <br>
                     <p class="form-title">다이어리 수정하기</p>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요." v-model="diaryStore.diary.title">
+                        <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요." v-model.trim="diaryStore.diary.title">
                         <label for="title">제목</label>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea id="content" class="form-control" placeholder="내용을 입력해주세요." style="height: 200px"
-                            v-model="diaryStore.diary.content"></textarea>
+                            v-model.trim="diaryStore.diary.content"></textarea>
                         <label for="content"> 내용 </label>
                     </div>
                     <!-- <div class="filebox">
@@ -79,6 +79,16 @@ const upload = function (event) {
 }
 
 const updateDiary = function (event) {
+
+    if(props.diary.title == ""){
+        alert("제목을 입력하세요")
+        return
+    }
+    if(props.diary.content == ""){
+        alert("내용을 입력하세요")
+        return
+    }
+
     console.log(props.diary)
     uDiary.value.userId = props.diary.userId;
     uDiary.value.diaryId = props.diary.diaryId;

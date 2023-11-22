@@ -6,12 +6,12 @@
                     <br>
                     <p class="form-title">다이어리 작성하기</p>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="title" placeholder="제목" v-model="diary.title">
+                        <input type="text" class="form-control" id="title" placeholder="제목" v-model.trim="diary.title" :required="required">
                         <label for="title">제목</label>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="content" placeholder="내용" style="height: 200px"
-                            v-model="diary.content"></textarea>
+                            v-model.trim="diary.content"></textarea>
                         <label for="content">내용</label>
                     </div>
                     <div class="input-group" >
@@ -77,6 +77,18 @@ const diary = ref({
 })
 
 const createDiary = function (event) {
+
+    console.log(diary.value.content)
+    
+    if(diary.value.title == ""){
+        alert("제목을 입력하세요")
+        return
+    }
+    if(diary.value.content == ""){
+        alert("내용을 입력하세요")
+        return
+    }
+
     diary.value.userId = userStore.loginUser.userId
     // diary.value.image = btoa(image.value)
     var formData = new FormData()

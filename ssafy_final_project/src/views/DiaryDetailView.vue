@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="userStore.loginUser!=null">
         <div class="btn-box">
             <v-btn class="ma-3 mx-3 back-btn" @click.prevent="back">
                 <v-icon start icon="mdi-arrow-left"></v-icon>
