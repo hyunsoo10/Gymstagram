@@ -360,5 +360,13 @@ h3 {
   width: 64%;
 }
 
+
+.page-link {
+  color: #A9B388;
+}
+.active>.page-link, .page-link.active {
+  background-color: #5F6F52;
+  color: white;
+}
 </style>
   
