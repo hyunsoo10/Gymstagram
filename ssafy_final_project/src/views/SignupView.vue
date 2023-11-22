@@ -91,6 +91,7 @@
                 </div>
             </section>
         </main>
+
     </div>
 </template>
 
@@ -101,14 +102,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const user = ref({
-    userName: '',
-    userId: '',
-    nickName: '',
-    userPassword: '',
-    profileImage: '',
-    email: '',
-})
+
 
 
 const isDragged = ref(false)
@@ -139,9 +133,6 @@ const onDrop = function(event){
 //     const file = event.target.files
 //     console.log("after: "+file)
 // }
-
-
-
 
 
 const image = ref('');
@@ -243,6 +234,40 @@ const regist = function (event) {
     }
     
 };
+
+
+const randomNickName= ref('')
+
+//랜덤 닉네임 불러오기
+onMounted(()=>{
+    axios({
+    //cors에러 해결하기 위해서 처리
+     url:`https://cors-anywhere.herokuapp.com/https://nickname.hwanmoo.kr?format=json`, 
+     method: 'GET',
+     headers: {
+        'Access-Control-Allow-Origin' : '*'
+     }
+    })
+    .then((response)=>{
+        // console.log(response['data'].words[0])
+        randomNickName.value = response['data'].words[0]
+        user.nickName = randomNickName.value
+        // console.log(user.nickName)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+
+})
+
+const user = ref({
+    userName: '',
+    userId: '',
+    nickName: randomNickName,
+    userPassword: '',
+    profileImage: '',
+    email: '',
+})
 </script>
 
 
