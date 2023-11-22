@@ -60,27 +60,10 @@
                                 </div>
                             </div>
 
-                                <!-- 파일 업로드 -->
-                            <!-- <input type="file" ref="fileInput" class="file-upload-input" @change="onFileChange($event)" multiple> -->
-                            <!-- 업로드된 리스트 -->
-                            <!-- <div class="file-upload-list">
-                            <div class="file-upload-list__item" v-for="(file, index) in fileList" :key="index">
-                                <div class="file-upload-list__item__data">
-                                <img class="file-upload-list__item__data-thumbnail" :src="file.src">
-                                <div class="file-upload-list__item__data-name">
-                                    {{ file.name }}
-                                </div>
-                                </div>
-                                <div class="file-upload-list__item__btn-remove" @click="handleRemove(index)">
-                                삭제
-                                </div>
-                            </div>
-                            </div> -->
 
                         </div>
                         <img class="image-ex" :src="imageUploaded" style="width: 10em; margin-top: 10px" />
-                        <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
-                            aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
+   
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn" >

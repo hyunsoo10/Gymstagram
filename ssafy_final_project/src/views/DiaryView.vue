@@ -7,7 +7,6 @@
             </button>
             <button class="btn btn-outline-primary btn-layer-2_1" value="ENJ" @click="avtyDiary($event), changeBtn($event)">
                 ENJ
-                <!-- <i class="fa fa-check"></i> -->
             </button>
             <button class="btn btn-outline-secondary btn-layer-2_2" value="ENP" @click="avtyDiary($event), changeBtn($event)">
                 ENP
@@ -121,8 +120,8 @@ div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 70%;
-  justify-content: space-around;
+  width: 60%;
+  ;
 }
 
 /* @import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap"); */
@@ -360,13 +359,5 @@ h3 {
   width: 64%;
 }
 
-
-.page-link {
-  color: #A9B388;
-}
-.active>.page-link, .page-link.active {
-  background-color: #5F6F52;
-  color: white;
-}
 </style>
   

@@ -10,20 +10,14 @@
       <v-card-title>My AVTY: <strong>{{ infoList[userStore.loginUser.avtyCode].name }}</strong></v-card-title>
 
       <v-card-subtitle>
-        <!-- <span class="me-1">Local Favorite</span> -->
-
-        <!-- <v-icon color="error" icon="mdi-fire-circle" size="small"></v-icon> -->
       </v-card-subtitle>
     </v-card-item>
 
     <v-card-text>
       <v-row align="center" class="mx-0">
-        <!-- <v-rating :model-value="4.5" color="amber" density="compact" half-increments readonly size="small"></v-rating> -->
       </v-row>
 
-      <!-- <div class="my-4 text-subtitle-1">
-        $ • Italian, Cafe
-      </div> -->
+
       <div v-for ="info in infoList[userStore.loginUser.avtyCode].desc" style="text-align:left !important">
           <div style="margin: 1.5em;"> {{ info }} </div>
       </div>
@@ -42,8 +36,6 @@
     </div>
 
     <div class="play-box">
-      <!-- <button @click="playMusic(avty), isPlaying=true"><i class="fas fa-volume-up" style="color: cornflowerblue;"></i></button>
-      <button @click=" isPlaying=false"><i class="fas fa-volume-mute"  style="color: tomato;"></i></button> -->
     </div>
   <template v-if="isPlaying">
       <div class="container">
@@ -57,12 +49,7 @@
                   />
       </div>
   </template>
-<!-- 
-    <v-card-actions>
-      <v-btn color="deep-purple-lighten-2" variant="text" @click="reserve">
-        Reserve
-      </v-btn>
-    </v-card-actions> -->
+
   </v-card>
 </template>
 <script setup>
@@ -76,17 +63,6 @@ const playMusic = (keyword)=>{
     console.log(keyword)
     youtubeStore.youtubeSearchByKeyword(keyword)
 }
-const changeBtn = function(e) {
-    let btns = document.querySelectorAll(".btn");
-  btns.forEach(function (btn, i) {
-    if (e.currentTarget == btn) {
-      btn.classList.add("active");
-    } else {
-      btn.classList.remove("active");
-    }
-  });
-    console.log(e.currentTarget.value);
-  }
 
 const isPlaying = ref(false)
 

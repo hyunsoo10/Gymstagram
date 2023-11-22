@@ -7,9 +7,6 @@
                                 <RouterLink to="/">&nbsp; GYM STAGRAM</RouterLink>
                                 </div>
                                 <ul class="navbar-menu">
-                                        <!-- <li>
-                                                <RouterLink to="/">홈</RouterLink>
-                                        </li> -->
                                         <li v-if="store.loginUser != null">
                                                 <RouterLink to="/quiz">Quiz</RouterLink>
                                         </li>
@@ -55,9 +52,6 @@ const gohome= () =>{
   
 <style scoped>
 
-/* .router-link-active.router-link-exact-active{
-        font-family:'SaumsungBold'!important;
-} */
 .router-link-active{
         font-family:'SaumsungBold'!important;
 }
@@ -108,43 +102,5 @@ a {
         border-radius: 4px;
 }
 
-
-
-
-/* .navbar-toggle-btn {
-        display: none;
-        position: absolute;
-        right: 32px;
-        font-size: 24px;
-        color: var(--accent-color);
-} */
-
-/* @media screen and (max-width: 768px) {
-        .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 8px 24px;
-        }
-
-        .navbar-menu {
-                display: none;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-        }
-
-        .navbar-menu li {
-                width: 100%;
-                text-align: center;
-        }
-
-        .navbar-toggle-btn {
-                display: block;
-        }
-
-        .navbar-menu.active {
-                display: flex;
-        }
-} */
 </style>
   

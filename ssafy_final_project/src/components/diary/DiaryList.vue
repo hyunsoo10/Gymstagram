@@ -20,83 +20,23 @@
             v-bind="props">
            {{ diary.avty }}
       </v-btn>
-      <!-- <v-btn  v-bind="props">
-          <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary">자세히 보기</RouterLink>
-      </v-btn> -->
-      <!-- <v-dialog
-        transition="dialog-bottom-transition"
-        width="auto"
-      >
-        <template v-slot:activator="{ props }">
-          <v-btn
-            color="primary"
-            v-bind="props"
-          >자세히보기</v-btn>
-        </template>
-        <template v-slot:default="{ isActive }">
-          <v-card width="100%" height="100%">
-            <v-toolbar
-              color="blue-grey-lighten-5"
-              :title="diary.userId"
-            ></v-toolbar>
-            <v-card-text>
-              <DiaryDetail
-                :diary = "diary"
-                :comments = "comments"
-              />
-            </v-card-text>
-            <v-card-actions class="justify-end">
-              <v-btn
-                variant="text"
-                @click="isActive.value = false"
-              >Close</v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog> -->
     </v-card-actions>
   </v-card>
 </template>
-<!-- <template>
-<v-infinite-scroll :height="300" :items="diaryStore.allDiary" :onLoad="load">
-  <template v-for="(item, index) in items" :key="item">
-    <div :class="['pa-2', index % 2 === 0 ? 'bg-grey-lighten-2' : '']">
-      Item {{ item.diaryId }}
-    </div>
-  </template>
-</v-infinite-scroll>
-</template> -->
+
 <script setup>
 import { ref, onMounted } from 'vue'
-// import DiaryDetail from '@/components/diary/DiaryDetail.vue'
 import { useDiaryStore } from '@/stores/diary'
-import axios from 'axios';
 const props = defineProps({
   diary: Object
 })
-// const cards = ref([
-//   { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
-//   { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-//   { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-// ],
-// )
-
-
 
 const diaryStore = useDiaryStore();
-
-const comments = ref()
 
 onMounted(() => {
   diaryStore.getAllComments()
 })
 
-const getComments = (diaryId) => {
-    console.log(diaryId)
-    diaryStore.getDiaryComments(diaryId)
-    comments.value = diaryStore.comments
-    console.log(diaryStore.comments)
-}
 </script>
 
 <style  scoped>

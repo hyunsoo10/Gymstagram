@@ -86,16 +86,6 @@
                     <Comment :comment="comment" />
                 </template>
             </div>
-            <!-- <div v-for="comment in diaryStore.comments" class="comment-box">
-                    <div class="comment-line">
-                        {{comment.userId}} : {{ comment.content }}
-                        <div class="comment-btn">
-                            <button v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle"  type="button" class="btn btn-outline-primary" @click="updateToggle = !updateToggle" >수정</button>
-                            <button v-if="(userStore.loginUser.userId == comment.userId) && updateToggle"  type="button" class="btn btn-outline-primary" @click="updateReview" >수정완료</button>
-                            <button  v-if="(userStore.loginUser.userId == comment.userId) && !updateToggle" type="button" class="btn btn-outline-danger"  @click="deleteReview(comment.commentId)">삭제</button>
-                        </div>
-                    </div>
-                </div> -->
         </template>
         <template v-if="diaryComment.length <= 0">
             <div style="text-align: center; margin: 50px auto">해당 다이어리에 작성된 댓글이 없습니다. <br> 첫 번째 댓글을 남겨보세요!</div>
@@ -111,20 +101,15 @@ import { useDiaryStore } from '@/stores/diary'
 import axios from 'axios'
 import Comment from '@/components/diary/comment/Comment.vue'
 import diaryUpdate from '@/components/diary/DiaryUpdate.vue';
-import { resetTracking } from '@vue/reactivity'
 
 const diaryStore = useDiaryStore();
 const userStore = useUserStore();
-// const props = defineProps({
-// diary: Object
-// })
-// console.log(props.diary)
+
 const newContent = ref('')
 const updateContent = ref('')
 const route = useRoute()
 const router = useRouter()
 
-// 모달창 false
 const dialog = ref(false);
 const close = function () {
     console.log(dialog.value)
@@ -161,9 +146,6 @@ const like = () => {
     // router.go()
 }
 const unlike = () => {
-    // console.log('unlike')
-    // console.log(userStore.loginUser.userId)
-    // console.log(diaryId.value)
     likeInfo.value.userId = userStore.loginUser.userId
     likeInfo.value.diaryId = diaryId.value
     diaryStore.diary.likeCount--;
@@ -175,17 +157,6 @@ const unlike = () => {
 onMounted(() => {
     diaryStore.getAllLike()
 })
-const showLike = () => {
-    // diaryStore.getDiaryLike(diaryId.value)
-    // console.log(diaryId.value)
-    // console.log(diaryStore.like/DiaryInfo)
-    // console.log(diaryStore.likeCount)
-}
-
-// const likeCount = ref()
-// const getDiaryLike = computed(()=>{
-//     return (diaryId) => likeCount.value = likeDiaryInfo.value.filter((diary) => diary.diaryId === diaryId).length
-// })
 
 onMounted(() => {
     diaryStore.getOneDiary(diaryId.value)
@@ -199,9 +170,6 @@ onMounted(() => {
         }
     })
         .then((res) => {
-            // likeDiaryInfo.value = res.data
-            // console.log(likeDiaryInfo.value)
-            // console.log(res.data)
             if (res.data > 0) {
                 likeFlag.value = true;
             }
@@ -240,59 +208,15 @@ const createComment = function () {
     console.log(newComment.value)
     diaryStore.createComment(newComment.value)
     newContent.value = ""
-    // console.log(newComment.value)
     router.go()
 }
 
-//댓글 수정
-const updateComment = function (com) {
-    // console.log(com)
-    // console.log(newContent.value)
-    // newComment.value.content = newContent.value
-    // console.log(event.target.value)
-    var today = new Date();
-
-    var year = today.getFullYear();
-    var month = ('0' + (today.getMonth() + 1)).slice(-2);
-    var day = ('0' + today.getDate()).slice(-2);
-
-    var hours = ('0' + today.getHours()).slice(-2);
-    var minutes = ('0' + today.getMinutes()).slice(-2);
-    var seconds = ('0' + today.getSeconds()).slice(-2);
-
-    var dateString = year + '-' + month + '-' + day;
-    var timeString = hours + ':' + minutes + ':' + seconds;
-    com.updateDate = dateString + " " + timeString
-    com.content = updateContent.value;
-    console.log(com)
-    axios.put("http://localhost:8080/diary-api/diary/comment", com, {
-        headers: {
-            'access-token': sessionStorage.getItem('access-token')
-        }
-    })
-    // isActive.value = false
-    // router.go()
-}
 const diaryComment = computed(() => {
     return diaryStore.comments.filter((comment) => {
         return comment.diaryId == diaryStore.diary.diaryId
     })
 })
-const deleteComment = function (commentId) {
-    var flag = confirm("정말로 댓글을 삭제하시겠습니까?")
-    console.log(flag)
-    if (flag) {
-        axios.delete(`http://localhost:8080/diary-api/diary/comment/${commentId}`, {
-            headers: {
-                'access-token': sessionStorage.getItem('access-token')
-            }
-        })
-        router.go()
-    }
-    // store.reviews = diaryStore.comments.filter((review) => review.reviewNo != reviewNo)
-    // emit('deleteComment', commentId)
-    //page 새로고침
-}
+
 
 const back = () => { router.go(-1) }
 </script>

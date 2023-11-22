@@ -107,7 +107,6 @@
                                     </v-card-actions>
                                 </v-card>
                                 </v-dialog>
-                            <!-- <button type="button" class="btn btn-danger delete-btn" @click="deleteUser($event)">회원탈퇴</button> -->
                         </div>
         
           
@@ -245,14 +244,11 @@ const disableUser = () =>{
                 let user = {
                 userId : store.loginUser.userId,
                 userPassword : confirmPassword.value
-                // alert(res.data)
+        
                 }
                 console.log(user)
                 store.refreshLogin(user)
-                // activateDialog.value = false
-            
-                // router.go()
-                // router.push({name: 'mydiary', params: {userId: user.userId}})
+
                 router.push(`/mypage/${user.userId}`)
             })
     }else{

@@ -36,13 +36,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useDiaryStore } from '@/stores/diary.js'
 import axios from 'axios';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
-const route = useRoute()
 
 // 모달창 활성화 여부
 const emit = defineEmits(['closeDialog'])
@@ -127,10 +126,6 @@ const updateDiary = function (event) {
             uploadName.value = ''
             imageUploaded.value = ''
             emit("closeDialog")
-            // router.push({
-            //     name: 'diaryDetail',
-            //     params: diaryId
-            // })
             router.go();
         })
         .catch(() => {

@@ -70,11 +70,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { useDiaryStore } from '@/stores/diary'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios';
-import MyDiary from '@/components/diary/MyDiary.vue';
-import Profile from '@/components/diary/Profile.vue';
-import AVTY from '@/components/diary/AVTY.vue'
+import MyDiary from '@/components/diary/mydiary/MyDiary.vue';
+import Profile from '@/components/diary/mydiary/Profile.vue';
+import AVTY from '@/components/diary/mydiary/AVTY.vue'
+import MyWeeklyDiary from '@/components/diary/mydiary/MyWeeklyDiary.vue'
 import DiaryCreate from '@/components/diary/DiaryCreate.vue';
-import MyWeeklyDiary from '@/components/diary/MyWeeklyDiary.vue'
 
 const route = useRoute();
 const diaryStore = useDiaryStore();

@@ -19,13 +19,7 @@
                     </form>
                 </div>
                 
-                <!-- <button button type="button" class="btn btn-secondary" @click="kakaoLogin">kakao 로그인</button> -->
-                <!-- <a>
-                    Kakao 로그인
-                </a> -->
-                <!-- <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=01bdd0d43fb0ea7f402dc99e9f0f02d4&redirect_uri=http://localhost:5173">
-                    Kakao 로그인
-                </a> -->
+  
                 <div>
                     <a id="custom-login-btn" @click="kakaoLogin()">
                     <img
@@ -34,7 +28,6 @@
                         alt="카카오 로그인 버튼"
                     />
                     </a>
-                <!-- <div @click="kakaoLogout()">로그아웃</div> -->
             </div>
             </section>
         </main>
@@ -55,14 +48,6 @@ const router = useRouter();
 const user = ref(null);
 const store = useUserStore()
 
-// const makeFormData = params => {
-//       const searchParams = new URLSearchParams()
-//       Object.keys(params).forEach(key => {
-//         searchParams.append(key, params[key])
-//       })
-//       return searchParams;
-// }
-
 const kakaoLogin = () =>{
     console.log("카카오 로그인")
     const redirect_uri = 'http://localhost:5173/kakaoLogin';
@@ -80,22 +65,6 @@ const login = () => {
     };
     store.login(user);
 };
-//그냥 로그인
-// const login = () => {
-//     let user = {
-//         id: id.value,
-//         password: password.value
-//     };
-//     store.login(user);
-// };
-
-
-// onMounted(() => {
-//     const savedUser = localStorage.getItem("loginUser");
-//     if (savedUser) {
-//         user.value = JSON.parse(savedUser);
-//     }
-// });
 
 </script>
   

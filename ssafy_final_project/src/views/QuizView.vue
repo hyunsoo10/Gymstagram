@@ -62,11 +62,11 @@
 
 <script setup>
 import { qnaList, infoList } from "@/assets/data/data.js";
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
 import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
 import { useUserStore } from "@/stores/user";
 import { useYoutubeStore } from "@/stores/youtube";
-import TheAVTYChart from '@/components/common/TheAVTYChart.vue';
+import TheAVTYChart from '@/components/avty/TheAVTYChart.vue';
 import axios from "axios";
 
 
@@ -90,11 +90,6 @@ const playMusic = (avty) => {
     console.log(avty)
     store.youtubeSearch(avty)
 }
-
-
-
-// const movies = ref([]);
-// const movieCnt = computed(() => movies.value.length);
 
 const avtyCounts = ref({
     0: 0,
@@ -134,21 +129,6 @@ onMounted(() => {
         })
 
 });
-
-// onMounted(() => {
-//     userStore.getUserList()
-//     userStore.users.forEach((user)=>{
-//         if(!avtyCounts[user.avtyCode]){
-//         avtyCounts[user.avtyCode] = 1;
-//         }
-//         else{
-//         avtyCounts[user.avtyCode] ++;
-//         }
-//     })
-//     console.log(userStore.users)
-//     console.log(avtyCounts)
-
-// });
 
 
 // 질문 9개

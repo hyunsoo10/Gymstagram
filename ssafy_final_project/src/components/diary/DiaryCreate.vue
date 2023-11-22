@@ -19,18 +19,7 @@
                         <input type="file" id="file" class="form-control" @change="upload" :ref="image"  accept="image/.*">
                     </div>
 
-                    <!-- <div class="file-upload-container" 
-                        @dragenter="onDragenter"
-                        @dragover.prevent="onDragover"
-                        @dragleave="onDragleave"
-                        @drop.prevent="onDrop"
-                        @click="$refs.filebtn.click()"
-                        >
-                        <div class="file-upload" :class="isDragged ? 'dragged' : ''">
-                            Drag and Drop Here
-                        </div>
-                    </div> -->
-
+                    <!--Drag & Drop 파일 업로드-->
                     <div 
                         @dragenter="onDragenter"
                         @dragover.prevent="onDragover"
@@ -54,10 +43,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useDiaryStore } from '@/stores/diary'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
@@ -139,7 +127,6 @@ const createDiary = function (event) {
     }
 
     diary.value.userId = userStore.loginUser.userId
-    // diary.value.image = btoa(image.value)
     var formData = new FormData()
     if (image.value != null) {
         diary.value.originalImage = image.value.name
@@ -180,12 +167,12 @@ const isDragged = ref(false)
 
 const onDragenter = function(event){
     isDragged.value = true
-    console.log("enter")
+    // console.log("enter")
 }
 
 const onDragleave = function(event){
     isDragged.value = false
-    console.log("leave")
+    // console.log("leave")
 }
 
 const onDragover = function(){
@@ -195,8 +182,8 @@ const onDragover = function(){
 const onDrop = function(event){
     isDragged.value = false
     const file = event.dataTransfer.files
-    console.log(event)
-    console.log(file)
+    // console.log(event)
+    // console.log(file)
     dragUpload(file[0])
 }
 
