@@ -45,8 +45,38 @@
                                 프로필사진
                             </label>
                             <input class="upload-name" :value=uploadName placeholder="첨부파일" style="border: 1px solid #B0A695;">
-                            <label for="file" id="file-btn">파일찾기</label>
+                            <label for="file" id="file-btn" ref="filebtn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
+
+                            <div class="file-upload-container" 
+                                @dragenter="onDragenter"
+                                @dragover.prevent="onDragover"
+                                @dragleave="onDragleave"
+                                @drop.prevent="onDrop"
+                                @click="$refs.filebtn.click()"
+                                >
+                                <div class="file-upload" :class="isDragged ? 'dragged' : ''">
+                                    Drag and Drop Here
+                                </div>
+                            </div>
+
+                                <!-- 파일 업로드 -->
+                            <!-- <input type="file" ref="fileInput" class="file-upload-input" @change="onFileChange($event)" multiple> -->
+                            <!-- 업로드된 리스트 -->
+                            <!-- <div class="file-upload-list">
+                            <div class="file-upload-list__item" v-for="(file, index) in fileList" :key="index">
+                                <div class="file-upload-list__item__data">
+                                <img class="file-upload-list__item__data-thumbnail" :src="file.src">
+                                <div class="file-upload-list__item__data-name">
+                                    {{ file.name }}
+                                </div>
+                                </div>
+                                <div class="file-upload-list__item__btn-remove" @click="handleRemove(index)">
+                                삭제
+                                </div>
+                            </div>
+                            </div> -->
+
                         </div>
                         <img class="image-ex" :src="imageUploaded" style="width: 10em; margin-top: 10px" />
                         <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
@@ -66,7 +96,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -80,13 +110,56 @@ const user = ref({
     email: '',
 })
 
+
+const isDragged = ref(false)
+
+const onDragenter = function(event){
+    isDragged.value = true
+    console.log("enter")
+}
+
+const onDragleave = function(event){
+    isDragged.value = false
+    console.log("leave")
+}
+
+const onDragover = function(){
+    
+}
+
+const onDrop = function(event){
+    isDragged.value = false
+    const file = event.dataTransfer.files
+    console.log(event)
+    console.log(file)
+    dragUpload(file[0])
+}
+
+// const onFileChange = function(event){
+//     const file = event.target.files
+//     console.log("after: "+file)
+// }
+
+
+
+
+
 const image = ref('');
 const password2 = ref('');
 const imageUploaded = ref("../src/assets/default_profile.png")
 
 const uploadName = ref('첨부파일')
 
+
+const dragUpload = function (file) {
+    console.log(file)
+    image.value = file
+    imageUploaded.value = URL.createObjectURL(image.value)
+    uploadName.value = image.value.name;
+}
+
 const upload = function (event) {
+    console.log(event.target.files[0])
     image.value = event.target.files[0]
     imageUploaded.value = URL.createObjectURL(image.value)
     console.log(URL.createObjectURL(image.value))
@@ -174,6 +247,70 @@ const regist = function (event) {
 
 
 <style scoped>
+
+.file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.file-upload.dragged {
+  border: 1px dashed powderblue;
+  opacity: 0.6;
+}
+.file-upload-container {
+  width: 20em;
+  height: 10em;
+  padding: 20px;
+  margin: 0 auto;
+  box-shadow: 0 0.625rem 1.25rem #0000001a;
+  border-radius: 20px;
+  
+}
+.file-upload-container:hover{
+    background-color: #EBE3D5;
+    color: white;
+    font-weight: 900;
+}
+.file-upload-input {
+  display: none;
+}
+.file-upload-list {
+  margin-top: 10px;
+  width: 100%;
+}
+.file-upload-list__item {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.file-upload-list__item__data {
+  display: flex;
+  align-items: center;
+}
+.file-upload-list__item__data-thumbnail {
+  margin-right: 10px;
+  border-radius: 20px;
+  width: 120px;
+  height: 120px;
+}
+.file-upload-list__item__btn-remove {
+  cursor: pointer;
+  border: 1px solid powderblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+
+
 li,
 ui {
     list-style-type: none;
