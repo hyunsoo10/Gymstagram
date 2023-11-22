@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `avty`(
    PRIMARY KEY (`avty_code`)
 );
 
-
 CREATE TABLE IF NOT EXISTS `likeDiary`(
   `user_Id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
   `diary_Id` INT NOT NULL,

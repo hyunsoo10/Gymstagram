@@ -36,8 +36,9 @@
     </div>
     <nav aria-label="Page navigation">
       <ul class="pagination d-flex justify-content-center">
-        <li class="page-item"><a class="page-link" :class="{ disabled: currentPage <= 1 }" href="#"
-                @click.prevent="currentPage--">&lt;</a></li>
+        <li class="page-item">
+          <a class="page-link" :class="{ disabled: currentPage <= 1 }" href="#" @click.prevent="currentPage--">&lt;</a>
+        </li>
         <li :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
             <a class="page-link" href="#" @click.prevent="clickPage(page)">{{ page }}</a>
         </li>
@@ -359,5 +360,25 @@ h3 {
   width: 64%;
 }
 
+.page-link {
+  color: #000; 
+  background-color: #ffffff;
+  border: 1px solid #ccc; 
+}
+
+.page-item.active .page-link {
+ z-index: 1;
+ color: #555;
+ font-weight:bold;
+ background-color:#cdcdcd;
+ border-color:#cdcdcd;
+ 
+}
+
+.page-link:focus, .page-link:hover {
+  color: #000;
+  background-color:#cdcdcd; 
+  border-color: #cdcdcd;
+}
 </style>
   
