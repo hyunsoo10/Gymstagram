@@ -206,9 +206,6 @@ div {
 }
 
 #diary-box {
-  /* display: flex;
-      flex-direction: row;
-      flex-wrap: wrap; */
   width: 50%;
 }
 
@@ -257,23 +254,25 @@ div {
 
 .weekly-calendar {
   width: 700px;
-  margin: 2em auto;
+  margin: 3em auto;
 }
 
 .total-calendar {
   width: 700px;
-  margin: 2em auto;
+  margin: 3em auto;
 }
 
 
 .total-diary-box {
   display: flex;
   flex-flow: wrap;
+  justify-content: space-evenly;
 }
 
 .weekly-diary-box {
   display: flex;
   flex-flow: wrap;
+  justify-content: space-evenly;
 }
 </style>
   

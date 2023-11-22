@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" width="300">
+  <v-card class='total-card' width="300">
     <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary" class="cursor">
     <v-img :src="`../src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
     height="200px" cover>
@@ -60,8 +60,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* .cursor{
-  cursor: url("@/assets/cursor/cursor2.png"), auto;
-} */
+.total-card {
+  margin: 1.5em;
+}
 </style>
 
