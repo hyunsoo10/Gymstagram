@@ -1,5 +1,5 @@
 <template>
-  <v-card class="card" width="300" height="400" :to="`/detail/${diary.diaryId}`" :diary="diary">
+  <v-card class="card" width="300" height="400" :to="`detail/${diary.diaryId}`" :diary="diary">
 
     <!-- saveImage에 Base64로 인코딩한 문자열을 저장한 경우 이렇게 불러올 수 있다.-->
     <!-- <v-img class="align-end text-white" height="200" :src="diary.saveImage" cover> </v-img> -->

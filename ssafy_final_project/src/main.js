@@ -19,6 +19,11 @@ import 'v-calendar/style.css';
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
+
+// import {useUserStore} from '@/stores/user'
+
+
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -32,8 +37,9 @@ const vuetify = createVuetify({
 });
 
 const app = createApp(App);
-
-app.use(createPinia());
+// app.use(createPinia());
+const pinia = createPinia();
+app.use(pinia);
 app.use(router);
 app.use(vuetify);
 app.use(VCalendar, {
@@ -46,6 +52,8 @@ app.use(VCalendar, {
     data: ['L', 'YYYY-MM-DD', 'YYYY/MM/DD']
   }
 })
+
+// const userStore = useUserStore();
 
 app.component("infinite-loading", InfiniteLoading);
 app.mount("#app");
