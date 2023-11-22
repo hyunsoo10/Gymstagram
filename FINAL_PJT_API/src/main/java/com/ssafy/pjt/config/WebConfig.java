@@ -23,8 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**").allowedOrigins("*").allowedMethods("POST", "GET", "PUT", "DELETE");
 	}
 
-	// 등록할 인터셉터가 있다면...
-	// 필드를 통해 의존성을 주입 받고
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**").excludePathPatterns("/user-api/**",

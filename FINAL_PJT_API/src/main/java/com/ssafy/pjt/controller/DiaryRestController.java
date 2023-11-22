@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +33,6 @@ import com.ssafy.pjt.model.dto.Comment;
 import com.ssafy.pjt.model.dto.Diary;
 import com.ssafy.pjt.model.dto.LikeDiary;
 import com.ssafy.pjt.model.dto.SearchCondition;
-import com.ssafy.pjt.model.dto.User;
 import com.ssafy.pjt.model.service.DiaryService;
 
 import io.swagger.annotations.Api;
@@ -92,7 +91,6 @@ public class DiaryRestController {
 			Diary diary = diaryService.getOneDiary(diaryId);
 			//diary 조회수 증가
 			diaryService.updateViewCount(diaryId);
-//			viewCountUp(req, res, session, diaryId);
 			if (diary != null) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
 			} else
@@ -117,47 +115,36 @@ public class DiaryRestController {
 		}
 	}
 
+	// diary 추가 (이미지를 Base64로 인코딩해서 보낼 때)
+//	@PostMapping(value = "/diary")
+//	@ApiOperation(value = "새로운 diary추가")
+//	public ResponseEntity<?> insertOne(@RequestBody Diary diary){
+//		try {
+//
+//			int result =  diaryService.addDiary(diary);
+//			if (result > 0) {
+//				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
+//			} else
+//				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+//		} catch (Exception e) {
+//			return exceptionHandling(e);
+//		}
+//	}
+
+	
 	// diary 추가
 	@PostMapping(value = "/diary", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ApiOperation(value = "새로운 diary추가")
 	public ResponseEntity<?> insertOne(
 			@RequestPart(required = false) @RequestParam(value = "image", required = false) MultipartFile file,
 			@RequestPart("diary") Diary diary) {
-//	public ResponseEntity<?> insertOne(@RequestBody Diary diary){
 		try {
 			// 결과 값 담을 변수
 			int result = 0;
-//			System.out.println(diary);
-//			byte[] base64Img = Base64.decodeBase64(diary.getImage());
-//			System.out.println(diary.getImage());
-//			byte[] base64Img = Base64.getDecoder().decode(diary.getImage());
-//			byte[] base64Img1 = org.apache.tomcat.util.codec.binary.Base64.decodeBase64(diary.getImage());
-//			System.out.println(Arrays.toString(file.getBytes()));
-//			System.out.println(diary);
-//			System.out.println(Arrays.toString(base64Img));
-//			System.out.println(Arrays.toString(base64Img1));
-//			System.out.println(base64Img);
-//			System.out.println(file);
-//			LocalDateTime now = LocalDateTime.now();
-//			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyMMdd");
-//			String formatDate = now.format(format);
 			if (file != null && file.getSize() > 0) {
-//				
-////				// 파일을 저장할 폴더 지정
-////				Resource res = resLoader.getResource("resources/upload");
-////				// 파일이 비어있다면 처리할 필요가 없다.
-////				// prefix를 포함한 전체 이름
-////				movie.setImg(System.currentTimeMillis() + "_" + file.getOriginalFilename());
-////				movie.setOrgImg(file.getOriginalFilename());
-////
-////				file.transferTo(new File(res.getFile().getCanonicalPath() + "/" + movie.getImg()));
-//				
-//				String fileName = file.getOriginalFilename();
 				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\diary_image\\"
 						+ diary.getUserId();
-//				String uploadPath = "C:\\uploadTemp\\";
 				String saveName = UUID.randomUUID() + "_" + diary.getOriginalImage();
-//				
 				File target = new File(uploadPath, saveName);
 
 				if (!new File(uploadPath).exists()) {
@@ -167,16 +154,16 @@ public class DiaryRestController {
 				try {
 					FileCopyUtils.copy(file.getBytes(), target);
 					diary.setSaveImage(saveName);
-//					Files.write(target, base64Img);
 					result = diaryService.addDiary(diary);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			} else {
-				// 파일이 없으면
+				// 파일이 없으면 그냥 업로드
 				result = diaryService.addDiary(diary);
 			}
-//			Diary diary = null;
+			
+			
 			if (result > 0) {
 				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
 			} else
@@ -185,7 +172,7 @@ public class DiaryRestController {
 			return exceptionHandling(e);
 		}
 	}
-
+	
 	// diary 수정
 	@PutMapping(value = "/diary", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ApiOperation(value = "diary 수정", response = Diary.class)
