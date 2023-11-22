@@ -3,7 +3,7 @@
       class="mx-auto"
       max-width="344"
     > -->
-  <v-card class="mx-auto" width="300">
+  <v-card class='weekly-card' width="300">
     <v-img :src="`../src/assets/diary_image/${diary.userId}/${diary.saveImage}`" height="200px" cover></v-img>
 
     <v-card-title>
@@ -18,7 +18,7 @@
       {{ diary.createDate }}
     </v-card-subtitle>
 
-    <v-card-text>
+    <v-card-text class="text-body-2">
           {{ diary.content }}
         </v-card-text>
 
@@ -57,4 +57,7 @@ const show = ref(false)
 
 </script>
 
-<style  scoped></style>
+<style  scoped>
+.weekly-card {
+  margin: 1.5em;
+}</style>

@@ -41,17 +41,20 @@
           <v-container fluid>
             <template v-if="n == 1">
               <h1>My Weekly Diary</h1>
-              <MyWeeklyDiary v-for="diary in diaryStore.weeklyDiary" :key="diary.diaryId" :diary="diary" />
+              <div class="weekly-diary-box">
+                <MyWeeklyDiary v-for="diary in diaryStore.weeklyDiary" :key="diary.diaryId" :diary="diary" />
+              </div>
             </template>
             <template v-if="n == 2">
               <h1>My Total Diary</h1>
-              <v-sheet class="calendar">
-              <VCalendar expanded :color="selectedColor" :attributes="attrs" @dayclick="selectDiary" @dayclick.color='red' view="monthly" :masks="masks" :first-day-of-week="2"/>
-            </v-sheet>
+              <v-sheet class="total-calendar">
+                <VCalendar expanded :color="selectedColor" :attributes="attrs" @dayclick="selectDiary" view="monthly"
+                  :masks="masks" :first-day-of-week="2" />
+              </v-sheet>
               <!-- <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" /> -->
               <div class="total-diary-box">
-              <MyDiary v-for="diary in dateDiary" :key="diary.diaryId" :diary="diary" />
-            </div>
+                <MyDiary v-for="diary in dateDiary" :key="diary.diaryId" :diary="diary" />
+              </div>
             </template>
           </v-container>
         </v-window-item>
@@ -91,17 +94,11 @@ const myDiary = computed(() => {
 // v-Calender
 const selectedColor = ref('yellow');
 
-const masks = {
+const masks = ref({
   title: 'YYYY년 MM월',
   weekdays: 'W',
   navMonths: 'MMM',
-}
-
-// let dateArray = new Set();
-// for(const diary in myDiary.value) {
-//   console.log(diary)
-//   dateArray.add(diary.createDate)
-// }
+})
 
 // 오늘날짜 받아오기
 let today = new Date();
@@ -110,6 +107,7 @@ let month = ('0' + (today.getMonth() + 1)).slice(-2);
 let day = ('0' + today.getDate()).slice(-2);
 
 let dateString = year + '-' + month + '-' + day;
+
 
 // 달력에서 고른 날짜(기본값이 오늘 날짜)
 const selectDate = ref(dateString)
@@ -257,15 +255,23 @@ div {
 
 }
 
-.calendar {
+.weekly-calendar {
   width: 700px;
   margin: 2em auto;
 }
-.vc-focus {
-  color : #30cf9a !important;
+
+.total-calendar {
+  width: 700px;
+  margin: 2em auto;
 }
 
+
 .total-diary-box {
+  display: flex;
+  flex-flow: wrap;
+}
+
+.weekly-diary-box {
   display: flex;
   flex-flow: wrap;
 }
