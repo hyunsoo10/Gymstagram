@@ -34,6 +34,12 @@ const chartOptions = ref({
     },
     // labels: avtyName.value,
     labels: ['ENJ', 'ENP', 'ESJ', 'ESP', 'INJ', 'INP', 'ISJ', 'ISP'],
+    // fill: {
+    // colors: ["#447b40", "#cc7870", "#e74ce4"]
+    // },
+    // backgroundColor: [
+    //         "#447b40", "#cc7870", "#e74ce4"
+    // ],
     responsive: [{
         breakpoint: 480,
         options: {
@@ -42,7 +48,12 @@ const chartOptions = ref({
             },
             legend: {
                 position: 'bottom'
-            }
+            },
+            // colors: ["#447b40", "#cc7870", "#e74ce4" ],
+            // backgroundColor: [
+            // "#447b40", "#cc7870", "#e74ce4"
+            // ],
+            
          }
     }]
 })
