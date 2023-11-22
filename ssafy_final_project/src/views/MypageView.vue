@@ -45,10 +45,13 @@
             </template>
             <template v-if="n == 2">
               <h1>My Total Diary</h1>
-              <div class="calendar">
-                <VCalendar expanded :color="selectedColor" :attributes="attrs" @dayclick="showDiary" view="weekly" />
-              </div>
-              <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" />
+              <v-sheet class="calendar">
+              <VCalendar expanded :color="selectedColor" :attributes="attrs" @dayclick="selectDiary" @dayclick.color='red' view="monthly" :masks="masks" :first-day-of-week="2"/>
+            </v-sheet>
+              <!-- <MyDiary v-for="diary in myDiary" :key="diary.diaryId" :diary="diary" /> -->
+              <div class="total-diary-box">
+              <MyDiary v-for="diary in dateDiary" :key="diary.diaryId" :diary="diary" />
+            </div>
             </template>
           </v-container>
         </v-window-item>
@@ -76,14 +79,52 @@ const userStore = useUserStore();
 const router = useRouter();
 const activateDialog = ref(true)
 
+const userId = ref(route.params.userId);
+//전체 다이어리 중에 my diary만 가져오기
+//diary 목록 중에 login한 user의 id와 같은 diary들만 filter
+const myDiary = computed(() => {
+  return diaryStore.allDiary.filter((diary) => {
+    return diary.userId == userStore.loginUser.userId
+  })
+})
+
 // v-Calender
-const selectedColor = ref('blue');
+const selectedColor = ref('yellow');
 
 const masks = {
   title: 'YYYY년 MM월',
   weekdays: 'W',
   navMonths: 'MMM',
 }
+
+// let dateArray = new Set();
+// for(const diary in myDiary.value) {
+//   console.log(diary)
+//   dateArray.add(diary.createDate)
+// }
+
+// 오늘날짜 받아오기
+let today = new Date();
+let year = today.getFullYear();
+let month = ('0' + (today.getMonth() + 1)).slice(-2);
+let day = ('0' + today.getDate()).slice(-2);
+
+let dateString = year + '-' + month + '-' + day;
+
+// 달력에서 고른 날짜(기본값이 오늘 날짜)
+const selectDate = ref(dateString)
+
+const selectDiary = (day, event) => {
+  console.log(day.id)
+  selectDate.value = day.id
+  console.log(myDiary)
+}
+
+const dateDiary = computed(() => {
+  return diaryStore.allDiary.filter((diary) => {
+    return diary.userId == userStore.loginUser.userId && diary.createDate === selectDate.value
+  })
+})
 
 const attrs = ref([
   {
@@ -94,11 +135,12 @@ const attrs = ref([
     },
     dates: new Date(),
   },
+  {
+    key: 'selectDate',
+    dot: 'red',
+    dates: [],
+  },
 ]);
-
-const showDiary = (day, event) => {
-  console.log(day.id)
-}
 
 // 모달창 false
 const dialog = ref(false);
@@ -108,24 +150,15 @@ const close = function () {
 }
 const confirmPassword = ref()
 
-const userId = ref(route.params.userId);
-
-//전체 다이어리 중에 my diary만 가져오기
-//diary 목록 중에 login한 user의 id와 같은 diary들만 filter
-const myDiary = computed(() => {
-  return diaryStore.allDiary.filter((diary) => {
-    return diary.userId == userStore.loginUser.userId
-  })
-})
-
 const loginUser = ref({});
 
 const tab = ref(null)
 onMounted(() => {
-  diaryStore.getAllDiary();
   loginUser.value = userStore.loginUser
-
+  diaryStore.getAllDiary(loginUser.value.userId);
   diaryStore.getWeeklyDiary(loginUser.value.userId);
+  // 내가 작성한 다이어리들의 날짜
+  attrs.value[1].dates = diaryStore.dates;
 })
 
 const ableUser = () => {
@@ -227,6 +260,14 @@ div {
 .calendar {
   width: 700px;
   margin: 2em auto;
+}
+.vc-focus {
+  color : #30cf9a !important;
+}
+
+.total-diary-box {
+  display: flex;
+  flex-flow: wrap;
 }
 </style>
   
