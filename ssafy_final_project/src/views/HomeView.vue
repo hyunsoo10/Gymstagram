@@ -150,8 +150,9 @@ span:nth-child(4) {
 
 .quiz-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: flex-start;
+  padding-left: 2.3em;
 }
 
 .chevron {
@@ -230,7 +231,7 @@ span:nth-child(4) {
   font-family: 'Raleway', Arial, sans-serif;
   position: relative;
   overflow: hidden;
-  margin: 1em auto;
+  /* margin: 1em; */
   min-width: 230px;
   max-width: 315px;
   width: 100%;
