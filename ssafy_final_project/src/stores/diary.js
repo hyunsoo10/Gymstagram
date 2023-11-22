@@ -11,6 +11,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const diary = ref({})
     const weeklyDiary = ref([])
     const comments = ref([])
+    const dates = ref([])
 
     const router = useRouter();
 
@@ -42,7 +43,7 @@ export const useDiaryStore = defineStore('diary', () => {
             })
     })
 
-    const getAllDiary = function () {
+    const getAllDiary = function (userId) {
         axios({
             url: REST_DIARY_API,
             method: 'GET',
@@ -51,8 +52,18 @@ export const useDiaryStore = defineStore('diary', () => {
             }
         })
             .then((res) => {
+                console.log(res.data)
                 allDiary.value = res.data
+
+                for (let i = 0; i < allDiary.value.length; i++) {
+                    if (allDiary.value[i].userId === userId) {
+                        dates.value.push(allDiary.value[i].createDate);
+                    }
+                }
+                // console.log(userId)
+                // console.log(dates.value)
             })
+            .finally(dates.value = [])
     }
     const getWeeklyDiary = function (userId) {
         axios({
@@ -75,11 +86,11 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-        .then((res) => {
-            if(res.data.length > 0){
-                comments.value = res.data
-            }
-        })
+            .then((res) => {
+                if (res.data.length > 0) {
+                    comments.value = res.data
+                }
+            })
     }
     const getAllComments = function () {
         axios({
@@ -89,11 +100,11 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-        .then((res) => {
-            if(res.data.length > 0){
-                comments.value = res.data
-            }
-        })
+            .then((res) => {
+                if (res.data.length > 0) {
+                    comments.value = res.data
+                }
+            })
     }
 
     const subComments = ref()
@@ -141,12 +152,12 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-        .then((res)=>{
-            if(res.data.length>0){
-                likeDiaryInfo.value = res.data
-            }
-            // console.log(likeDiaryInfo.value)
-        })
+            .then((res) => {
+                if (res.data.length > 0) {
+                    likeDiaryInfo.value = res.data
+                }
+                // console.log(likeDiaryInfo.value)
+            })
     }
 
     onMounted(() => {
@@ -164,7 +175,7 @@ export const useDiaryStore = defineStore('diary', () => {
             })
     })
 
-    const like = function(like){
+    const like = function (like) {
         axios({
             url: `${REST_DIARY_API}/like`,
             method: 'POST',
@@ -173,15 +184,15 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-        .then((res)=>{
-            if(res.data.length>0){
-                likeDiaryInfo.value = res.data
-            }
-            // console.log(likeDiaryInfo.value)
+            .then((res) => {
+                if (res.data.length > 0) {
+                    likeDiaryInfo.value = res.data
+                }
+                // console.log(likeDiaryInfo.value)
             })
-        }
-    
-    const unlike = function(like){
+    }
+
+    const unlike = function (like) {
         axios({
             url: `${REST_DIARY_API}/like`,
             method: 'DELETE',
@@ -190,11 +201,11 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-        .then((res)=>{
-            console.log('좋아요해제')
-        })
+            .then((res) => {
+                console.log('좋아요해제')
+            })
     }
-    
+
     // onMounted(() => {
     // const savedUser = localStorage.getItem("loginUser");
     // if (savedUser) {
@@ -232,5 +243,5 @@ export const useDiaryStore = defineStore('diary', () => {
     //       });
     //   };
 
-    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike}
+    return { getAllDiary, allDiary, weeklyDiary, getWeeklyDiary, comments, getDiaryComments, getAllComments, createComment, diary, getOneDiary, getAvtyDiary, avtyDiary, getSubComments, subComments, getSubCommentLength, like, unlike, likeDiaryInfo, getAllLike, dates }
 })
