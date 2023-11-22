@@ -121,8 +121,8 @@ div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 60%;
-  ;
+  width: 70%;
+  justify-content: space-around;
 }
 
 /* @import url("https://fonts.googleapis.com/css?family=Alatsi|Poppins&display=swap"); */
