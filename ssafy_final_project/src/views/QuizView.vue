@@ -1,7 +1,6 @@
 <template>
-    <div class="d-flex" style="margin-left: 7em;">
-
-        <v-sheet id="outer" class="d-flex align-center justify-center flex-wrap text-center mt-5 mb-20 mx-auto py-7 px-4"
+    <div class="avty-main" >
+        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4"
             elevation="4" height="auto" rounded max-width="800" width="100%">
             <div class="avty-test">
                 <section id="main" :style="styleObjMain">
@@ -24,35 +23,38 @@
 
                     </div>
                 </section>
-                <section id="result" :style="styleObjResult">
-                    <h3>✨검사 결과✨</h3>
-                    <br>
-                    <div class="resultName"> 결과 이름 </div>
-                    <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
-                    <div class="resultDesc">
-                    </div>
+                <div class="result-page-end">
+                    <section id="result" :style="styleObjResult">
+                        <h3>✨검사 결과✨</h3>
+                        <br>
+                        <div class="resultName"> 결과 이름 </div>
+                        <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto"></div>
+                        <div class="resultDesc"></div>
 
-                    <p><strong>추천 음악 들어보세요!</strong></p>
-                    <div class="play-box">
-                        <button @click="playMusic(avty), isPlaying = true"><i class="fas fa-volume-up"
-                                style="color: cornflowerblue;"></i></button>
-                        <button @click="isPlaying = false"><i class="fas fa-volume-mute" style="color: tomato;"></i></button>
+                        <p><strong>추천 음악 들어보세요!</strong></p>
+                        <div class="play-box">
+                            <button @click="playMusic(avty), isPlaying = true"><i class="fas fa-volume-up"
+                                    style="color: cornflowerblue;"></i></button>
+                            <button @click="isPlaying = false"><i class="fas fa-volume-mute"
+                                    style="color: tomato;"></i></button>
 
-                    </div>
-                    <template v-if="isPlaying">
-                        <div class="container">
-                            <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in store.videos"
-                                :key="video.id.videoId" :video="video" :index="index" :current="current" />
                         </div>
-                    </template>
-                    <button button type="button" class="btn btn-secondary chart-button " @click="showChart"><i class="fas fa-chart-pie" style="color: white;"></i>&nbsp; AVTY 유저 현황</button>
-                </section>
+                        <template v-if="isPlaying">
+                            <div class="container">
+                                <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in store.videos"
+                                    :key="video.id.videoId" :video="video" :index="index" :current="current" />
+                            </div>
+                        </template>
+                        <button button type="button" class="btn btn-secondary chart-button " @click="showChart">
+                            <i class="fas fa-chart-pie" style="color: white;"></i>&nbsp; AVTY 유저 현황</button>
+                    </section>
+                </div>
             </div>
         </v-sheet>
-        
+
         <template v-if="isChartShowing">
-            <div style="width: 100%;">
-                    <TheAVTYChart :avtyData="avtyCounts" />
+            <div class="chart">
+                <TheAVTYChart :avtyData="avtyCounts" />
             </div>
         </template>
     </div>
@@ -103,16 +105,16 @@ const avtyCounts = ref({
     5: 0,
     6: 0,
     7: 0,
-    
-}); 
+
+});
 const REST_USER_API = `http://localhost:8080/user-api/user`
 const users = ref()
 const isChartShowing = ref(false)
-const showChart = () =>{
+const showChart = () => {
     console.log(users.value)
-    users.value.forEach((user)=>{
-        if(user.avtyCode != 8){
-        avtyCounts.value[user.avtyCode]++;
+    users.value.forEach((user) => {
+        if (user.avtyCode != 8) {
+            avtyCounts.value[user.avtyCode]++;
         }
     })
     console.log(avtyCounts)
@@ -120,16 +122,16 @@ const showChart = () =>{
 }
 
 onMounted(() => {
-axios({
-    url: REST_USER_API,
-    method: 'GET',
-    headers: {
-        'access-token': sessionStorage.getItem('access-token')
-    }
+    axios({
+        url: REST_USER_API,
+        method: 'GET',
+        headers: {
+            'access-token': sessionStorage.getItem('access-token')
+        }
     })
-    .then((res) => {
-        users.value = res.data
-    })
+        .then((res) => {
+            users.value = res.data
+        })
 
 });
 
@@ -320,9 +322,11 @@ function setResult() {
 
     // 검사 결과를 DB에 반영
     axios
-        .put(`http://localhost:8080/user-api/user/${userStore.loginUser.userId}`, userStore.loginUser, {headers: {
+        .put(`http://localhost:8080/user-api/user/${userStore.loginUser.userId}`, userStore.loginUser, {
+            headers: {
                 'access-token': sessionStorage.getItem('access-token')
-            }})
+            }
+        })
         .then(() => {
             console.log('정보수정에 성공하였습니다!');
         }).catch(() => {
@@ -351,9 +355,19 @@ function setResult() {
 </script>
 
 <style>
+
+.avty-main {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
 #outer {
-    margin-bottom: 10rem;
-    font-family:'SaumsungLightBold' !important;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    font-family: 'SaumsungLightBold' !important;
+    text-align: center;
+    padding: 2em;
 }
 
 .avty-test {
@@ -426,7 +440,7 @@ focus {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#febbbb+0,fe9090+52,ff5c5c+100;Red+3D+%231 */
     background: #EBE3D5;
     /* Old browsers */
-    background: -moz-linear-gradient(top,#EBE3D5 0%,#c5bba9 52%, #776B5D 100%);
+    background: -moz-linear-gradient(top, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #EBE3D5 0%, #c5bba9 52%, #776B5D 100%);
     /* Chrome10-25,Safari5.1-6 */
@@ -457,17 +471,19 @@ focus {
 }
 
 .chart-button {
-
     padding: 1em;
     width: 12em;
-    margin: 10px;
+    margin-top: 2em;
     color: white !important;
     font-weight: 900;
     background: #B0A695;
+    border: 1px solid #B0A695;
 }
-.chart-button:hover{
+
+.chart-button:hover {
     background: #776B5D;
 }
+
 </style>
 
 
