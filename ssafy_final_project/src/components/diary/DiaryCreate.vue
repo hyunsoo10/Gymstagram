@@ -118,7 +118,7 @@ const createDiary = function (event) {
 }
 const uploadName = ref('첨부파일')
 
-const imageUploaded = ref("../src/assets/Gymstagram.png")
+const imageUploaded = ref("../src/assets/Gymstagram2.png")
 const image = ref(null)
 const upload = function (e) {
     image.value = e.target.files[0]
