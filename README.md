@@ -184,12 +184,703 @@
 
 ```
 
+### DiaryRestController
+
+#### 1 - (1) 이미지 파일 업로드(MultipartFile Type으로 받기)
+```java
+	// diary 추가
+	@PostMapping(value = "/diary", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@ApiOperation(value = "새로운 diary추가")
+	public ResponseEntity<?> insertOne(
+			@RequestPart(required = false) @RequestParam(value = "image", required = false) MultipartFile file,
+			@RequestPart("diary") Diary diary) {
+		try {
+			// 결과 값 담을 변수
+			int result = 0;
+			if (file != null && file.getSize() > 0) {
+				String uploadPath = "C:\\FINAL\\PJT-FINAL-I-CHS-NSH\\ssafy_final_project\\src\\assets\\diary_image\\"
+						+ diary.getUserId();
+				String saveName = UUID.randomUUID() + "_" + diary.getOriginalImage();
+				File target = new File(uploadPath, saveName);
+
+				if (!new File(uploadPath).exists()) {
+					new File(uploadPath).mkdirs();
+				}
+
+				try {
+					FileCopyUtils.copy(file.getBytes(), target);
+					diary.setSaveImage(saveName);
+					result = diaryService.addDiary(diary);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				// 파일이 없으면 그냥 업로드
+				result = diaryService.addDiary(diary);
+			}
+			
+			
+			if (result > 0) {
+				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+```
+#### 1 - (2) 이미지 파일 업로드(JSON 형식으로 받기)
+```java
+	//diary 추가 (이미지를 Base64로 인코딩해서 보낼 때)
+	@PostMapping(value = "/diary")
+	@ApiOperation(value = "새로운 diary추가")
+	public ResponseEntity<?> insertOne(@RequestBody Diary diary){
+		try {
+
+			int result =  diaryService.addDiary(diary);
+			if (result > 0) {
+				return new ResponseEntity<Diary>(diary, HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+```
+📘 Description <br>
+
+다이어리에 이미지 파일을 업로드해서 파일을 저장/관리 하는 방법에 대한 고민을 많이 했습니다. 프론트엔드에서 백엔드로 데이터를 넘겨줄 때 주로 JSON 형태로 넘겨주고 백엔드에서는 이 데이터를 @RequestBody를 이용해서 적절한 객체로 데이터를 받아오는 방식이 일반적입니다. 하지만, 데이터에 이미지가 포함되어 있으면 일반적인 방법으로 전달이 불가능합니다. 따라서 저희는 2가지 방법을 고민했습니다. <br>
+
+1️⃣ JSON 데이터를 파일 형식으로 전환해서 데이터를 주고 받는다.
+
+    프론트엔드쪽에서 var formData = new FormData() 객체를 활용해서 이미지파일을 담고,
+    필요한 JSON 데이터도 BLOB형태로 변환해서 담아준 후에, 이를 백엔드 쪽에 보내면, 
+    @RequestParam type으로 값을 받아서 활용할 수 있습니다. 이때 받은 이미지 파일은 
+    지정한 경로에 저장해주고, 이때 저장한 이름을 DB에 저장한다면 프론트 엔드 쪽에서
+    이 경로를 통해 이미지 파일에 접근해서 적절한 파일을 가져올 수 있습니다.
+  
+
+
+2️⃣ 파일 데이터를 JSON 형식으로 전환해서 데이터를 주고 받는다.
+
+    프론트엔드 쪽에서 이미지 파일을 Base64로 인코딩 하면 문자열로 바꿀 수 있습니다.
+    이 문자열을 JSON에 담아서 백엔드로 보내면, @RequestBody로 JSON 데이터를 받을 수 있습니다.
+    그리고 이 문자열을 DB에 그대로 저장해서(LONGTEXT) 나중에 이 문자열을 프론트엔드의
+    src 경로에 불러오면 이미지 파일을 화면에 보여줄 수 있습니다.
+    이 방식은 파일을 생성해서 업로드 하는 방식이 아니고, 이미지를 Base64 인코딩으로 문자열을 만들고
+    나중에 화면에 해당 이미지를 다시 디코딩해서 보여주는 방식입니다.
+    만약에 우리가 이미지를 따로 저장할 필요 없고, 한 데이터에 한 가지 이미지만 존재하며
+    그 이미지가 자주 바뀌는 등의 행위가 일어난다면 이 방식을 통해 이미지를 저장하고 활용하는 방법도
+    유용할 것 같습니다.
+<hr>
+<br>
+
+### 2. Diary 좋아요 / 좋아요 해제
+
+```java
+	// diary 좋아요
+	@PostMapping("diary/like")
+	@ApiOperation(value = "diary 좋아요")
+	public ResponseEntity<?> likeDiary(@RequestBody LikeDiary likeDiary) {
+		try {
+			int result = diaryService.like(likeDiary);
+			int result1 = diaryService.increaseLikeCount(likeDiary.getDiaryId());
+			if (result > 0 && result1 > 0) {
+				System.out.println(likeDiary.getDiaryId());
+				return new ResponseEntity<String>("좋아요 성공", HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+
+	}
+
+	// diary 좋아요 해제
+	@DeleteMapping("diary/like")
+	@ApiOperation(value = "diary 좋아요 해제")
+	public ResponseEntity<?> unLikeDiary(@RequestBody LikeDiary likeDiary) {
+		try {
+			int result = diaryService.unLike(likeDiary);
+			int result1 = diaryService.decreaseLikeCount(likeDiary.getDiaryId());
+			if (result > 0 && result1 > 0) {
+				return new ResponseEntity<String>("좋아요 해제", HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+
+	}
+```
+
+📘 Description <br>
+
+다이어리 좋아요 요청이 들어오면 likeDiary 테이블에 userId와 diaryId를 매핑 시킨 likeDiary Dto를 넘겨줍니다. 그리고 동시에 해당 diaryId의 좋아요 숫자를 증가시켜줍니다.
+
+다이어리 좋아요 해제 요청이 들어오면 likeDiary Dto를 넘겨줘서 해당하는 값을 likeDiary에서 삭제해줍니다. 그리고 동시에 해당 diaryId의 좋아요 숫자를 감소시켜줍니다.
+<hr>
+<br>
+
+### 3. User의 Diary 좋아요 여부 체크 
+``` java
+
+	// diaryId와 userId 로 다이어리 좋아요 여부 체크
+	@GetMapping("diary/like/{userId}/{diaryId}")
+	@ApiOperation(value = "diary좋아요 여부 확인 diaryId와 userId와 일치하는 목록 있는지 체크")
+	public ResponseEntity<?> likeList(@PathVariable(value = "userId") String userId,
+			@PathVariable(value = "diaryId") int diaryId) {
+		try {
+			LikeDiary likeDiary = new LikeDiary();
+
+			likeDiary.setUserId(userId);
+			likeDiary.setDiaryId(diaryId);
+			int result = diaryService.getLikeDiary(likeDiary);
+			if (result == 1) {
+				return new ResponseEntity<Integer>(1, HttpStatus.OK);
+			} else
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+
+	}
+
+```
+📘 Description <br>
+User가 특정 Diary에 좋아요를 눌렀는지 않았는지를 확인해서 응답을 해주는 API 메서드입니다. 파라미터로 userId 와 diaryId를 전달 받고, DB의 likeDiary 테이블에서 두 값과 일치하는 값이 있으면 해당 user는 해당 diary를 이미 좋아요 누른 상태이고, 일치하는 값이 없으면 아직 누르지 않은 상태입니다.
+<hr>
+<br>
+
+### 4. 댓글 비활성화
+
+```java
+	// 댓글 비활성화
+	@PutMapping("/diary/uncomment/{commentId}")
+	@ApiOperation(value = "{commentId} 댓글 비활성화")
+	public ResponseEntity<String> unComment(@PathVariable int commentId) {
+		try {
+			int result = diaryService.unComment(commentId);
+			if(result > 0) {
+				return new ResponseEntity<String>("댓글이 비활성화 됐습니다.", HttpStatus.OK);
+			}
+			return new ResponseEntity<String>("댓글 상태 변경에 실패했습니다.", HttpStatus.NOT_MODIFIED);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+```
+📘 Description <br>
+특정 댓글에 하위 댓글이 업을 경우 DB에서 그냥 삭제를 하게 됩니다. 하지만, 하위 댓글이 있을 경우에 해당 댓글을 DB에서 지우지 않고, isDeleted 컬럼에 값을 true로 변경시켜서 비활성화 시킵니다. 이는 해당 댓글이 삭제 되면 그 댓글에 달린 다른 하위 댓글들도 사라지게 되는 문제를 방지하기 위함입니다. isDeleted가 true인 경우 프론트엔드에서 내용을 보여주지 않고, "삭제된 댓글입니다" 라는 문구를 대신 보여줍니다.
+
+<hr>
+<br>
+
+
+### UserRestController
+
+#### 1 Jwt 로그인
+
+```java
+	@PostMapping("/user/jwtlogin")
+	@ApiOperation(value = "로그인 with Jwt 토큰인증")
+	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println("백앤드로 넘어오는 유저 정보 : " + user);
+		HttpStatus status = null;
+		try {
+			//로그인 시도 user 객체의 ID와 비밀번호에 해당하는 user정보가 있는지 DB에서 검사
+			String userId = user.getUserId();
+			String password = user.getUserPassword();
+
+			User dbUser = userService.getOneUser(userId);
+			
+			
+			//아이디가 있다면
+			if(dbUser != null) {
+				//비밀번호까지 일치한다면
+				if (dbUser.getUserPassword().equals(password)) {
+					//나머지 필요한 정보 담아주기
+					user.setAvtyCode(dbUser.getAvtyCode());
+					user.setNickName(dbUser.getNickName());
+					user.setProfileImage(dbUser.getProfileImage());
+					user.setRegisterDate(dbUser.getRegisterDate());
+					user.setUserName(dbUser.getUserName());
+					user.setActivate(dbUser.isActivate());
+					user.setEmail(user.getEmail());
+					//세션 스토리지에 유저의 비밀번호를 저장하고 싶지 않을 때 읨의로 set해서 프론트쪽에 보낼 수 있다
+					//user.setUserPassword("TOP-SECRET");
+					user.setUserPassword(dbUser.getUserPassword());
+					System.out.println("프론트로 넘길 유저 정보 : " +user);
+					
+					result.put("access-token", jwtUtil.createToken("user", user));
+					
+					result.put("message", SUCCESS);
+					status = HttpStatus.ACCEPTED;
+				}else {
+					//아이디는 맞았지만 비밀번호가 틀렸다면
+					result.put("message", WRONGPASSWORD);
+					status = HttpStatus.OK;
+				}
+			}
+			else {
+				//해당하는 ID를 찾을 수 없다면
+				result.put("message", NOFOUNDID);
+				status = HttpStatus.OK;
+			}
+		} catch (UnsupportedEncodingException e) {
+			result.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(result, status);
+	}
+```
+📘 Description <br>
+Jwt 토큰 인증 방식으로 access토큰을 발급받고, 프론트 엔드에 해당 토큰 정보를 넘겨줘서 로그인을 진행하는 API 메서드 입니다. 프론트엔드에서 넘겨 받은 userId와 userPassword 데이터와 일치하는 유저가 있을 경우 access-token과 함께 user 정보를 프론트엔드에 넘겨줍니다.
+
+처음에는 userPassword 데이터를 "TOP-SECRET" 으로 숨겨서 프론트엔드로 보내주었습니다. 하지만, 회원 탈퇴 / 계정 비활성화 작업시에 프론트엔드에서 userPassword가 필요한 상황이 생겨서 userPassword 데이터도 같이 넘겨주는 방식으로 바꿨습니다. 물론, 회원 탈퇴 / 계정 비활성화 작업시에도 axios 요청을 보내서 valid 여부를 확인해도 가능하지만, 요청 없이 즉각적으로 확인하기 위해서 프론트엔드 부분에서 password valid 여부를 확인 할수 있도록 작업했습니다.
+
+<hr>
+<br>
+
+#### 2 User avty 코드 수정
+
+```java
+	@PutMapping(value = "/user/{userId}")
+	@ApiOperation(value = "avty코드 수정", response = Integer.class) 
+	public ResponseEntity<?> updateAvty(@RequestBody User user) {
+		int result = userService.modifyAvty(user);
+		
+		if (result > 0) {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		} else
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+	}
+```
+
+📘 Description <br>
+User의 avty 테스트가 끝나면, 해당 결과를 프론트에서 받아온 다음에 DB에 결과 값으로 나온 avty 코드를 삽입해주는 API 메서드 입니다. user의 전체 정보 수정 API 메서드가 있긴 하지만, avty 컬럼 정보만 업데이트 해주는 작업에 user 전체 정보 수정 API 메서드를 활용하는 것이 비효율적이라고 생각했기 때문에 따로 메서드를 구현했습니다.
+
+<hr>
+<br>
+
+#### 3 User 계정 활성화 / 비활성화
+
+```java
+	// 회원 비활성화 / 활성화
+	@PutMapping("/user/activate/{userId}")
+	@ApiOperation(value = "{userId} 회원 활성화 상태 변화")
+	public ResponseEntity<String> changeActivate(@PathVariable String userId) {
+		try {
+			int result = userService.updateUserAct(userId);
+			if(result > 0) {
+				User user = (User) userService.getOneUser(userId);
+				if(user.isActivate())
+					return new ResponseEntity<String>("계정이 활성화 되었습니다.", HttpStatus.OK);
+				else
+					return new ResponseEntity<String>("계정이 비활성화 되었습니다.", HttpStatus.OK);
+				
+			}
+			return new ResponseEntity<String>("계정 상태 변경에 실패했습니다.", HttpStatus.NOT_MODIFIED);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+```
+📘 Description <br>
+회원 탈퇴가 고민된다면 계정을 비활성화 시킬 수 있는 옵션을 제공해주는데, 이때 회원 계정을 비활성화 시키고 다시 활성화 시킬때 활용하는 API 메서드입니다. user 테이블의 activate 컬럼이 true이면 활성화 계정, false이면 비활성화 계정입니다.
+
+파라미터로 전달받은 userId에 해당하는 user의 activate 컬럼을 반대 값( activate = !activate)으로 전환시켜주는 로직을 통해, 활성화와 비활성화 작업을 동일한 메서드에서 진행할 수 있도록 했습니다.
+
+<hr>
+<br>
+
+### Mapper
+
+#### 1 diaryMapper.xml
+
+
+```xml
+	<!-- 전체 다이어리 조회 -->
+	<select id="selectAllDiary" parameterType="SearchCondition" resultType="Diary">
+		SELECT diary.diary_id AS diaryId, diary.user_id as userId, diary.title AS title, diary.content AS content, diary.range AS `range`, create_date AS createDate, original_image AS originalImage,
+			   save_image AS saveImage, view_count AS viewCount, like_count AS likeCount, avty.avty_name AS avty
+		 FROM diary
+			INNER JOIN user ON diary.user_id = user.user_id
+   			INNER JOIN avty ON user.avty_code = avty.avty_code
+		<if test="key!='none'">
+			WHERE ${key} LIKE CONCAT('%' #{word} '%')
+		</if>
+		<if test="orderBy!='none'">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>
+		<if test="orderBy =='none'">
+			ORDER BY diary.create_date DESC
+		</if>
+	</select>
+
+```
+📘 Description <br>
+diary 테이블에서 데이터를 가져올 때 user 테이블과 avty테이블에서도 받아와야 하는 정보가 있기 때문에 INNER JOIN 을 활용해서 필요한 정보를 모두 받아오도록 했습니다. SearchCondition dto를 파라미터로 넘겨줘서 검색 조건에 따라 값을 조회할 수 있게 동적쿼리를 활용했습니다.
+
+<hr>
+<br>
+
+```xml
+	<!-- weekly 다이어리 조회 -->
+	<select id="selectMyWeeklyDiary" parameterType="String" resultMap="diaryMap">
+		SELECT * 
+		FROM diary
+		WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )
+	    AND user_id = #{userId}
+	    GROUP BY create_date
+	    ORDER BY create_date ASC;
+	</select>
+
+```
+📘 Description <br>
+user의 weekly diary를 조회해서 가져오는 쿼리문 입니다. WHERE 조건절에 
+```WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )``` 이렇게 조건을 주고 쿼리를 날리면 현재 날짜 기준으로 create_date가 월화수목금토일 사이에 있는 데이터 들만 조회할 수 있습니다. 
+
+<hr>
+<br>
+
+```xml
+	<!-- 다이어리 좋아요 -->
+	<insert id="like" parameterType="LikeDiary">
+			INSERT INTO likediary (user_id, diary_id)
+			VALUES (#{userId}, #{diaryId})
+	</insert>
+	<!-- 다이어리 좋아요 해제 -->
+	<delete id="unLike" parameterType="LikeDiary">
+			DELETE 
+			FROM likediary
+			WHERE user_id = #{userId} AND diary_id = #{diaryId}
+	</delete>
+
+```
+📘 Description <br>
+좋아요 - likeDiary dto의 userId와 diaryId의 조합이 likediary에 추가
+
+좋아요 해제 - likeDiary dto의 userId와 diaryId의 조합이 likediary에서 삭제
+
+<hr>
+<br>
+
+
+```xml
+	<!-- 대댓글 조회 -->
+	<select id="selectSubComment" resultMap="commentMap">
+		SELECT * 
+			FROM comment
+			WHERE parent_comment = #{commentId}
+	</select>
+	
+		<!-- 댓글 비활성화 -->
+	<update id="unComment" parameterType="int">
+		UPDATE comment
+			SET is_deleted = NOT is_deleted
+			WHERE comment_id = #{commentId}
+	</update>
+```
+📘 Description <br>
+comment의 parent_comment에 0이 아닌 값이 있다면 해당 comment는 하위 댓글이라는 것을 의미합니다. parent_comment에는 해당 댓글의 부모 댓글의 comment_id가 담겨 있습니다. 따라서 parent_comment = commentId 조건으로 값을 조회하면 commentId의 대댓글을 조회할 수 있습니다.
+
+대댓글이 달린 댓글의 경우 DB에서 삭제하는 것이 아니라 is_deleted를 true로 변경시켜서 삭제된 댓글임을 표시만하고 DB에 값을 유지하게 됩니다. is_deleted는 false가 default값입니다. 해당 댓글의 하위 댓글이 있는지 없는지의 여부는 프론트엔드에서 확인하고 백엔드로 유효한 요쳥을 날리는 방식으로 동작합니다.
+
+<hr>
+<br>
+
+#### 2 userMapper.xml
+
+```xml
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM user
+			WHERE user_id = #{userId}
+	</delete>
+	
+	<!-- 유저 활성화/비활성화 -->
+	<update id="updateUserAct" parameterType="String">
+		UPDATE user
+			SET activate = NOT activate
+			WHERE user_id = #{userId}
+	</update>
+
+```
+📘 Description <br>
+회원 탈퇴시에는 DB에서 정보를 지워버리고, 비활성화 시켰을 때는 activate를 false로 전환시켜줍니다. activate의 기본값은 true입니다. 또한 비활성화된 계정의 경우는 activate를 다시 true로 전환시켜서 활성화시켜줍니다.
+<hr>
+<br>
+
+
 ## 📌 프론트
 
 📂 **<u>폴더 구조</u>**
-```
+
 
 ```
+📂 ssafy_final_project
+    ㄴ 📂 node_modules
+    ㄴ 📂 public
+    ㄴ 📂 src
+        ㄴ 📂 assets
+        ㄴ 📂 components
+            ㄴ 📂 avty
+                ㄴ 📄 TheAVTYChart.vue
+            ㄴ 📂 common
+                ㄴ 📄 TheFooter.vue
+                ㄴ 📄 TheHeaderNav.vue
+            ㄴ 📂 diary
+                ㄴ 📂 comment
+                    ㄴ 📄 Comment.vue
+                ㄴ 📂 mydiary
+                    ㄴ 📄 AVTY.vue
+                    ㄴ 📄 MyDiary.vue
+                    ㄴ 📄 MyWeeklyDiary.vue
+                    ㄴ 📄 Profile.vue
+                ㄴ 📄 DiaryCreate.vue
+                ㄴ 📄 DiaryList.vue
+                ㄴ 📄 DiaryUpdate.vue
+            ㄴ 📂 kakao
+                ㄴ 📄 KakaoLoginCheck.vue
+            ㄴ 📂 weather
+                ㄴ 📄 WeatherForecast.vue
+            ㄴ 📂 youtube
+                ㄴ 📄 YoutubeMusicPlayer.vue
+        ㄴ 📂 router
+                ㄴ 📄 index.js
+        ㄴ 📂 stores
+            ㄴ 📄 diary.js
+            ㄴ 📄 user.js
+            ㄴ 📄 youtube.js
+        ㄴ 📂 views
+            ㄴ 📄 DiaryDetailView.vue
+            ㄴ 📄 DiaryView.vue
+            ㄴ 📄 HomeView.vue
+            ㄴ 📄 KakaoLoginView.vue
+            ㄴ 📄 LoginView.vue
+            ㄴ 📄 MyPageView.vue
+            ㄴ 📄 QuizView.vue
+            ㄴ 📄 SignupView.vue
+            ㄴ 📄 UpdateView.vue
+        ㄴ 📄 App.vue
+        ㄴ 📄 main.js
+    ㄴ 📄 .env.local
+    ㄴ 📄 index.html
+    ㄴ 📄 package-lock.json
+    ㄴ 📄 package.json
+    ㄴ 📄 vite.config.js
+
+
+```
+
+
+### 카카오 로그인
+
+#### 1. 접근 코드 받기 (LoginView.vue)
+```js
+const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
+
+// 카카오 로그인
+const kakaoLogin = () => {
+    const redirect_uri = 'http://localhost:5173/kakaoLogin';
+    const cliendId = KAKAO_API_KEY;
+    const AuthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${cliendId}&redirect_uri=${redirect_uri}&'scope=account_email profile_nickname'`
+    window.location.href = AuthURL;
+
+}
+```
+📘 Description <br>
+
+`https://kauth.kakao.com/oauth` 에 적절한 파라미터와 함께 요청을 날려서(kakao dev api 키를 활용), 내가 설정한 redirect_uri에서 쿼리 스트링으로 code라는 값에 access-token을 전달 받는다.
+
+<hr>
+<br>
+
+#### 2. access-token받고 토큰으로 유저 정보 받기 (KakaoLoginCheck.vue)
+```js
+
+onMounted(()=>{
+    code.value = route
+    kakaoGetToken(code.value)
+    userStore.getUserList()
+    
+})
+
+const kakaoGetToken = () =>{
+import {useRoute} from 'vue-router'
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
+
+//인가코드 쿼리로 받아오기
+//파라미터가 아니라 쿼리스트링으로 받아오는 것임
+const route = useRoute().query.code
+
+    axios({
+        url: 'https://kauth.kakao.com/oauth/token',
+        method: 'POST',
+        data:{
+            grant_type: "authorization_code",
+            client_id: "01bdd0d43fb0ea7f402dc99e9f0f02d4",
+            redirect_uri: "http://localhost:5173/kakaoLogin",
+            code: code.value
+        },
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        }
+    })
+    .then((res)=>{
+        console.log(res.data)
+        accessToken.value = res.data['access_token']
+        //유저 정보 받아오기
+        kakaoGetUserInfo()
+    })
+}
+
+const kakaoGetUserInfo = () =>{
+    axios({
+        url: 'https://kapi.kakao.com/v2/user/me',
+        method: 'GET',
+        headers: {
+            'Authorization' : `Bearer ${accessToken.value}`
+        }
+    })
+    .then((res)=>{
+        kakaoInfo.value.email = res.data["kakao_account"]["email"]
+        kakaoInfo.value.nickName = res.data["kakao_account"]["profile"].nickname
+    })
+    .then(()=>{
+        //DB의 전체 유저 리스트에서 카카오 로그인 시도 이메일과 같은 이메일이 있다면 로그인 해주기
+        let kakao = userStore.users.find((user) => user.email === kakaoInfo.value.email)
+        //카카오로 회원가입 했던 유저는 로그인 시켜주기
+        if(kakao != undefined){
+            let kakaoUser = {
+                userId : kakao.userId,
+                userPassword: kakao.userPassword
+            }
+            userStore.login(kakaoUser)
+            return
+        }
+    })
+}
+
+```
+📘 Description <br>
+
+카카오에서 응답받은 code를 `useRoute().query.code`로 받아와야 합니다. 이때 주의할 점은 파라미터가 아니라 쿼리스트링으로 값이 넘어오기 때문에 `route.params.code`로 받는 것이 아니라는 것을 주의해야 합니다. 이렇게 요청 받은 코드를 다른 적절한 data와 함께 `https://kauth.kakao.com/oauth/token`로 요청을 날리면, 카카오로 부터 access-token을 응답받을 수 있습니다.
+
+이렇게 access-token을 응답 받았으면, 이제 유저 정보를 받아와야 합니다. `https://kapi.kakao.com/v2/user/me`에 headers ``` 'Authorization' : `Bearer ${accessToken.value}` ``` 정보를 포함시켜서 적절한 요청을 날리면 user가 동의한 항목에 대한 정보를 응답받을 수 있습니다. 하지만 저희 사이트에서 더 필요한 정보가 있기 때문에, 첫 로그인 시도시에는 추가 정보를 입력받아서 저희 사이트에 회원가입을 하는 방식으로 로직을 구현했습니다.
+
+이렇게 카카오 로그인을 통해 회원가입한 유저 DB에는 email에 카카오 로그인 email 정보가 담깁니다. 이 email 정보는 다음에 해당 유저가 카카오 로그인을 시도할 때 바로 로그인할 수 있게 해주는 방식으로 활용했습니다.
+<hr>
+<br>
+
+
+### 회원가입
+
+#### 1. 유효성 검사
+
+```js
+const regist = function (event) {
+    // 유효성 검사
+    // 1. 비밀번호 입력과 비밀번호 확인 입력의 일치 여부
+    if (user.value.userPassword != password2.value) {
+        alert('비밀번호가 일치하지 않습니다.').
+            return;
+    }
+    // 2. 비밀번호가 8자리 이상, 16자 이하이며 특수문자(!@#$%^&*)
+    const pattern = /[!@#$%^&*]/
+    if (user.value.userPassword.length < 8 || user.value.userPassword.length > 16 || !pattern.test(user.value.userPassword)) {
+        alert('비밀번호는 8자리 이상, 16자리 이하이며, 특수문자(!@#$%^&*)를 포함해야 합니다.')
+        return
+    }
+
+    // 3. 이미 등록된 ID, 닉네임인지 중복 여부 확인
+    axios.get("http://localhost:8080/user-api/user")
+    .then((res) => {
+        checkId.value = res.data.find(
+            (u) => u.userId === user.value.userId
+        );
+        nickNameCheck.value = res.data.find(
+            (u) => u.nickName === user.value.nickName
+        );
+    })
+    .then(() => {
+
+        if (checkId.value) {
+            alert('이미 존재하는 ID입니다.');
+            return
+        }
+        if (nickNameCheck.value) {
+            alert('이미 존재하는 닉네임입니다.');
+            return
+        }
+        signup()
+    })
+
+    const signup = () => {
+
+        //회원 가입 로직 생략
+    }
+
+};
+
+```
+📘 Description <br>
+- 비밀번호 일치 확인 검사
+- 비밀번호 8자리 이상, 16자리 이하, 특수문자 포함 검사
+- 중복 ID 와 nickname 검사
+
+<hr>
+<br>
+
+#### 2. 랜덤 닉네임 추천
+```js
+const randomNickName = ref('')
+
+//랜덤 닉네임 불러오기
+onMounted(() => {
+    axios({
+        //cors에러 해결하기 위해서 임시로 인증받고 처리
+        url: `https://cors-anywhere.herokuapp.com/https://nickname.hwanmoo.kr?format=json`,
+        method: 'GET',
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        }
+    })
+    .then((response) => {
+        // console.log(response['data'].words[0])
+        randomNickName.value = response['data'].words[0]
+        user.nickName = randomNickName.value
+        // console.log(user.nickName)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+
+})
+
+```
+📘 Description <br>
+랜덤 단어를 json 형식으로 응답받을 수 있는 `https://nickname.hwanmoo.kr?format=json`가 있는데, 여기서 응답 받아온 랜덤 단어를 회원 가입시에 추천 닉네임으로 제공해줄 수 있습니다. 하지만 이때 CORS 에러가 발생해서 `https://cors-anywhere.herokuapp.com` 라는 cross-origin 요청을 임시로 가능하게 해주는 API가 있어서, 이를 활용해서 CORS에러를 임시적으로 해결해서 랜덤 닉네임을 받아왔습니다.
+
+<hr>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 📌 DB
 
@@ -303,15 +994,7 @@ VALUES
     (4,'ssafy','2023-11-04 09:03:45','04.jpg','04','재밌는 헬스','사실은 넘 어려웡 ㅠ 하지만 포기란 배추 셀 때나 하는 이야기야 포기하지 않고 끝까지 아자아자',0,0,0,NULL),
     (5,'ssafy','2023-11-05 09:10:22','05.jpg','05','크로스핏 체험','윤성빈 선수보고 크로스핏 체험하러 가봤는데 진짜 재밌었다 !! 다치지 않게 조심해야지 ~~',0,0,0,NULL),
     (6,'ssafy','2023-11-09 10:01:22','06.jpg','06','같이 운동합시당!','크로스핏은 사람들이랑 같이 할 수 있어서 좋은듯,,, 다음엔 친구 데리고 가야지',0,0,0,NULL),
-    (7,'ssafy','2023-11-10 10:01:22','07.jpg','07','오늘 운동 맛있다 ~','운동 열심히 합시다. 운동이 최고야. 운동하면 오래살고 건강해진다잉',0,0,0,NULL),
-    (8,'ssafy','2023-11-10 09:01:22','08.jpg','08','인생사진 건졌다 ㅋㅋ','같이 운동하시는 분한테 찍어달라고 했는데 좀 괜찮은듯? 역시 운동할 때 잘생겨보이나 ㅋㅋ',0,0,0,NULL),
-    (9,'ssafy','2023-11-10 22:22:22','09.jpg','09','진짜 힘든 하루 ..','오늘은 역대급 힘든날 .. ㅠ 내일 근육통이 벌써 두렵다요 ㅠ',0,0,0,NULL),
-    (10,'ssafy','2023-11-11 09:01:22','10.jpg','10','오랜만에 거울샷 ㅋ','거울이 조금 더럽긴 하지만 복근 잘보여서 기록해둡니다 ~~',0,0,0,NULL),
-    (11,'ssafy','2023-11-12 09:01:22','11.jpg','11','헬스장에 나홀로','내가 1빠로 도착해서 혼자 여유롭게 운동하고 왔다 .. 헬스장 조명 새로 갈았던데 좋은듯?',0,0,0,NULL),
-    (12,'ssafy','2023-11-13 09:01:22','12.jpg','12','태닝하러 다녀온 날','바디프로필 준비를 위해서 태닝하고 왔다.. 근육이 더 잘 보이나? 모르겠다',0,0,0,NULL),
-    (13,'ssafy','2023-11-14 09:01:22','13.jpg','13','내 등 어떤데','오늘은 등을 집중적으로 했는데 맘에 들어서 한 번 찍어봤음!',0,0,0,NULL),
-    (14,'ssafy','2023-11-14 22:44:22','14.jpg','14','으으으아 !!!','오늘의 2번째 운동 .. 대회 준비 해볼까? 식단하기 너무 싫은데 ..ㅠㅠ',0,0,0,NULL),
-    (15,'ssafy','2023-11-15 09:01:22','15.jpg','15','대박','오늘 오랜만에 크로스핏 갔는데 성빈이 형님이랑 같이 운동했다,, 역시 국대는 다른듯 허락 맡고 찍은 사진 기록해두기 !!',0,0,0,NULL);
+    (7,'ssafy','2023-11-10 10:01:22','07.jpg','07','오늘 운동 맛있다 ~','운동 열심히 합시다. 운동이 최고야. 운동하면 오래살고 건강해진다잉',0,0,0,NULL);
 -- 중략
 
 
@@ -320,19 +1003,9 @@ VALUES
 	(1,24,'dhwlgP','역시 현수 멋져요 !!','2023-11-23 09:07:44',NULL,0,0),
     (2,95,'ssafy','역시 내 친구 최고다 💪🏻','2023-11-23 09:20:20',NULL,0,0),
     (3,95,'shtpgml','대회 준비 응원합니다 ~~~','2023-11-23 09:31:55',NULL,0,0),
-    (4,24,'shtpgml','조현수 최고 ㅋㅅㅋ','2023-11-23 09:32:14',NULL,0,0),
-    (5,23,'shtpgml','다음에 같이 가요 ㅋㅋㅋ 저도 등산 좋아합니당','2023-11-23 09:32:51',NULL,0,0),
-    (6,64,'shtpgml','우와 부러워요 ㅠㅠ','2023-11-23 09:33:01',NULL,0,0),
-    (7,95,'dltmdgjs','형 친구에요 ? 다음에 같이 운동 ㄱㄱ','2023-11-23 09:33:46',NULL,0,2),
-    (8,95,'dbtmdgh','내가 더 멋진듯 ㅋ','2023-11-23 09:39:26',NULL,0,2),
-    (13,95,'rlaqudgus','저도 운동 알려주세요 !!','2023-11-23 10:07:44',NULL,0,0),
-    (14,95,'rlawhddls','나랑 농구나 하자','2023-11-23 10:10:01',NULL,0,13),
-    (15,95,'rlawldms','오 ~ 운동하신지 얼마나 되셨어요 ?','2023-11-23 10:11:23','2023-11-23 10:11:33',0,0),
-    (16,95,'tjrwlaud','헬스말고 클라이밍은 어떠세요 ㅋㅋㅋ? 끝나고 애니도 같이 봐요 🙏🏻','2023-11-23 10:13:15',NULL,0,0),
-    (17,95,'rladudtjq','형 무슨 애니 보실건데요 ?','2023-11-23 10:13:48',NULL,0,16),
-    (18,23,'rlatjsdud','하늘 예쁘네요 ~','2023-11-23 10:16:00',NULL,0,0),
-    (20,95,'rlaskawns','닭가슴살 추천부탁드려요','2023-11-23 10:17:14',NULL,1,0),
-    (21,95,'rladPFla','나도나도','2023-11-23 10:17:42',NULL,0,20);
+    (4,24,'shtpgml','조현수 최고 ㅋㅅㅋ','2023-11-23 09:32:14',NULL,0,0);
+
+--중략
 
 INSERT INTO `likediary` (`user_Id`,`diary_Id`) 
 VALUES 
@@ -341,26 +1014,16 @@ VALUES
     ('dltmdgjs',24),
     ('shtpgml',24),
     ('dltmdgjs',64),
-    ('dltmdgjs',69),
-    ('dbtmdgh',95),
-    ('dltmdgjs',95),
-    ('rladbrud',95),
-    ('rladudtjq',95),
-    ('rlaqudgus',95),
-    ('rlaskawns',95),
-    ('rlatjsdud',95),
-    ('rlawldms',95),
-    ('shtpgml',95),
-    ('ssafy',95),
-    ('whdydghks',95),
-    ('shtpgml',134),
-    ('rlatjsdud',159),
-    ('wjsdmsvud',95),
-    ('rlaxodns',95);
+    ('dltmdgjs',69);
+-- 중략
 
 ```
 
 <br>
+
+
+
+
 
 
 ## 	✏️ Commit Message Rule

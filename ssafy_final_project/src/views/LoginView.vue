@@ -33,29 +33,26 @@
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { ref } from 'vue';
+
 import { useUserStore } from '@/stores/user'
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 const id = ref('');
 const password = ref('');
 
 
-const router = useRouter();
-const user = ref(null);
 const store = useUserStore()
 
+// 카카오 로그인
 const kakaoLogin = () => {
-    console.log("카카오 로그인")
     const redirect_uri = 'http://localhost:5173/kakaoLogin';
-    const cliendId = '01bdd0d43fb0ea7f402dc99e9f0f02d4';
+    const cliendId = KAKAO_API_KEY;
     const AuthURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${cliendId}&redirect_uri=${redirect_uri}&'scope=account_email profile_nickname'`
     window.location.href = AuthURL;
 
 }
 
-//jwt 로그인
+// jwt 로그인
 const login = () => {
     let user = {
         userId: id.value,
