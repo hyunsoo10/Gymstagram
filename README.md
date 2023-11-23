@@ -667,15 +667,17 @@ comment의 parent_comment에 0이 아닌 값이 있다면 해당 comment는 하�
             ㄴ 📄 user.js
             ㄴ 📄 youtube.js
         ㄴ 📂 views
-            ㄴ 📄 DiaryDetailView.vue
-            ㄴ 📄 DiaryView.vue
+            ㄴ 📂 diary
+                ㄴ 📄 DiaryDetailView.vue
+                ㄴ 📄 DiaryView.vue
+                ㄴ 📄 MyPageView.vue
+            ㄴ 📂 user
+                ㄴ 📄 KakaoLoginView.vue
+                ㄴ 📄 LoginView.vue
+                ㄴ 📄 QuizView.vue
+                ㄴ 📄 SignupView.vue
+                ㄴ 📄 UpdateView.vue
             ㄴ 📄 HomeView.vue
-            ㄴ 📄 KakaoLoginView.vue
-            ㄴ 📄 LoginView.vue
-            ㄴ 📄 MyPageView.vue
-            ㄴ 📄 QuizView.vue
-            ㄴ 📄 SignupView.vue
-            ㄴ 📄 UpdateView.vue
         ㄴ 📄 App.vue
         ㄴ 📄 main.js
     ㄴ 📄 .env.local
