@@ -206,7 +206,6 @@ const deleteComment = function (commentId) {
 const getSubcomment = (commentId) => {
     // console.log(commentId)
     diaryStore.getSubComments(commentId)
-
 }
 
 const subCommentContent = ref('')
