@@ -12,9 +12,7 @@
       <div class="text-truncate">{{ diary.content }}</div>
     </v-card-text>
     <v-card-actions>
-      <v-btn 
-            :class="diary.avty"
-            v-bind="props">
+      <v-btn :class="diary.avty" v-bind="props">
            {{ diary.avty }}
       </v-btn>
       <!-- <v-btn  v-bind="props">
