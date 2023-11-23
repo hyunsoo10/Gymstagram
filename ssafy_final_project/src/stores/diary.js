@@ -16,6 +16,7 @@ export const useDiaryStore = defineStore('diary', () => {
     const router = useRouter();
 
     const loginUser = ref(null)
+
     const getOneDiary = function (diaryId) {
         axios({
             url: `${REST_DIARY_API}/${diaryId}`,
@@ -60,11 +61,11 @@ export const useDiaryStore = defineStore('diary', () => {
                         dates.value.push(allDiary.value[i].createDate);
                     }
                 }
-                // console.log(userId)
-                // console.log(dates.value)
             })
             .finally(dates.value = [])
     }
+
+    //userId로 my weekly diary 가져오기
     const getWeeklyDiary = function (userId) {
         axios({
             url: `${REST_DIARY_API}/weekly/${userId}`,
@@ -78,6 +79,7 @@ export const useDiaryStore = defineStore('diary', () => {
             })
     }
 
+    //diaryId에 해당하는 전체 comments 가져오기
     const getDiaryComments = function (diaryId) {
         axios({
             url: `${REST_DIARY_API}/comment/${diaryId}`,
@@ -88,10 +90,13 @@ export const useDiaryStore = defineStore('diary', () => {
         })
             .then((res) => {
                 if (res.data.length > 0) {
+                    console.log(res.data)
                     comments.value = res.data
                 }
             })
     }
+    
+    //전체 comment 조회
     const getAllComments = function () {
         axios({
             url: `${REST_DIARY_API}/comment/`,
@@ -107,17 +112,21 @@ export const useDiaryStore = defineStore('diary', () => {
             })
     }
 
+    //대댓글 담을 데이터
     const subComments = ref()
 
+    //commentId를 인자로 넘겨 받아서 해당 comment의 하위 댓글들만 가져오는 computed 함수
     const getSubComments = computed(() => {
         return (commentId) => subComments.value = comments.value.filter((comment) => comment.parentComment === commentId);
     })
 
+    //commentId의 대댓글 길이 가져오는 함수
     const getSubCommentLength = computed(() => {
         return (commentId) => comments.value.filter((comment) => comment.parentComment === commentId).length
     })
 
 
+    //댓글 작성
     const createComment = function (comment) {
         axios({
             url: `${REST_DIARY_API}/comment`,
@@ -127,23 +136,22 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-            .then((res) => {
-                console.log('댓글 작성 성공')
-                comments.value.push(comment)
-            })
+        .then((res) => {
+            console.log('댓글 작성 성공')
+            comments.value.push(comment)
+        })
     }
 
+    //Avty별 다이어리 조회 
     const getAvtyDiary = computed(() => {
         return (avty) => avtyDiary.value = allDiary.value.filter((diary) => diary.avty === avty
         )
     })
 
+    //Diary 좋아요 정보 담을 배열
     const likeDiaryInfo = ref([])
-    // const likeCount = ref(0)
-    // const getDiaryLike = computed(()=>{
-    //     return (diaryId) =>  likeCount.value = likeDiaryInfo.value.filter((info) => info.diaryId === diaryId).length
-    // })
 
+    //전체 좋아요 정보 불러오기
     const getAllLike = function () {
         axios({
             url: `${REST_DIARY_API}/like`,
@@ -174,7 +182,8 @@ export const useDiaryStore = defineStore('diary', () => {
                 console.log(likeDiaryInfo.value)
             })
     })
-
+    
+    //좋아요
     const like = function (like) {
         axios({
             url: `${REST_DIARY_API}/like`,
@@ -188,10 +197,10 @@ export const useDiaryStore = defineStore('diary', () => {
                 if (res.data.length > 0) {
                     likeDiaryInfo.value = res.data
                 }
-                // console.log(likeDiaryInfo.value)
             })
     }
 
+    //좋아요 해제
     const unlike = function (like) {
         axios({
             url: `${REST_DIARY_API}/like`,

@@ -20,7 +20,7 @@
                         </label>
                         <input type="text" id="userId" placeholder="아이디를 입력해주세요.(중복불가능)" v-model="user.userId">
                         <br>
-             
+
                         <label for="userNickname">
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
@@ -44,46 +44,25 @@
                             <label>
                                 프로필사진
                             </label>
-                            <input class="upload-name" :value=uploadName placeholder="첨부파일" style="border: 1px solid #B0A695;">
+                            <input class="upload-name" :value=uploadName placeholder="첨부파일"
+                                style="border: 1px solid #B0A695;">
                             <label for="file" id="file-btn" ref="filebtn">파일찾기</label>
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
 
-                            <div class="file-upload-container" 
-                                @dragenter="onDragenter"
-                                @dragover.prevent="onDragover"
-                                @dragleave="onDragleave"
-                                @drop.prevent="onDrop"
-                                @click="$refs.filebtn.click()"
-                                >
+                            <div class="file-upload-container" @dragenter="onDragenter" @dragover.prevent="onDragover"
+                                @dragleave="onDragleave" @drop.prevent="onDrop" @click="$refs.filebtn.click()">
                                 <div class="file-upload" :class="isDragged ? 'dragged' : ''">
                                     Drag and Drop Here
                                 </div>
                             </div>
 
-                                <!-- 파일 업로드 -->
-                            <!-- <input type="file" ref="fileInput" class="file-upload-input" @change="onFileChange($event)" multiple> -->
-                            <!-- 업로드된 리스트 -->
-                            <!-- <div class="file-upload-list">
-                            <div class="file-upload-list__item" v-for="(file, index) in fileList" :key="index">
-                                <div class="file-upload-list__item__data">
-                                <img class="file-upload-list__item__data-thumbnail" :src="file.src">
-                                <div class="file-upload-list__item__data-name">
-                                    {{ file.name }}
-                                </div>
-                                </div>
-                                <div class="file-upload-list__item__btn-remove" @click="handleRemove(index)">
-                                삭제
-                                </div>
-                            </div>
-                            </div> -->
 
                         </div>
                         <img class="image-ex" :src="imageUploaded" style="width: 10em; margin-top: 10px" />
-                        <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
-                            aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
+
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
-                        <div class="regist-btn" >
+                        <div class="regist-btn">
                             <button type="button" class="btn btn-secondary" @click="regist($event)">회원가입</button>
                         </div>
                         <br>
@@ -107,21 +86,21 @@ const router = useRouter();
 
 const isDragged = ref(false)
 
-const onDragenter = function(event){
+const onDragenter = function (event) {
     isDragged.value = true
     console.log("enter")
 }
 
-const onDragleave = function(event){
+const onDragleave = function (event) {
     isDragged.value = false
     console.log("leave")
 }
 
-const onDragover = function(){
-    
+const onDragover = function () {
+
 }
 
-const onDrop = function(event){
+const onDrop = function (event) {
     isDragged.value = false
     const file = event.dataTransfer.files
     console.log(event)
@@ -188,7 +167,7 @@ const regist = function (event) {
                 (u) => u.nickName === user.value.nickName
             );
         })
-        .then(()=>{
+        .then(() => {
             console.log(checkId.value)
             console.log(nickNameCheck.value)
             if (checkId.value) {
@@ -203,8 +182,8 @@ const regist = function (event) {
             }
             signup()
         })
-    
-    const signup = () =>{
+
+    const signup = () => {
 
         // 모든 유효성 검사를 통과했으면 회원 등록 가능
         // console.log(user)
@@ -220,43 +199,43 @@ const regist = function (event) {
         }
 
         axios
-        .post("http://localhost:8080/user-api/user", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(() => {
-            alert('회원가입에 성공하였습니다!');
-            router.push('/');
-        }).catch(() => {
-            console.log("회원가입에 실패하였습니다!")
-        })
+            .post("http://localhost:8080/user-api/user", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(() => {
+                alert('회원가입에 성공하였습니다!');
+                router.push('/');
+            }).catch(() => {
+                console.log("회원가입에 실패하였습니다!")
+            })
     }
-    
+
 };
 
 
-const randomNickName= ref('')
+const randomNickName = ref('')
 
 //랜덤 닉네임 불러오기
-onMounted(()=>{
+onMounted(() => {
     axios({
-    //cors에러 해결하기 위해서 처리
-     url:`https://cors-anywhere.herokuapp.com/https://nickname.hwanmoo.kr?format=json`, 
-     method: 'GET',
-     headers: {
-        'Access-Control-Allow-Origin' : '*'
-     }
+        //cors에러 해결하기 위해서 처리
+        url: `https://cors-anywhere.herokuapp.com/https://nickname.hwanmoo.kr?format=json`,
+        method: 'GET',
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        }
     })
-    .then((response)=>{
-        // console.log(response['data'].words[0])
-        randomNickName.value = response['data'].words[0]
-        user.nickName = randomNickName.value
-        // console.log(user.nickName)
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
+        .then((response) => {
+            // console.log(response['data'].words[0])
+            randomNickName.value = response['data'].words[0]
+            user.nickName = randomNickName.value
+            // console.log(user.nickName)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 
 })
 
@@ -272,66 +251,74 @@ const user = ref({
 
 
 <style scoped>
-
 .file-upload {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  border: transparent;
-  border-radius: 20px;
-  cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: transparent;
+    border-radius: 20px;
+    cursor: pointer;
 }
+
 .file-upload.dragged {
-  border: 1px dashed powderblue;
-  opacity: 0.6;
+    border: 1px dashed powderblue;
+    opacity: 0.6;
 }
+
 .file-upload-container {
-  width: 20em;
-  height: 10em;
-  padding: 20px;
-  margin: 0 auto;
-  box-shadow: 0 0.625rem 1.25rem #0000001a;
-  border-radius: 20px;
-  
+    width: 20em;
+    height: 10em;
+    padding: 20px;
+    margin: 0 auto;
+    box-shadow: 0 0.625rem 1.25rem #0000001a;
+    border-radius: 20px;
+
 }
-.file-upload-container:hover{
+
+.file-upload-container:hover {
     background-color: rgba(214, 209, 209, 0.705);
     color: white;
     font-weight: 900;
 }
+
 .file-upload-input {
-  display: none;
+    display: none;
 }
+
 .file-upload-list {
-  margin-top: 10px;
-  width: 100%;
+    margin-top: 10px;
+    width: 100%;
 }
+
 .file-upload-list__item {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
 .file-upload-list__item__data {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 .file-upload-list__item__data-thumbnail {
-  margin-right: 10px;
-  border-radius: 20px;
-  width: 120px;
-  height: 120px;
+    margin-right: 10px;
+    border-radius: 20px;
+    width: 120px;
+    height: 120px;
 }
+
 .file-upload-list__item__btn-remove {
-  cursor: pointer;
-  border: 1px solid powderblue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid powderblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 6px;
 }
 
 
@@ -346,7 +333,7 @@ main {
     /* height: 100vh; */
 }
 
-section{
+section {
     width: 50em;
 }
 
@@ -410,7 +397,8 @@ button {
     border: #B0A695;
     background: #B0A695;
 }
-button:hover{
+
+button:hover {
     background: #776B5D;
 
 }
@@ -464,7 +452,6 @@ body {
     border: 0;
 }
 
-.signup-title{
+.signup-title {
     color: #776B5D;
-}
-</style>
+}</style>

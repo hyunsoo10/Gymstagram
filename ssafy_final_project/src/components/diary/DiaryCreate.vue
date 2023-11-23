@@ -19,18 +19,7 @@
                         <input type="file" id="file" class="form-control" @change="upload" :ref="image"  accept="image/.*">
                     </div>
 
-                    <!-- <div class="file-upload-container" 
-                        @dragenter="onDragenter"
-                        @dragover.prevent="onDragover"
-                        @dragleave="onDragleave"
-                        @drop.prevent="onDrop"
-                        @click="$refs.filebtn.click()"
-                        >
-                        <div class="file-upload" :class="isDragged ? 'dragged' : ''">
-                            Drag and Drop Here
-                        </div>
-                    </div> -->
-
+                    <!--Drag & Drop 파일 업로드-->
                     <div 
                         @dragenter="onDragenter"
                         @dragover.prevent="onDragover"
@@ -54,10 +43,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useDiaryStore } from '@/stores/diary'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
@@ -74,8 +62,57 @@ const diary = ref({
     originalImage: "",
     title: "",
     content: "",
+    saveImage:"",
 })
 
+// 이미지 파일을 Base64 인코딩해서 넘기기
+// const createDiary = function (event) {
+
+//     if(diary.value.title == ""){
+//         alert("제목을 입력하세요")
+//         return
+//     }
+//     if(diary.value.content == ""){
+//         alert("내용을 입력하세요")
+//         return
+//     }
+
+//     diary.value.userId = userStore.loginUser.userId
+//     if (image.value != null) {
+//         //파일 읽기
+//         var reader = new FileReader();
+//         reader.readAsDataURL(image.value)
+//         //readystate == 2일 때 result에 이미지 파일이 base64로 인코딩된 문자열이 담겨 있음
+//         reader.onloadend = ()=>{
+//            diary.value.saveImage = reader.result
+//            console.log(diary.value.originalImage)
+//            axios.post('http://localhost:8080/diary-api/diary', diary.value, {
+//                headers: {
+//                    'Content-Type': 'application/json',
+//                     'access-token': sessionStorage.getItem('access-token')
+//                },
+//            }).then(() => {
+//                console.log("다이어리 추가 성공")
+//                emit("closeDialog")
+//                router.go()
+//            }).catch(() => {
+//                console.log("다이어리 추가 실패")
+//            })
+//         }
+//     }else{
+//         axios.post('http://localhost:8080/diary-api/diary', diary.value, {
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                  'access-token': sessionStorage.getItem('access-token')
+//             },
+//         }).then(() => {
+//             emit("closeDialog")
+//             router.go()
+//         }).catch(() => {
+//             console.log("다이어리 추가 실패")
+//         })
+//     }
+// }
 const createDiary = function (event) {
 
     console.log(diary.value.content)
@@ -90,7 +127,6 @@ const createDiary = function (event) {
     }
 
     diary.value.userId = userStore.loginUser.userId
-    // diary.value.image = btoa(image.value)
     var formData = new FormData()
     if (image.value != null) {
         diary.value.originalImage = image.value.name
@@ -118,7 +154,7 @@ const createDiary = function (event) {
 }
 const uploadName = ref('첨부파일')
 
-const imageUploaded = ref("../src/assets/Gymstagram.png")
+const imageUploaded = ref("../src/assets/Gymstagram2.png")
 const image = ref(null)
 const upload = function (e) {
     image.value = e.target.files[0]
@@ -131,12 +167,12 @@ const isDragged = ref(false)
 
 const onDragenter = function(event){
     isDragged.value = true
-    console.log("enter")
+    // console.log("enter")
 }
 
 const onDragleave = function(event){
     isDragged.value = false
-    console.log("leave")
+    // console.log("leave")
 }
 
 const onDragover = function(){
@@ -146,8 +182,8 @@ const onDragover = function(){
 const onDrop = function(event){
     isDragged.value = false
     const file = event.dataTransfer.files
-    console.log(event)
-    console.log(file)
+    // console.log(event)
+    // console.log(file)
     dragUpload(file[0])
 }
 

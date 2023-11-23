@@ -23,26 +23,6 @@
           <template v-else>
             <RouterLink to="/login"> <img src="@/assets/home-quiz.png" /></RouterLink>
           </template>
-          <!-- <figure class="snip1445">
-            <figcaption>
-              <div>
-                <div class="quiz">
-                  <template v-if="userStore.loginUser != null">
-                    <RouterLink to="/quiz">QUIZ START</RouterLink>
-                  </template>
-                  <template v-else>
-                    <RouterLink to="/login">QUIZ START</RouterLink>
-                  </template>
-                </div>
-              </div>
-            </figcaption>
-            <template v-if="userStore.loginUser != null">
-              <RouterLink to="/quiz">quiz</RouterLink>
-            </template>
-            <template v-else>
-              <RouterLink to="/login"></RouterLink>
-            </template>
-          </figure> -->
         </div>
 
       </div>
@@ -69,8 +49,6 @@ setTimeout(() => {
 </script>
 
 <style scoped>
-/* @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap"); */
-
 * {
   padding: 0;
   margin: 0;
@@ -231,9 +209,5 @@ span:nth-child(4) {
   padding-top: 1.5em;
   width: 10em;
   animation: img-fade-in 2.5s forwards cubic-bezier(0.5, 1, 0.89, 1);
-  /* -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease; */
-
 }
-
 </style>

@@ -214,5 +214,21 @@ README.md 초안 작성
 
 ### 2023 11-23
 
+#### morning
+
+completed
+
+더미 데이터 생성
+네비게이션 가드 설정
+README.md 초안 작성
+각종 버그 검사
+
+todo
+
+더미 데이터 추가
+page 최적화
+
+발표자료
+README.md
 
 ### 2023 11-24

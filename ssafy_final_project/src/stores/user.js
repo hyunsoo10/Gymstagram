@@ -11,18 +11,6 @@ export const useUserStore = defineStore('user', () => {
 
     const loginUser = ref(null)
 
-    // const loginUser = ref({
-    //     userId: "",
-    //     userPassword: "",
-    //     userName: "",
-    //     nickName: "",
-    //     profileImage:"",
-    //     registerDate: "",
-    //     permission: "",
-    //     avtyCode: "",
-    //     activate: ""
-    // })
-
     const getUserList = function () {
         axios({
             url: REST_USER_API,
@@ -35,13 +23,6 @@ export const useUserStore = defineStore('user', () => {
                 users.value = res.data
             })
     }
-    // onMounted(() => {
-    //     const savedUser = localStorage.getItem("loginUser");
-    //     if (savedUser) {
-    //         console.log(savedUser)
-    //         loginUser.value = JSON.parse(savedUser);
-    //     }
-    // });
     
     let user = null
     onMounted (()=> {
@@ -57,12 +38,11 @@ export const useUserStore = defineStore('user', () => {
         }
     })
 
-    //JwtLogin
+    //Jwt 토큰 인증 Login
     const login = (user) => {
         axios.post(`${REST_USER_API}/jwtlogin`, user)
         .then((response)=>{
-        //   console.log(response.data)
-        //   console.log(atob(response.data['access-token'].split('.')[1]))
+
             let message = response.data['message']
 
             if(message != "success"){
@@ -73,7 +53,6 @@ export const useUserStore = defineStore('user', () => {
             
                 const token = response.data['access-token'].split('.')
                 let user = token[1]
-                // user = atob(user)
                 //디코딩
                 user = decodeURIComponent(escape(atob(user)));
                 user = JSON.parse(user)
@@ -81,7 +60,7 @@ export const useUserStore = defineStore('user', () => {
                 loginUser.value = Object.assign({}, user);
                 console.log(loginUser.value)
                 // alert(loginUser.value.userName + "님 환영합니다!");
-            //   localStorage.setItem('loginUser', user);
+
                 router.push('/');
             }
         })
@@ -112,7 +91,7 @@ export const useUserStore = defineStore('user', () => {
         })
       }
 
-    // //로그인
+    // //기존 로그인
     // //user 객체를 인자로 받아서 DB에서 아이디 일치하는 회원 가져온 후에 비밀번호 검사
     // const login = (user) => {
     //     // user 정보 요청 api 주소
@@ -155,8 +134,6 @@ export const useUserStore = defineStore('user', () => {
             })
             .then(() => {
                 alert('정보수정에 성공하였습니다!');
-                // localStorage에 저장된 정보도 변경하기
-                // const localUser = JSON.parse(localStorage.getItem('loginUser'))
                 axios.get(`${REST_USER_API}/${loginUser.value.userId}`, {headers: {
                 'access-token': sessionStorage.getItem('access-token')
             }})
@@ -170,12 +147,10 @@ export const useUserStore = defineStore('user', () => {
                 axios.post(`${REST_USER_API}/jwtlogin`, user)
                 .then((response)=>{
                   console.log(response.data)
-                //   console.log(atob(response.data['access-token'].split('.')[1]))
                   sessionStorage.setItem('access-token', response.data["access-token"])
             
                   const token = response.data['access-token'].split('.')
                   let user = token[1]
-                  // user = atob(user)
                   //디코딩
                   user = decodeURIComponent(escape(atob(user)));
                   user = JSON.parse(user)
@@ -185,7 +160,6 @@ export const useUserStore = defineStore('user', () => {
             
                 })
                 router.push('/');
-                // loginUser.value = dbUser;
             })
             })
             .catch(() => {
@@ -193,7 +167,7 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
-    //로그아웃
+    //sessionStore로부터 로그아웃
     const logout = () => {
         loginUser.value = null;
         sessionStorage.removeItem('access-token');
@@ -209,7 +183,6 @@ export const useUserStore = defineStore('user', () => {
     //     console.log("?")
     // };
 
-    // const user = ref([])
     const getUser = function (id) {
         axios.get(`${REST_USER_API}/${id}`)
             .then((res) => {

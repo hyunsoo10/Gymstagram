@@ -1,10 +1,4 @@
 <template>
-    <!-- <div style="margin: 20px auto; text-align: center">
-        Kakao Login View
-        <br>
-        <br>
-        {{ kakaoInfo }}
-    </div> -->
     <div v-show="userStore.loginUser == null">
         <main class="d-flex flex-column">
             <div class="signup-title">
@@ -61,8 +55,6 @@
                             <input type="file" id="file" @change="upload" :ref="image" accept="image/.*">
                         </div>
                         <img class="image-ex" :src="imageUploaded" style="width: 200px; margin-top: 10px" />
-                        <!-- <input type="file" id="profileImg" name="profileImg" aria-describedby="inputGroupFileAddon04"
-                            aria-label="Upload" @change="upload" :ref="image" accept="image/.*"> -->
                         <p class="input-desc">*닉네임은 최소 2-10자이며, 특수 문자를 제외한 한글, 영어 대소문자, 숫자 입력 가능</p>
                         <p class="input-desc">*비밀번호는 최소 8-16자이며, 특수 문자(!@#$%^&*) 하나 이상 포함 필수, 영어 대소문자, 숫자 입력 가능</p>
                         <div class="regist-btn">
@@ -244,7 +236,6 @@ const regist = function (event) {
         // console.log(image.value)
         let formData = new FormData()
         if (image.value != null) {
-            // console.log('1')
             user.value.profileImage = image.value.name;
             formData.append('image', image.value)
             formData.append('user', new Blob([JSON.stringify(user.value)], { type: "application/json" }));

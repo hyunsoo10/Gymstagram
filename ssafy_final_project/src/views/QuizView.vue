@@ -1,7 +1,7 @@
 <template>
-    <div class="avty-main" >
-        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4"
-            elevation="4" height="auto" rounded max-width="800" width="100%">
+    <div class="avty-main">
+        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4" elevation="4" height="auto" rounded
+            max-width="800" width="100%">
             <div class="avty-test">
                 <section id="main" :style="styleObjMain">
                     <br>
@@ -62,11 +62,11 @@
 
 <script setup>
 import { qnaList, infoList } from "@/assets/data/data.js";
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
 import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
 import { useUserStore } from "@/stores/user";
 import { useYoutubeStore } from "@/stores/youtube";
-import TheAVTYChart from '@/components/common/TheAVTYChart.vue';
+import TheAVTYChart from '@/components/avty/TheAVTYChart.vue';
 import axios from "axios";
 
 
@@ -90,11 +90,6 @@ const playMusic = (avty) => {
     console.log(avty)
     store.youtubeSearch(avty)
 }
-
-
-
-// const movies = ref([]);
-// const movieCnt = computed(() => movies.value.length);
 
 const avtyCounts = ref({
     0: 0,
@@ -134,21 +129,6 @@ onMounted(() => {
         })
 
 });
-
-// onMounted(() => {
-//     userStore.getUserList()
-//     userStore.users.forEach((user)=>{
-//         if(!avtyCounts[user.avtyCode]){
-//         avtyCounts[user.avtyCode] = 1;
-//         }
-//         else{
-//         avtyCounts[user.avtyCode] ++;
-//         }
-//     })
-//     console.log(userStore.users)
-//     console.log(avtyCounts)
-
-// });
 
 
 // 질문 9개
@@ -241,11 +221,6 @@ function addAnswer(answerText, qIdx, idx) {
     // 2가지 응답버튼
     let answer = document.createElement('button');
     answer.classList.add('answerList');
-    // 부트스트랩 css 및 애니메이션 적용
-    // answer.classList.add('my-3');
-    // answer.classList.add('py-3');
-    // answer.classList.add('mx-auto');
-    // answer.classList.add('fadeIn');
 
     // 응답 전체 박스에 개별 응답버튼 넣기
     answerBox.appendChild(answer);
@@ -355,13 +330,13 @@ function setResult() {
 </script>
 
 <style>
-
 .avty-main {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 
 }
+
 #outer {
     margin-top: 5em;
     margin-bottom: 5em;
@@ -483,7 +458,6 @@ focus {
 .chart-button:hover {
     background: #776B5D;
 }
-
 </style>
 
 

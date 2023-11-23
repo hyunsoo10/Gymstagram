@@ -1,6 +1,5 @@
 <template>
-  <!-- <div> -->
-  <div  style="display: none;">
+  <div style="display: none;">
       <iframe
         width="300"
         height="200"

@@ -70,11 +70,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { useDiaryStore } from '@/stores/diary'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios';
-import MyDiary from '@/components/diary/MyDiary.vue';
-import Profile from '@/components/diary/Profile.vue';
-import AVTY from '@/components/diary/AVTY.vue'
+import MyDiary from '@/components/diary/mydiary/MyDiary.vue';
+import Profile from '@/components/diary/mydiary/Profile.vue';
+import AVTY from '@/components/diary/mydiary/AVTY.vue'
+import MyWeeklyDiary from '@/components/diary/mydiary/MyWeeklyDiary.vue'
 import DiaryCreate from '@/components/diary/DiaryCreate.vue';
-import MyWeeklyDiary from '@/components/diary/MyWeeklyDiary.vue'
 
 const route = useRoute();
 const diaryStore = useDiaryStore();
@@ -120,7 +120,13 @@ const selectDiary = (day, event) => {
 
 const dateDiary = computed(() => {
   return diaryStore.allDiary.filter((diary) => {
-    return diary.userId == userStore.loginUser.userId && diary.createDate === selectDate.value
+    let originDate = new Date(diary.createDate);
+    let year = originDate.getFullYear();
+    let month = ('0' + (originDate.getMonth() + 1)).slice(-2);
+    let day = ('0' + originDate.getDate()).slice(-2);
+
+    let dateString = year + '-' + month + '-' + day;
+    return diary.userId == userStore.loginUser.userId && dateString === selectDate.value
   })
 })
 
@@ -206,9 +212,6 @@ div {
 }
 
 #diary-box {
-  /* display: flex;
-      flex-direction: row;
-      flex-wrap: wrap; */
   width: 50%;
 }
 
@@ -257,23 +260,25 @@ div {
 
 .weekly-calendar {
   width: 700px;
-  margin: 2em auto;
+  margin: 3em auto;
 }
 
 .total-calendar {
   width: 700px;
-  margin: 2em auto;
+  margin: 3em auto;
 }
 
 
 .total-diary-box {
   display: flex;
   flex-flow: wrap;
+  justify-content: space-evenly;
 }
 
 .weekly-diary-box {
   display: flex;
   flex-flow: wrap;
+  justify-content: space-evenly;
 }
 </style>
   
