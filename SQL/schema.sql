@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS `diary`(
   `original_image` VARCHAR(50),
   `title` VARCHAR(45) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `content` LONGTEXT CHARACTER SET utf8mb4 NOT NULL,
-  `view_count` int(52) DEFAULT 0,
-  `like_count` int(52) DEFAULT 0,
-  `range` int(2) DEFAULT 0,
+  `view_count` INT(52) DEFAULT 0,
+  `like_count` INT(52) DEFAULT 0,
+  `range` INT(2) DEFAULT 0,
   `update_date` TIMESTAMP,
   CONSTRAINT `diary_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   PRIMARY KEY (`diary_id`)
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `comment`(
   `comment_id` INT(52) AUTO_INCREMENT NOT NULL,
   `diary_id` INT NOT NULL,
   `user_id` VARCHAR(45) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
-  `nickname` VARCHAR(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `content` VARCHAR(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `write_date` TIMESTAMP DEFAULT now(),
   `update_date` TIMESTAMP,
@@ -56,13 +55,13 @@ CREATE TABLE IF NOT EXISTS `comment`(
 
 CREATE TABLE IF NOT EXISTS `avty`(
   `avty_code` INT NOT NULL,
-  `avty_name` VARCHAR(45) CHARACTER SET utf8mb4 NOT NULL,
+  `avty_name` CHAR(5) CHARACTER SET utf8mb4 NOT NULL,
    PRIMARY KEY (`avty_code`)
 );
 
 CREATE TABLE IF NOT EXISTS `likeDiary`(
-  `user_Id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
-  `diary_Id` INT NOT NULL,
+  `user_id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
+  `diary_id` INT NOT NULL,
   PRIMARY KEY (`user_Id`, `diary_Id`),
   CONSTRAINT `like_ibfk_1` FOREIGN KEY (`user_Id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `like_ibfk_2` FOREIGN KEY (`diary_Id`) REFERENCES `diary` (`diary_Id`) ON DELETE CASCADE

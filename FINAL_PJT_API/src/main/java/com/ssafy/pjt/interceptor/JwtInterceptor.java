@@ -31,12 +31,11 @@ public class JwtInterceptor implements HandlerInterceptor{
 		
 		if(token != null) {
 			jwtUtil.valid(token);
-//			System.out.println("valid token: " + token );
 			return true;
 		}
-//		System.out.println("invalid token: " + token);
-//		System.out.println("접근 불가능");
+
 		return false;
+		//서버 예외 던지기
 //		throw new Exception("접근할 수 없습니다.");
 		
 	}
