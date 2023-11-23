@@ -25,7 +25,7 @@
                             닉네임
                             <img class="icon-star" src="@/assets/icon_star.png" />
                         </label>
-                        <input type="text" id="userNickname" placeholder="닉네임를 입력해주세요.(중복불가능, 특수문자 제외)"
+                        <input type="text" id="userNickname" placeholder="닉네임을 입력해주세요.(중복불가능, 특수문자 제외)"
                             v-model="user.nickName">
                         <br>
                         <label for="userPassword">
