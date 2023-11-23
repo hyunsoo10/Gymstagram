@@ -1,13 +1,3 @@
-<!-- <template>
-    <div>
-        <h4>날씨정보</h4>
-        <div> 현재 위치 : {{ location }} </div>
-        <div>기온 : {{ tmp }}℃</div>
-        <div>하늘상태 : {{ sky }}</div>
-        <div>강수형태 : {{ pty }}</div>
-        <div>강수확률 : {{ pop }}%</div>
-    </div>
-</template> -->
 <template>
     <div class="home-weather-info">
         <v-card class="weather-info" max-width="500">

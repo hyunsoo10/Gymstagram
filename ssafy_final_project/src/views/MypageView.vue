@@ -120,7 +120,13 @@ const selectDiary = (day, event) => {
 
 const dateDiary = computed(() => {
   return diaryStore.allDiary.filter((diary) => {
-    return diary.userId == userStore.loginUser.userId && diary.createDate === selectDate.value
+    let originDate = new Date(diary.createDate);
+    let year = originDate.getFullYear();
+    let month = ('0' + (originDate.getMonth() + 1)).slice(-2);
+    let day = ('0' + originDate.getDate()).slice(-2);
+
+    let dateString = year + '-' + month + '-' + day;
+    return diary.userId == userStore.loginUser.userId && dateString === selectDate.value
   })
 })
 

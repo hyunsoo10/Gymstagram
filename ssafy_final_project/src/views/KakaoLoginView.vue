@@ -1,14 +1,14 @@
 <template>
     <div v-show="pageFlag">
-        <KakaoLoginCheck/>
+        <KakaoLoginCheck />
     </div>
 </template>
 
 <script setup>
 
 import KakaoLoginCheck from '@/components/kakao/KakaoLoginCheck.vue'
-import { ref, onMounted} from 'vue';
-import {useRoute, useRouter} from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 
@@ -29,24 +29,24 @@ const userStore = useUserStore();
 
 
 
-onMounted(()=>{
+onMounted(() => {
     code.value = route
     // console.log(code.value)
     kakaoGetToken(code.value)
     userStore.getUserList()
-    
+
 })
 
 
 const kakaoFlag = ref(false)
 
-const kakaoGetToken = () =>{
+const kakaoGetToken = () => {
     // console.log("카카오 로그인")
-    
+
     axios({
         url: 'https://kauth.kakao.com/oauth/token',
         method: 'POST',
-        data:{
+        data: {
             grant_type: "authorization_code",
             client_id: "01bdd0d43fb0ea7f402dc99e9f0f02d4",
             redirect_uri: "http://localhost:5173/kakaoLogin",
@@ -56,50 +56,50 @@ const kakaoGetToken = () =>{
             'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         }
     })
-    .then((res)=>{
-        console.log(res.data)
-        // console.log(res.data['access_token'])
-        accessToken.value = res.data['access_token']
-        //유저 정보 받아오기
-        kakaoGetUserInfo()
-    })
+        .then((res) => {
+            console.log(res.data)
+            // console.log(res.data['access_token'])
+            accessToken.value = res.data['access_token']
+            //유저 정보 받아오기
+            kakaoGetUserInfo()
+        })
 }
 
-const kakaoGetUserInfo = () =>{
+const kakaoGetUserInfo = () => {
     // console.log(accessToken.value)
     axios({
         url: 'https://kapi.kakao.com/v2/user/me',
         method: 'GET',
         headers: {
-            'Authorization' : `Bearer ${accessToken.value}`
+            'Authorization': `Bearer ${accessToken.value}`
         }
     })
-    .then((res)=>{
-        // console.log(res.data)
-        // console.log(res.data["kakao_account"]["email"])
-        // console.log(res.data["kakao_account"]["profile"].nickname)
-        kakaoInfo.value.email = res.data["kakao_account"]["email"]
-        kakaoInfo.value.nickName = res.data["kakao_account"]["profile"].nickname
-    })
-    .then(()=>{
-        // console.log(kakaoInfo.value.email)
-        // console.log(userStore.users)
-        //DB의 전체 유저 리스트에서 카카오 로그인 시도 이메일과 같은 이메일이 있다면 로그인 해주기
-        let kakao = userStore.users.find((user) => user.email === kakaoInfo.value.email)
-        //카카오로 회원가입 했던 유저는 로그인 시켜주기
-        // console.log(kakao  == undefined)
-        if(kakao != undefined){
-            let kakaoUser = {
-                userId : kakao.userId,
-                userPassword: kakao.userPassword
+        .then((res) => {
+            // console.log(res.data)
+            // console.log(res.data["kakao_account"]["email"])
+            // console.log(res.data["kakao_account"]["profile"].nickname)
+            kakaoInfo.value.email = res.data["kakao_account"]["email"]
+            kakaoInfo.value.nickName = res.data["kakao_account"]["profile"].nickname
+        })
+        .then(() => {
+            // console.log(kakaoInfo.value.email)
+            // console.log(userStore.users)
+            //DB의 전체 유저 리스트에서 카카오 로그인 시도 이메일과 같은 이메일이 있다면 로그인 해주기
+            let kakao = userStore.users.find((user) => user.email === kakaoInfo.value.email)
+            //카카오로 회원가입 했던 유저는 로그인 시켜주기
+            // console.log(kakao  == undefined)
+            if (kakao != undefined) {
+                let kakaoUser = {
+                    userId: kakao.userId,
+                    userPassword: kakao.userPassword
+                }
+                userStore.login(kakaoUser)
+                // return
             }
-            userStore.login(kakaoUser)
-            // return
-        }
-        else{
-            pageFlag.value=true
-        }
-    })
+            else {
+                pageFlag.value = true
+            }
+        })
 }
 const router = useRouter();
 
@@ -133,7 +133,7 @@ const regist = function (event) {
     //카카오 에서 받아온 정보 넣어주기
     user.value.email = kakaoInfo.value.email
     user.value.nickName = kakaoInfo.value.nickName
-        // 유효성 검사
+    // 유효성 검사
     // 1. 비밀번호 입력과 비밀번호 확인 입력의 일치 여부
     if (user.value.userPassword != password2.value) {
         alert('비밀번호가 일치하지 않습니다.').
@@ -157,7 +157,7 @@ const regist = function (event) {
                 (u) => u.nickName === user.value.nickName
             );
         })
-        .then(()=>{
+        .then(() => {
             console.log(checkId.value)
             console.log(nickNameCheck.value)
             if (checkId.value) {
@@ -172,8 +172,8 @@ const regist = function (event) {
             }
             signup()
         })
-    
-    const signup = () =>{
+
+    const signup = () => {
 
         // 모든 유효성 검사를 통과했으면 회원 등록 가능
         // console.log(user)
@@ -189,19 +189,19 @@ const regist = function (event) {
         }
 
         axios
-        .post("http://localhost:8080/user-api/user", formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(() => {
-            alert('회원가입에 성공하였습니다!');
-            router.push('/');
-        }).catch(() => {
-            console.log("회원가입에 실패하였습니다!")
-        })
+            .post("http://localhost:8080/user-api/user", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(() => {
+                alert('회원가입에 성공하였습니다!');
+                router.push('/');
+            }).catch(() => {
+                console.log("회원가입에 실패하였습니다!")
+            })
     }
-    
+
 };
 </script>
 

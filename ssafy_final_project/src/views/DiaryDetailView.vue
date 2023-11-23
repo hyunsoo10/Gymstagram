@@ -106,7 +106,6 @@ const diaryStore = useDiaryStore();
 const userStore = useUserStore();
 
 const newContent = ref('')
-const updateContent = ref('')
 const route = useRoute()
 const router = useRouter()
 
@@ -117,14 +116,9 @@ const close = function () {
 }
 
 
-const diary = ref({})
-const show = ref(false)
-
 const diaryId = ref(route.params.diaryId)
-const updateToggle = ref(false)
 
 const likeFlag = ref(false)
-const tempFlag = likeFlag.value
 
 const likeInfo = ref(
     {
@@ -145,6 +139,7 @@ const like = () => {
     likeInfo.value.diaryId = ''
     // router.go()
 }
+
 const unlike = () => {
     likeInfo.value.userId = userStore.loginUser.userId
     likeInfo.value.diaryId = diaryId.value

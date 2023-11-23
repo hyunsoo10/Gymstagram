@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheHeaderNav/>
+    <TheHeaderNav />
     <RouterView />
     <TheFooter />
   </div>
@@ -13,21 +13,22 @@ import TheFooter from './components/common/TheFooter.vue';
 </script>
 
 <style scoped>
-
 @font-face {
-  font-family:'SaumsungLight';
+  font-family: 'SaumsungLight';
   src: url('assets/fonts/SamsungOne-400.ttf') format('truetype');
 }
+
 @font-face {
-  font-family:'SaumsungMedium';
+  font-family: 'SaumsungMedium';
   src: url('assets/fonts/SamsungOne-700.ttf') format('truetype');
 }
+
 @font-face {
-  font-family:'SaumsungBold';
+  font-family: 'SaumsungBold';
   src: url('assets/fonts/SamsungSharpSans-Bold.ttf') format('truetype');
 }
-* {
-  font-family:'SaumsungMedium' !important;
-}
 
+* {
+  font-family: 'SaumsungMedium' !important;
+}
 </style>

@@ -1,9 +1,8 @@
 <template>
   <v-card class='total-card' width="300">
     <RouterLink :to="`/detail/${diary.diaryId}`" :diary="diary" class="cursor">
-    <v-img :src="`../src/assets/diary_image/${diary.userId}/${diary.saveImage}`" 
-    height="200px" cover>
-    </v-img>
+      <v-img :src="`../src/assets/diary_image/${diary.userId}/${diary.saveImage}`" height="200px" cover>
+      </v-img>
     </RouterLink>
 
     <v-card-title>
@@ -11,52 +10,29 @@
     </v-card-title>
 
     <v-card-subtitle>
-      {{ diary.createDate }}
+      {{ dateString }}
     </v-card-subtitle>
     <v-card-text class="text-body-2">
-          {{ diary.content }}
-        </v-card-text>
-    <!-- <v-card-actions>
-      <v-btn color="black" variant="text"  @click="show = !show">
-        내용보기
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
-    </v-card-actions>
-
-    <v-expand-transition>
-      <div v-show="show">
-        <v-divider></v-divider>
-
-        <v-card-text class="text-body-2">
-          {{ diary.content }}
-        </v-card-text>
-      </div>
-    </v-expand-transition> -->
+      {{ diary.content }}
+    </v-card-text>
   </v-card>
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { ref, } from 'vue'
 
 const props = defineProps({
   diary: Object
 })
 
-const route = useRoute()
+let originDate = new Date(props.diary.createDate);
 
-const show = ref(false)
+let year = originDate.getFullYear();
+let month = ('0' + (originDate.getMonth() + 1)).slice(-2);
+let day = ('0' + originDate.getDate()).slice(-2);
 
-const store = useUserStore()
-const userId = ref(route.params.userId)
+const dateString = ref(year + '-' + month + '-' + day);
 
-onMounted(() => {
-
-})
 </script>
 
 <style scoped>

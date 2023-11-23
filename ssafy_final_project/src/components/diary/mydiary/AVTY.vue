@@ -18,55 +18,49 @@
       </v-row>
 
 
-      <div v-for ="info in infoList[userStore.loginUser.avtyCode].desc" style="text-align:left !important">
-          <div style="margin: 1.5em;"> {{ info }} </div>
+      <div v-for="info in infoList[userStore.loginUser.avtyCode].desc" style="text-align:left !important">
+        <div style="margin: 1.5em;"> {{ info }} </div>
       </div>
     </v-card-text>
 
     <v-divider class="mx-4 mb-1"></v-divider>
 
     <v-card-title>🎙️추천 노래🎙️</v-card-title>
-        
+
     <div class="px-4" style="margin-bottom: 2em;;">
-      <v-chip-group v-model="selection" selected-class="text-deep-purple-accent-4"  style="justify-content: center;">
-        <template  v-for ="song in infoList[userStore.loginUser.avtyCode].songs">
-          <v-chip @click="playMusic(song),  isPlaying=!isPlaying">🎶 {{ song }}</v-chip>
-        </template>  
+      <v-chip-group v-model="selection" selected-class="text-deep-purple-accent-4" style="justify-content: center;">
+        <template v-for="song in infoList[userStore.loginUser.avtyCode].songs">
+          <v-chip @click="playMusic(song), isPlaying = !isPlaying">🎶 {{ song }}</v-chip>
+        </template>
       </v-chip-group>
     </div>
 
     <div class="play-box">
     </div>
-  <template v-if="isPlaying">
+    <template v-if="isPlaying">
       <div class="container">
-                  <YoutubeMusicPlayer
-                      class="youtube-list"
-                      v-for="(video, index) in youtubeStore.videos"
-                      :key="video.id.videoId"
-                      :video="video"
-                      :index="index"
-                      :current="current"
-                  />
+        <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in youtubeStore.videos" :key="video.id.videoId"
+          :video="video" :index="index" :current="current" />
       </div>
-  </template>
+    </template>
 
   </v-card>
 </template>
 <script setup>
-import {ref} from 'vue'
-import {useUserStore} from '@/stores/user'
+import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
 import { useYoutubeStore } from "@/stores/youtube";
 import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
 const userStore = useUserStore()
 const youtubeStore = useYoutubeStore()
-const playMusic = (keyword)=>{
-    console.log(keyword)
-    youtubeStore.youtubeSearchByKeyword(keyword)
+const playMusic = (keyword) => {
+  console.log(keyword)
+  youtubeStore.youtubeSearchByKeyword(keyword)
 }
 
 const isPlaying = ref(false)
 
-const infoList = ref( [
+const infoList = ref([
   {
     name: 'ENJ',
     desc: [
@@ -74,7 +68,7 @@ const infoList = ref( [
       "운동하기로 마음 먹은 날에 계획을 세워 바로 실천할 수 있는 운동이 어울려요.",
       "추천하는 운동은 러닝과 헬스🏃🏻‍♂️에요!",
     ],
-    songs:['Baddie - IVE(아이브)' , 'Hype Boy - NewJeans(뉴진스)', 'Perfect Night - 르세라핌']
+    songs: ['Baddie - IVE(아이브)', 'Hype Boy - NewJeans(뉴진스)', 'Perfect Night - 르세라핌']
   },
   {
     name: 'ENP',
@@ -92,7 +86,7 @@ const infoList = ref( [
       "목적 의식을 중요하게 생각하는 유형으로 도전적인 운동이 잘 어울려요.",
       "추천하는 운동은 승마🏇🏻, 골프⛳ 그리고 크로스핏이에요!",
     ],
-    songs:['Seven(feat.Latto) - 정국', 'Dynamite - BTS(방탄소년단)', '거짓말 - 빅뱅']
+    songs: ['Seven(feat.Latto) - 정국', 'Dynamite - BTS(방탄소년단)', '거짓말 - 빅뱅']
   },
   {
     name: 'ESP',
@@ -101,7 +95,7 @@ const infoList = ref( [
       "신나는 음악에 맞춰 자신을 드러내는 운동이 어울려요.",
       "추천하는 운동은 복싱🥊, 폴댄스, 에어로빅이에요!",
     ],
-    songs:['챔피언 - 싸이(PSY)', '순정 - 코요태', '피땀눈물 - BTS(방탄소년단)']
+    songs: ['챔피언 - 싸이(PSY)', '순정 - 코요태', '피땀눈물 - BTS(방탄소년단)']
   },
   {
     name: 'INJ',
@@ -118,7 +112,7 @@ const infoList = ref( [
       "강사와 호흡을 맞추며 몸의 균형⚖️을 찾기 좋은 운동이 어울려요.",
       "추천하는 운동은 필라테스에요!",
     ],
-    songs:['사람 Pt.2 (feat.아이유) - Agust D' , '다음 생(Re-Birth) - B.I(비아이)','Kiss me more - Doja cat']
+    songs: ['사람 Pt.2 (feat.아이유) - Agust D', '다음 생(Re-Birth) - B.I(비아이)', 'Kiss me more - Doja cat']
   },
   {
     name: 'ISJ',
@@ -127,7 +121,7 @@ const infoList = ref( [
       "개인적인 성향이 강한 유형으로 팀플레이 스포츠보다 개인 종목이 더 어울려요.",
       "추천하는 운동은 수영🏊🏻‍♂️ 이에요!",
     ],
-    songs:['나의 별에게 - 수영(SOOYOUNG)','연애소설(Love Story) - 에픽하이', '힘내 - 소녀시대']
+    songs: ['나의 별에게 - 수영(SOOYOUNG)', '연애소설(Love Story) - 에픽하이', '힘내 - 소녀시대']
   },
   {
     name: 'ISP',
@@ -136,19 +130,18 @@ const infoList = ref( [
       "혼자만의 시간을 가지는 것을 중요하게 생각해요.",
       "추천하는 운동은 서핑🏄🏻‍♂️, 등산🌄이에요.",
     ],
-    songs:['다시 여기 바닷가 - 싹쓰리(유두래곤, 린다G, 비룡)', '합정역 5번출구 - 유산슬', '우리의 꿈 - 코요태']
+    songs: ['다시 여기 바닷가 - 싹쓰리(유두래곤, 린다G, 비룡)', '합정역 5번출구 - 유산슬', '우리의 꿈 - 코요태']
   },
   {
     name: '?',
     desc: [
       "AVTY 유형 테스트를 통해 나만의 운동 AVTY 유형을 알아보세요"
     ],
-    songs:['운동할 때 듣기 좋은 노래']
+    songs: ['운동할 때 듣기 좋은 노래']
   },
 ]);
 
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

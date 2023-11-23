@@ -20,9 +20,6 @@
         <div class="weekly-cnt">
           📒 Weekly Diary&nbsp;&nbsp;{{ weeklyCnt }}
         </div>
-        <div class="current-streak">
-          🗓️ 7일 연속 작성
-        </div>
       </div>
     </div>
   </div>
@@ -90,7 +87,7 @@ nav {
 }
 
 .profile-name {
-  font-size: 22px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -109,26 +106,20 @@ nav {
   transition: 0.3ms;
 }
 .total-cnt {
-  font-size: 16px;
+  font-size: 15px;
   text-align: start;
   margin: 5px 0px;
 }
 
 .weekly-cnt {
-  font-size: 16px;
+  font-size: 15px;
   text-align: start;
   margin: 5px 0px;
 }
 
-.current-streak {
-  font-size: 16px;
-  text-align: start;
-  margin: 5px 0px;
-}
-
-.profile-desc div{
+/* .profile-desc div{
   font-size: 0.8rem;
-}
+} */
 
 
 </style>

@@ -11,18 +11,6 @@ export const useUserStore = defineStore('user', () => {
 
     const loginUser = ref(null)
 
-    // const loginUser = ref({
-    //     userId: "",
-    //     userPassword: "",
-    //     userName: "",
-    //     nickName: "",
-    //     profileImage:"",
-    //     registerDate: "",
-    //     permission: "",
-    //     avtyCode: "",
-    //     activate: ""
-    // })
-
     const getUserList = function () {
         axios({
             url: REST_USER_API,

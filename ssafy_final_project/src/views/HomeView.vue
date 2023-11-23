@@ -49,7 +49,6 @@ setTimeout(() => {
 </script>
 
 <style scoped>
-
 * {
   padding: 0;
   margin: 0;
@@ -211,5 +210,4 @@ span:nth-child(4) {
   width: 10em;
   animation: img-fade-in 2.5s forwards cubic-bezier(0.5, 1, 0.89, 1);
 }
-
 </style>

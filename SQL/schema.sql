@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `user`(
 CREATE TABLE IF NOT EXISTS `diary`(
   `diary_id` INT AUTO_INCREMENT NOT NULL,
   `user_id` VARCHAR(20) CHARACTER SET utf8mb4 NOT NULL,
-  `create_date` DATE NOT NULL DEFAULT (current_date),
+  `create_date` TIMESTAMP DEFAULT now(),
   `save_image` VARCHAR(150),
   `original_image` VARCHAR(50),
   `title` VARCHAR(45) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `diary`(
   `view_count` int(52) DEFAULT 0,
   `like_count` int(52) DEFAULT 0,
   `range` int(2) DEFAULT 0,
-  `update_date` DATE,
+  `update_date` TIMESTAMP,
   CONSTRAINT `diary_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   PRIMARY KEY (`diary_id`)
 );

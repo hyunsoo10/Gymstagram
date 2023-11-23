@@ -1,7 +1,7 @@
 <template>
-    <div class="avty-main" >
-        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4"
-            elevation="4" height="auto" rounded max-width="800" width="100%">
+    <div class="avty-main">
+        <v-sheet id="outer" class="d-flex text-center mt-5 mb-20 mx-auto py-7 px-4" elevation="4" height="auto" rounded
+            max-width="800" width="100%">
             <div class="avty-test">
                 <section id="main" :style="styleObjMain">
                     <br>
@@ -221,11 +221,6 @@ function addAnswer(answerText, qIdx, idx) {
     // 2가지 응답버튼
     let answer = document.createElement('button');
     answer.classList.add('answerList');
-    // 부트스트랩 css 및 애니메이션 적용
-    // answer.classList.add('my-3');
-    // answer.classList.add('py-3');
-    // answer.classList.add('mx-auto');
-    // answer.classList.add('fadeIn');
 
     // 응답 전체 박스에 개별 응답버튼 넣기
     answerBox.appendChild(answer);
@@ -335,13 +330,13 @@ function setResult() {
 </script>
 
 <style>
-
 .avty-main {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 
 }
+
 #outer {
     margin-top: 5em;
     margin-bottom: 5em;
@@ -463,7 +458,6 @@ focus {
 .chart-button:hover {
     background: #776B5D;
 }
-
 </style>
 
 

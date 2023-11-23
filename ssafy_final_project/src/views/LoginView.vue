@@ -8,7 +8,8 @@
                 <div class="login-form">
                     <form method="post" id="login-form">
                         <input type="text" name="userId" placeholder="아이디" v-model="id"> <br>
-                        <input type="password" name="userPassword" placeholder="비밀번호" v-model="password" @keyup.enter="login">
+                        <input type="password" name="userPassword" placeholder="비밀번호" v-model="password"
+                            @keyup.enter="login">
                         <br>
                         <button button type="button" class="btn btn-secondary" @click="login">로그인</button>
                         <br>
@@ -18,17 +19,14 @@
                         <a href="/signup">회원가입</a>
                     </form>
                 </div>
-                
-  
+
+
                 <div>
                     <a id="custom-login-btn" @click="kakaoLogin()">
-                    <img
-                        src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-                        width="222"
-                        alt="카카오 로그인 버튼"
-                    />
+                        <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222"
+                            alt="카카오 로그인 버튼" />
                     </a>
-            </div>
+                </div>
             </section>
         </main>
     </div>
@@ -48,7 +46,7 @@ const router = useRouter();
 const user = ref(null);
 const store = useUserStore()
 
-const kakaoLogin = () =>{
+const kakaoLogin = () => {
     console.log("카카오 로그인")
     const redirect_uri = 'http://localhost:5173/kakaoLogin';
     const cliendId = '01bdd0d43fb0ea7f402dc99e9f0f02d4';
@@ -84,9 +82,10 @@ main {
     height: 60vh;
 }
 
-.login-title{
+.login-title {
     color: #776B5D;
 }
+
 .login-form {
     width: 80%;
     margin: 0 50px;
@@ -94,12 +93,12 @@ main {
     border: 1px solid #B0A695;
     border-radius: 10px;
     text-align: center;
-    
+
 }
 
 .login-form h2 {
     text-align: center;
-    
+
 }
 
 .login-form input {
@@ -134,11 +133,13 @@ button {
     border: #776B5D;
     background: #B0A695;
 }
-button:hover{
+
+button:hover {
     background: #776B5D;
 
 }
-#custom-login-btn{
+
+#custom-login-btn {
     cursor: pointer;
 }
 </style>
