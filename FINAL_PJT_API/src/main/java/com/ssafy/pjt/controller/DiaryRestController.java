@@ -274,7 +274,6 @@ public class DiaryRestController {
 
 			likeDiary.setUserId(userId);
 			likeDiary.setDiaryId(diaryId);
-//			System.out.println(likeDiary);
 			int result = diaryService.getLikeDiary(likeDiary);
 			if (result == 1) {
 				return new ResponseEntity<Integer>(1, HttpStatus.OK);

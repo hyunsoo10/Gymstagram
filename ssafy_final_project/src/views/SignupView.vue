@@ -88,12 +88,12 @@ const isDragged = ref(false)
 
 const onDragenter = function (event) {
     isDragged.value = true
-    console.log("enter")
+    // console.log("enter")
 }
 
 const onDragleave = function (event) {
     isDragged.value = false
-    console.log("leave")
+    // console.log("leave")
 }
 
 const onDragover = function () {
@@ -107,11 +107,6 @@ const onDrop = function (event) {
     console.log(file)
     dragUpload(file[0])
 }
-
-// const onFileChange = function(event){
-//     const file = event.target.files
-//     console.log("after: "+file)
-// }
 
 
 const image = ref('');
@@ -168,8 +163,6 @@ const regist = function (event) {
             );
         })
         .then(() => {
-            console.log(checkId.value)
-            console.log(nickNameCheck.value)
             if (checkId.value) {
                 alert('이미 존재하는 ID입니다.');
                 // router.push('/signup');
@@ -186,8 +179,6 @@ const regist = function (event) {
     const signup = () => {
 
         // 모든 유효성 검사를 통과했으면 회원 등록 가능
-        // console.log(user)
-        // console.log(image.value)
         let formData = new FormData()
         if (image.value != null) {
             // console.log('1')
@@ -227,15 +218,15 @@ onMounted(() => {
             'Access-Control-Allow-Origin': '*'
         }
     })
-        .then((response) => {
-            // console.log(response['data'].words[0])
-            randomNickName.value = response['data'].words[0]
-            user.nickName = randomNickName.value
-            // console.log(user.nickName)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+    .then((response) => {
+        // console.log(response['data'].words[0])
+        randomNickName.value = response['data'].words[0]
+        user.nickName = randomNickName.value
+        // console.log(user.nickName)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 
 })
 
