@@ -5,10 +5,16 @@
                 <v-icon start icon="mdi-arrow-left"></v-icon>
                 Back
             </v-btn>
-            <v-btn class="ma-3 mx-3 update-btn" v-if="diaryStore.diary.userId === userStore.loginUser.userId"
-                @click.stop="dialog = true">
-                <v-icon start icon="mdi-pencil"></v-icon>수정하기
-            </v-btn>
+            <div>
+                <v-btn class="ma-3 mx-3 update-btn" v-if="diaryStore.diary.userId === userStore.loginUser.userId"
+                    @click.stop="dialog = true">
+                    <v-icon start icon="mdi-pencil"></v-icon>수정하기
+                </v-btn>
+                <v-btn class="ma-3 mx-3 delete-btn" v-if="diaryStore.diary.userId === userStore.loginUser.userId"
+                    @click.="deleteDiary(diaryStore.diary)" color="red-lighten-1">
+                    <v-icon start icon="mdi-delete"></v-icon>삭제하기
+                </v-btn>
+            </div>
         </div>
         <diaryUpdate :diary="diaryStore.diary" @close-Dialog="close" :dialog="dialog" v-model="dialog"></diaryUpdate>
         <div class="diary-body">
@@ -211,12 +217,24 @@ const diaryComment = computed(() => {
         return comment.diaryId == diaryStore.diary.diaryId
     })
 })
-// const diaryComment = computed(() => {
-//     return diaryStore.comments.filter((comment) => {
-//         return comment.diaryId == diaryStore.diary.diaryId
-//     })
-// })
 
+const deleteDiary = (diary)=>{
+    var flag = confirm("정말로 삭제하시겠습니까?")
+    if(flag){
+        axios({
+            url:`http://localhost:8080/diary-api/diary/${diary.diaryId}`,
+            method: 'DELETE',
+            headers: {
+                'access-token': sessionStorage.getItem('access-token')
+            }
+        })
+        .then((res) => {
+            router.push(`/mypage/${diary.userId}`)
+            // console.log('다이어리 삭제')
+        })
+        .catch((e) => console.log(e))
+    }
+}
 
 const back = () => { router.go(-1) }
 </script>
