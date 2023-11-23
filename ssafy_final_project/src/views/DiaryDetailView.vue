@@ -211,6 +211,11 @@ const diaryComment = computed(() => {
         return comment.diaryId == diaryStore.diary.diaryId
     })
 })
+// const diaryComment = computed(() => {
+//     return diaryStore.comments.filter((comment) => {
+//         return comment.diaryId == diaryStore.diary.diaryId
+//     })
+// })
 
 
 const back = () => { router.go(-1) }

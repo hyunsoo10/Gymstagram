@@ -136,10 +136,10 @@ export const useDiaryStore = defineStore('diary', () => {
                 'access-token': sessionStorage.getItem('access-token')
             }
         })
-            .then((res) => {
-                console.log('댓글 작성 성공')
-                comments.value.push(comment)
-            })
+        .then((res) => {
+            console.log('댓글 작성 성공')
+            comments.value.push(comment)
+        })
     }
 
     //Avty별 다이어리 조회 
