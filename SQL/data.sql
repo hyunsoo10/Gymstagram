@@ -15,7 +15,7 @@ INSERT INTO `avty`VALUES
 
 INSERT INTO `user` (`user_id`, `user_password`, `user_name`, `nickname`, `avty_code`, `profile_image`) 
 VALUES
-('ssafy', '1q2w3e4r!', '조현수', '갓현수', 0, 'profile.png'),
+('ssafy', '1234', '조현수', '갓현수', 0, 'profile.png'),
 ('dhwlgP', '1q2w3e4r!', '오지혜', '헤일리1', 0, 'profile.png'),
 ('rnjsdbrud', '1q2w3e4r!', '권유경', 'K유경', 6, 'profile.png'),
 ('rlaskawns', '1q2w3e4r!', '김남준', '올리버쌤', 7, 'profile.png'),
