@@ -141,6 +141,7 @@
 ## 📌 화면 설계서 (Figma)
 
 
+피그마 화면 넣어야 됌
 
 
 # 소스코드 및 DB 스크립트
@@ -498,9 +499,9 @@ User의 avty 테스트가 끝나면, 해당 결과를 프론트에서 받아온 
 
 ### Mapper
 
-#### 1 diaryMapper.xml
+#### 1. diaryMapper.xml
 
-
+**다이어리 조회**
 ```xml
 	<!-- 전체 다이어리 조회 -->
 	<select id="selectAllDiary" parameterType="SearchCondition" resultType="Diary">
@@ -526,7 +527,10 @@ diary 테이블에서 데이터를 가져올 때 user 테이블과 avty테이블
 
 <hr>
 <br>
+<br>
+<br>
 
+**weekly diary**
 ```xml
 	<!-- weekly 다이어리 조회 -->
 	<select id="selectMyWeeklyDiary" parameterType="String" resultMap="diaryMap">
@@ -545,7 +549,10 @@ user의 weekly diary를 조회해서 가져오는 쿼리문 입니다. WHERE 조
 
 <hr>
 <br>
+<br>
+<br>
 
+**diary 좋아요**
 ```xml
 	<!-- 다이어리 좋아요 -->
 	<insert id="like" parameterType="LikeDiary">
@@ -567,8 +574,10 @@ user의 weekly diary를 조회해서 가져오는 쿼리문 입니다. WHERE 조
 
 <hr>
 <br>
+<br>
+<br>
 
-
+**대댓글**
 ```xml
 	<!-- 대댓글 조회 -->
 	<select id="selectSubComment" resultMap="commentMap">
@@ -591,8 +600,10 @@ comment의 parent_comment에 0이 아닌 값이 있다면 해당 comment는 하�
 
 <hr>
 <br>
+<br>
+<br>
 
-#### 2 userMapper.xml
+#### 2.  userMapper.xml
 
 ```xml
 	<!-- 회원 탈퇴 -->
@@ -776,7 +787,8 @@ const kakaoGetUserInfo = () =>{
 이렇게 카카오 로그인을 통해 회원가입한 유저 DB에는 email에 카카오 로그인 email 정보가 담깁니다. 이 email 정보는 다음에 해당 유저가 카카오 로그인을 시도할 때 바로 로그인할 수 있게 해주는 방식으로 활용했습니다.
 <hr>
 <br>
-
+<br>
+<br>
 
 ### 회원가입
 
@@ -868,19 +880,364 @@ onMounted(() => {
 
 <hr>
 <br>
+<br>
+<br>
+
+### AVTY 퀴즈
+
+#### 1. 퀴즈 진행 및 결과
 
 
+#### 2. Apex Chart
+```html
+<template>
+    <div style="text-align: center;">
+        <div id="chart">
+            <p>GYM STAGRAM 회원AVTY 현황</p>
+            <VueApexCharts type="donut" :options="chartOptions" :series="avtyRate"></VueApexCharts>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+import VueApexCharts from 'vue3-apexcharts'
+
+ const props = defineProps({
+    avtyData: Object
+})
+const avtyRate = ref([])
+const avtyName= ref( [])
+
+avtyRate.value = Object.values(props.avtyData)
+avtyName.value = Object.keys(props.avtyData)
+
+const chartOptions = ref({
+    chart:{
+        width: 200,
+        height: 300,
+        type: 'donut',
+    },
+    labels: ['ENJ', 'ENP', 'ESJ', 'ESP', 'INJ', 'INP', 'ISJ', 'ISP'],
+    colors:["#A099FB", "#FE79AB", "#01CECB", "#f32c52", "#FCE38A", "#79AC78", "#96B6C5", "#B3A492"],
+    fill: {
+    colors: ["#A099FB", "#FE79AB", "#01CECB", "#f32c52", "#FCE38A", "#79AC78", "#96B6C5", "#B3A492"]
+    },
+
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 200
+            },
+            legend: {
+                position: 'bottom'
+            },
+         }
+    }]
+})
+
+</script>
+```
+📘 Description <br>
+사용자가 퀴즈를 진행할 수 있고, 퀴즈의 결과에 따라 AVTY 코드 값이 유저 DB에 저장됩니다. 그리고 사용자는 현재 회원의 AVTY 비율을 도넛 차트로 확인할 수 있습니다.
+
+<hr>
+<br>
+<br>
+<br>
+
+### 오픈 API
+
+#### 공공 데이터 포탈 / Kakao Map
+
+``` js
+
+```
+
+#### 추천 음악 재생 (AVTY.vue)
+```html
+    <v-card-title>🎙️추천 노래🎙️</v-card-title>
+
+    <div class="px-4" style="margin-bottom: 2em;;">
+      <v-chip-group v-model="selection" selected-class="text-deep-purple-accent-4" style="justify-content: center;">
+        <template v-for="song in infoList[userStore.loginUser.avtyCode].songs">
+          <v-chip @click="playMusic(song), isPlaying = !isPlaying">🎶 {{ song }}</v-chip>
+        </template>
+      </v-chip-group>
+    </div>
+
+    <div class="play-box">
+    </div>
+    <template v-if="isPlaying">
+      <div class="container">
+        <YoutubeMusicPlayer class="youtube-list" v-for="(video, index) in youtubeStore.videos" :key="video.id.videoId"
+          :video="video" :index="index" :current="current" />
+      </div>
+    </template>
+
+    <script setup>
+        import { ref } from 'vue'
+        import { useYoutubeStore } from "@/stores/youtube";
+        import YoutubeMusicPlayer from "@/components/youtube/YoutubeMusicPlayer.vue";
+
+        const youtubeStore = useYoutubeStore()
+        const playMusic = (keyword) => {
+        console.log(keyword)
+        youtubeStore.youtubeSearchByKeyword(keyword)
+        }
+
+        const infoList = ref([
+            {
+                name: 'ENJ',
+                desc: [
+                "계획 세우는 것🗓️을 좋아하는 사람이에요.",
+                "운동하기로 마음 먹은 날에 계획을 세워 바로 실천할 수 있는 운동이 어울려요.",
+                "추천하는 운동은 러닝과 헬스🏃🏻‍♂️에요!",
+                ],
+                songs: ['Baddie - IVE(아이브)', 'Hype Boy - NewJeans(뉴진스)', 'Perfect Night - 르세라핌']
+            },
+        // 중략...
+        ])
+
+  </script>
+```
+<br>
+<br>
+
+#### Youtube (YoutubeMusicPlayer.vue)
+```html
+<template>
+  <div style="display: none;">
+      <iframe
+        width="300"
+        height="200"
+        :src="videoURL"
+        title="YouTube video player"
+        frameborder="1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+  </div>
+</template>
+
+<script setup>
+import { computed } from "vue";
+const props = defineProps({
+  video: {
+    type: Object,
+    required: true,
+  },
+  index: Number,
+  current: Number,
+});
+const videoURL = computed(() => {
+  const videoId = props.video.id.videoId;
+  return `https://www.youtube.com/embed/${videoId}?start=80&end=100&autoplay=1&mute=0`;
+});
+
+</script>
+```
+📘 Description <br>
+` playMusic(song), isPlaying = !isPlaying"`  함수를 통해서 재생하려고 하는 음악의 이름을 keyword로 Youtube API에 검색 요청을 하면, 해당하는 음악 영상이 자동 재생되는 방식입니다.
+
+isPlaying이 true 값이면 v-if="isPlaying" 조건으로 YoutubeMusicPlayer.vue 가 렌더링 되어서 음악이 재생되고, false면 YoutubeMusicPlayer.vue 가 렌더링 되지 않기 때문에 v-if 속성의 특징을 활용해서 마치 음악을 재생하고 중지하는 효과를 구현했습니다.
+
+사용자는 AVTY 결과 종료후 결과 화면에서 혹은 테스트 후 프로필 화면에서 추천음악을 미리듣기 할 수 있습니다. 이때 Youtube API를 활용해서 영상 검색 쿼리를 통해 음악을 가져오고, src 경로에 값을 조정해서 자동재생과 원하는 구간만큼 재생할 수 있도록 설정해 줍니다. 
+- `https://www.youtube.com/embed/${videoId}?start=80&end=100&autoplay=1mute=0` 
+- start=80 : 80초 부터 재생
+- end=100 : 100초까지 재생
+- autoplay=1 : 자동 재생
+- mute=0 : 소리 켬
+
+<hr>
+<br>
+<br>
+<br>
 
 
+### 이미지 파일 업로드
+
+#### 1. Drag & Drop
+
+```html
+<div class="input-group" >
+    <label for="file" ref="filebtn" > </label>
+    <input type="file" id="file" class="form-control" @change="upload" :ref="image"  accept="image/.*">
+</div>
+
+<!--Drag & Drop 파일 업로드-->
+<div 
+    @dragenter="onDragenter"
+    @dragover.prevent="onDragover"
+    @dragleave="onDragleave"
+    @drop.prevent="onDrop"
+    @click="$refs.filebtn.click()"
+    @change="upload"
+        :ref="image"
+    class="drag-box">
+    <img :src="imageUploaded" style="width: 20rem; margin-top: 10px" />
+</div>
+<div class="d-flex justify-content-center " style="margin-top: 10px;">
+    <v-btn class="create-btn" @click="createDiary($event)">등록</v-btn>
+    <v-btn class="close-btn" @click="close">닫기</v-btn>
+</div>
+                
+<script setup>
+import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const userStore = useUserStore()
 
 
+const diary = ref({
+    userId: "",
+    originalImage: "",
+    title: "",
+    content: "",
+    saveImage:"",
+})
 
+const isDragged = ref(false)
 
+const onDragenter = function(event){
+    isDragged.value = true
+}
 
+const onDragleave = function(event){
+    isDragged.value = false
+}
 
+const onDrop = function(event){
+    isDragged.value = false
+    const file = event.dataTransfer.files
+    dragUpload(file[0])
+}
 
+const dragUpload = function (file) {
+    console.log(file)
+    image.value = file
+    imageUploaded.value = URL.createObjectURL(image.value)
+    uploadName.value = image.value.name;
+}
+</script>
+``` 
+📘 Description <br>
+ `@click="$refs.filebtn.click()` :  drag & drop box 영역을 눌렀을 때 파일첨부 버튼을 누르는 이벤트를 걸어서 발생시켜줍니다.
 
+`@dragover.prevent="onDragover" @drop.prevent="onDrop"`  :  dragover와 drop의 기본 이벤트를 막아주고 isDragged ref 변수를 조작합니다. 그리고 drop이 발생하면 해당 이벤트의 target 파일을 업로드합니다.
 
+<hr>
+<br>
+<br>
+
+#### 2. 이미지 파일을 Base64 문자열로 인코딩
+```js
+const createDiary = function (event) {
+
+    diary.value.userId = userStore.loginUser.userId
+
+    if (image.value != null) {
+        //파일 읽기
+        var reader = new FileReader();
+        reader.readAsDataURL(image.value)
+        //readystate == 2일 때 result에 이미지 파일이 base64로 인코딩된 문자열이 담겨 있음
+        reader.onloadend = ()=>{
+           diary.value.saveImage = reader.result
+           console.log(diary.value.originalImage)
+           axios.post('http://localhost:8080/diary-api/diary', diary.value, {
+               headers: {
+                   'Content-Type': 'application/json',
+                    'access-token': sessionStorage.getItem('access-token')
+               },
+           }).then(() => {
+               console.log("다이어리 추가 성공")
+               emit("closeDialog")
+               router.go()
+           }).catch(() => {
+               console.log("다이어리 추가 실패")
+           })
+        }
+    }else{
+        axios.post('http://localhost:8080/diary-api/diary', diary.value, {
+            headers: {
+                'Content-Type': 'application/json',
+                 'access-token': sessionStorage.getItem('access-token')
+            },
+        }).then(() => {
+            emit("closeDialog")
+            router.go()
+        }).catch(() => {
+            console.log("다이어리 추가 실패")
+        })
+    }
+}
+```
+📘 Description <br>
+이미지 파일을 Base64 문자열로 인코딩해서 diary 객체에 담아서 JSON 데이터 형태로 백엔드 부분으로 전달할 수 있습니다. 이렇게 전달할 경우 스프링에서 @RequestBody 형식으로 받을 수있습니다. 실제 파일을 업로드 하는 것이 아니라, 문자열을 저장해서 불러오는 형식으로 한다면 인코딩한 문자열만 저장해서 관리하면 됩니다. 하지만 실제 파일 형태로 업로드하고 싶다면 Base64 문자열을 디코딩해서 Byte[] 배열로 전환 후 File을 생성하는 로직을 추가할 필요가 있습니다.
+<hr>
+<br>
+
+#### 3. diary 객체를 formData 형태로 전달
+
+```js
+const createDiary = function (event) {
+
+    console.log(diary.value.content)
+    
+    if(diary.value.title == ""){
+        alert("제목을 입력하세요")
+        return
+    }
+    if(diary.value.content == ""){
+        alert("내용을 입력하세요")
+        return
+    }
+
+    diary.value.userId = userStore.loginUser.userId
+    var formData = new FormData()
+    if (image.value != null) {
+        diary.value.originalImage = image.value.name
+        formData.append('image', image.value)
+        formData.append('diary', new Blob([JSON.stringify(diary.value)], { type: "application/json" }));
+    } else {
+        formData.append('diary', new Blob([JSON.stringify(diary.value)], { type: "application/json" }));
+    }
+    axios.post('http://localhost:8080/diary-api/diary', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+             'access-token': sessionStorage.getItem('access-token')
+
+        },
+
+    }).then(() => {
+        console.log("다이어리 추가 성공")
+        emit("closeDialog")
+        router.go()
+    }).catch(() => {
+        console.log("다이어리 추가 실패")
+    })
+}
+const uploadName = ref('첨부파일')
+
+const imageUploaded = ref("../src/assets/Gymstagram2.png")
+const image = ref(null)
+const upload = function (e) {
+    image.value = e.target.files[0]
+    uploadName.value = image.value.name;
+    imageUploaded.value = URL.createObjectURL(image.value)
+}
+
+```
+
+📘 Description <br>
+이미지 파일을 문자열로 전환하는 것이 아니라, 이번에는 JSON 객체를 파일 형태로 전환해서 formData에 담은 후에 백엔드로 함께 보내는 방식입니다. 이때 Spring에서는 MultipartFile 형태로, @RequestPart와 함께 데이터를 전달받아서 처리하는 작업을 해줘야합니다. 
+<hr>
+<br>
+<br>
 
 ## 📌 DB
 
@@ -1026,22 +1383,23 @@ VALUES
 
 
 
-## 	✏️ Commit Message Rule
+## 	📒Commit Message Rule
 ### [커밋 타입]: [작업내용]
-Feat : 기능 (새로운 기능)
 
-Fix : 버그 (버그 수정)
+✏️ Feat : 기능 (새로운 기능)
 
-Refactor : 리팩토링
+✏️ Fix : 버그 (버그 수정)
 
-Design : css나 디자인 변경, 이미지 추가 등
+✏️  Refactor : 리팩토링
 
-Style : 코드 포맷 변경, 세미콜론 누락, 코드 수정이 없는 경우
+✏️ Design : css나 디자인 변경, 이미지 추가 등
 
-Comment : 필요한 주석 추가 했을 경우
+✏️ Style : 코드 포맷 변경, 세미콜론 누락, 코드 수정이 없는 경우
 
-Docs : 문서 (문서 추가, 수정, 삭제 ex. README.md, DailyScrum.md)
+✏️ Comment : 필요한 주석 추가 했을 경우
 
-Chore : 기타 변경사항
+✏️ Docs : 문서 (문서 추가, 수정, 삭제 ex. README.md, DailyScrum.md)
+
+✏️ Chore : 기타 변경사항
 
 
