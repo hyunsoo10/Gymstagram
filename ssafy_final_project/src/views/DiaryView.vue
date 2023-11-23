@@ -87,7 +87,7 @@ const currentPageDiaryList = computed(() => {
 })
 
 
-//avty다이어리 가져오기
+// avty다이어리 가져오기
 const avtyDiary = function (e) {
   diaryStore.getAvtyDiary(e.currentTarget.value)
 }
