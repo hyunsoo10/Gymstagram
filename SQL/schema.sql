@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `comment`(
   `comment_id` INT(52) AUTO_INCREMENT NOT NULL,
   `diary_id` INT NOT NULL,
   `user_id` VARCHAR(45) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+  `nickname` VARCHAR(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `content` VARCHAR(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `write_date` TIMESTAMP DEFAULT now(),
   `update_date` TIMESTAMP,
@@ -52,8 +53,6 @@ CREATE TABLE IF NOT EXISTS `comment`(
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`diary_id`) REFERENCES `diary` (`diary_id`) ON DELETE CASCADE,
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE IF NOT EXISTS `avty`(
   `avty_code` INT NOT NULL,

@@ -20,6 +20,9 @@
             v-bind="props">
            {{ diary.avty }}
       </v-btn>
+      <v-card-text class="userId-info">
+        {{ diary.userId }}
+        </v-card-text>
     </v-card-actions>
   </v-card>
 </template>
@@ -103,6 +106,12 @@ onMounted(() => {
   border: 1px solid #B3A492;
   color : #B3A492;
   background: #b3a49249;
+}
+
+.userId-info{
+  text-align: end;
+  font-weight: lighter;
+  font-size: 14px;
 }
 
 </style>

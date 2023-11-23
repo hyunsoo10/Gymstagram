@@ -136,9 +136,10 @@
 
 	<!-- Diary의 댓글 조회 -->	
 	<select id="selectDiaryComments" parameterType="int" resultMap="commentMap">
-			SELECT * 
-			FROM comment
-			WHERE diary_id = #{diaryId}
+			SELECT c.comment_id, c.diary_id, c.user_id, u.nickname, c.content, c.write_date, c.update_date, c.is_deleted, c.parent_comment
+			FROM comment c
+			LEFT JOIN user u ON c.user_id = u.user_id
+			WHERE diary_id = #{diaryId};
 	</select>
 	
 	<!-- 댓글 수정 -->

@@ -4,6 +4,7 @@ public class Comment {
 	private int commentId;
 	private int diaryId;
 	private String userId;
+	private String nickName;
 	private String writeDate;
 	private String updateDate;
 	/** 삭제 되더라도, 해당 댓글에 달린 대댓글은 표시될 수 있도록 DB에서 완전 삭제하지 않을 것임 */
@@ -66,6 +67,14 @@ public class Comment {
 		this.userId = userId;
 	}
 
+	public String getnickName() {
+		return nickName;
+	}
+
+	public void setnickName(String nickName) {
+		this.nickName =  nickName;
+	}
+	
 	public String getWriteDate() {
 		return writeDate;
 	}
@@ -108,9 +117,9 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [commentId=" + commentId + ", diaryId=" + diaryId + ", userId=" + userId + ", writeDate="
-				+ writeDate + ", updateDate=" + updateDate + ", isDeleted=" + isDeleted + ", parentComment="
-				+ parentComment + ", content=" + content + "]";
+		return "Comment [commentId=" + commentId + ", diaryId=" + diaryId + ", userId=" + userId + ", nickName="
+				+ nickName + ", writeDate=" + writeDate + ", updateDate=" + updateDate + ", isDeleted=" + isDeleted
+				+ ", parentComment=" + parentComment + ", content=" + content + "]";
 	}
 
 }

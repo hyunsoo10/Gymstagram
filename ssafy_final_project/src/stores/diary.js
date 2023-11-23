@@ -90,6 +90,7 @@ export const useDiaryStore = defineStore('diary', () => {
         })
             .then((res) => {
                 if (res.data.length > 0) {
+                    console.log(res.data)
                     comments.value = res.data
                 }
             })
