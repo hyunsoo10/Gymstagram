@@ -2,7 +2,7 @@
     <div class="reviews d-flex flex-column" v-if="!(comment.deleted && diaryStore.getSubCommentLength(comment.commentId) == 0 )">
         <div class="comment-info">
         <div class="writer">
-            <strong>👶🏻&nbsp;</strong>{{ comment.userId }}
+            <strong>👶🏻&nbsp;</strong>{{ comment.nickName }}
         </div>
         <div class="comment-date">{{ comment.writeDate }} </div>
     </div>
@@ -51,7 +51,7 @@
                     <v-divider></v-divider>
                     <template v-for="subComment in diaryStore.subComments">
                         <v-card-text>
-                            <span>{{ subComment.userId }} : {{ subComment.content }}</span>
+                            <span>{{ subComment.nickName}} : {{ subComment.content }}</span>
                             <small style="float: right">
                                 <template
                                     v-if="userStore.loginUser != null && (userStore.loginUser.userId == subComment.userId)">
@@ -269,9 +269,9 @@ const createSubComment = function () {
     font-size: 1em;
 }
 .comment {
-    padding-top: 10px;
-    margin: 20px;
-    font-size: 1.3rem;
+    padding-top: 5px;
+    margin: 10px 20px;
+    font-size: 1.2rem;
 }
 
 .update-btn{
