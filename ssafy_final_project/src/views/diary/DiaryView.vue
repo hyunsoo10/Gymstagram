@@ -40,7 +40,7 @@
       <div class="text-center vuetify-page" >
         <v-container  class="vuetify-page">
           <v-row justify="center"  class="vuetify-page">
-            <v-col cols="5" class="vuetify-page">
+            <v-col cols="7" class="vuetify-page">
               <v-container class="max-width vuetify-page" >
                 <v-pagination
                   v-model="currentPage"
