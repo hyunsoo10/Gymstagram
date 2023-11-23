@@ -360,25 +360,20 @@ h3 {
   width: 64%;
 }
 
+
+
+.page-link {
+  color: #A9B388;
+}
+.active>.page-link, .page-link.active {
+  background-color: #cdcdcd;
+  color: white;
+}
+
 .page-link {
   color: #000; 
   background-color: #ffffff;
   border: 1px solid #ccc; 
-}
-
-.page-item.active .page-link {
- z-index: 1;
- color: #555;
- font-weight:bold;
- background-color:#cdcdcd;
- border-color:#cdcdcd;
- 
-}
-
-.page-link:focus, .page-link:hover {
-  color: #000;
-  background-color:#cdcdcd; 
-  border-color: #cdcdcd;
 }
 </style>
   
