@@ -307,7 +307,6 @@ onMounted(() => {
                                     break;
                             }
                         } else if (item.category === "PTY") {
-                            // pty.value = item.fcstValue;
                             switch (item.fcstValue) {
                                 case "1":
                                     weatherIcon.value = "🌧️";

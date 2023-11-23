@@ -33,11 +33,6 @@ import { useUserStore } from '@/stores/user';
 const userStore = useUserStore()
 
 const router = useRouter();
-
-// const loginUser = JSON.parse(localStorage.getItem('loginUser'))
-
-
-// const userName = loginUser.userName;
 const profileImage = "../src/assets/user_image/" + userStore.loginUser.userId + "/" + userStore.loginUser.profileImage;
 
 defineProps({
