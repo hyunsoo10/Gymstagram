@@ -14,7 +14,6 @@
 
 <script setup>
 import { computed } from "vue";
-import _ from "lodash";
 const props = defineProps({
   video: {
     type: Object,
