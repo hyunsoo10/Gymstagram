@@ -37,11 +37,11 @@
     </div>
 
    <!--vuetify pagination-->
-      <div class="text-center">
-        <v-container class="vuetify-page">
-          <v-row justify="center">
-            <v-col cols="5">
-              <v-container class="max-width">
+      <div class="text-center vuetify-page" >
+        <v-container  class="vuetify-page">
+          <v-row justify="center"  class="vuetify-page">
+            <v-col cols="5" class="vuetify-page">
+              <v-container class="max-width vuetify-page" >
                 <v-pagination
                   v-model="currentPage"
                   class="my-4"
@@ -167,6 +167,7 @@ h3 {
   color: #897bff;
 }
 .vuetify-page{
+  margin: 0.1em auto !important;
 }
 .button-container {
   padding: 16px;
