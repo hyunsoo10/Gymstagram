@@ -232,7 +232,7 @@ public class UserRestController {
 	@ApiOperation(value = "로그인 with Jwt 토큰인증")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		System.out.println("백앤드로 넘어오는 유저 정보 : " + user);
+//		System.out.println("백앤드로 넘어오는 유저 정보 : " + user);
 		HttpStatus status = null;
 		try {
 			//로그인 시도 user 객체의 ID와 비밀번호에 해당하는 user정보가 있는지 DB에서 검사
@@ -257,7 +257,7 @@ public class UserRestController {
 					//세션 스토리지에 유저의 비밀번호를 저장하고 싶지 않을 때 읨의로 set해서 프론트쪽에 보낼 수 있다
 //					user.setUserPassword("TOP-SECRET");
 					user.setUserPassword(dbUser.getUserPassword());
-					System.out.println("프론트로 넘길 유저 정보 : " +user);
+//					System.out.println("프론트로 넘길 유저 정보 : " +user);
 					
 					result.put("access-token", jwtUtil.createToken("user", user));
 					
