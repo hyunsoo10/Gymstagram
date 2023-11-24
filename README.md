@@ -139,7 +139,9 @@
 ## 📌 화면 설계서 (Figma)
 <img src="README_IMG/Figma.png">
 
-피그마 화면 넣어야 됌
+
+
+
 
 # 🎬 프로젝트 OVERVIEW
 
