@@ -166,7 +166,6 @@ onMounted(() => {
 })
 
 const ableUser = () => {
-  // console.log("계정 활성화")
   if (confirmPassword.value === userStore.loginUser.userPassword) {
     axios({
       url: `http://localhost:8080/user-api/user/activate/${userStore.loginUser.userId}`,
@@ -179,10 +178,9 @@ const ableUser = () => {
         let user = {
           userId: userStore.loginUser.userId,
           userPassword: confirmPassword.value
-          // alert(res.data)
         }
         userStore.refreshLogin(user)
-        // activateDialog.value = false
+
         alert("계정이 활성화 되었습니다.")
         router.go()
       })

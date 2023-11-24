@@ -130,4 +130,5 @@ onMounted(() => {
   text-align: end;
   font-weight: lighter;
   font-size: 14px;
-}</style>
+}
+</style>

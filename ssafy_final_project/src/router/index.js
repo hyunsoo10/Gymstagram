@@ -13,7 +13,7 @@ import DiaryUpdate from '@/components/diary/diaryUpdate.vue'
 import KakaoLoginView from '@/views/user/KakaoLoginView.vue'
 
 
-import {useUserStore} from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,9 +30,9 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         //로그인 안했으면 못들어간다
         const userStore = useUserStore();
-          if (userStore.loginUser ==null) {
-            return { name: 'home' }
-          }
+        if (userStore.loginUser == null) {
+          return { name: 'home' }
+        }
       }
     },
     {
@@ -42,9 +42,9 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         //로그인 했으면 못들어간다
         const userStore = useUserStore();
-          if (userStore.loginUser!=null) {
-            return { name: 'home' }
-          }
+        if (userStore.loginUser != null) {
+          return { name: 'home' }
+        }
       }
     },
     {
@@ -52,9 +52,9 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
       beforeEnter: (to, from) => {
-      //로그인 했으면 못들어간다
-      const userStore = useUserStore();
-        if (userStore.loginUser!=null) {
+        //로그인 했으면 못들어간다
+        const userStore = useUserStore();
+        if (userStore.loginUser != null) {
           return { name: 'home' }
         }
       }
@@ -68,12 +68,6 @@ const router = createRouter({
       path: '/diary',
       name: 'diary',
       component: DiaryView,
-      // children: [{
-      //   path: ":diaryId",
-      //   name: "diaryDetail",
-      //   component: DiaryDetailView
-      // }
-      // ]
     },
     {
       path: '/create',
@@ -98,9 +92,9 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         //로그인 안했으면 못들어간다
         const userStore = useUserStore();
-          if (userStore.loginUser ==null) {
-            return { name: 'home' }
-          }
+        if (userStore.loginUser == null) {
+          return { name: 'home' }
+        }
       },
       children: [{
         path: ":userId",
@@ -109,9 +103,9 @@ const router = createRouter({
         beforeEnter: (to, from) => {
           //본인 my page 아니면 못들어간다
           const userStore = useUserStore();
-            if (userStore.loginUser.userId != to.params["userId"]) {
-              return { name: 'home' }
-            }
+          if (userStore.loginUser.userId != to.params["userId"]) {
+            return { name: 'home' }
+          }
         },
       }
       ]
@@ -119,7 +113,7 @@ const router = createRouter({
     {
       path: '/kakaoLogin',
       name: 'kakaoLogin',
-      query:{
+      query: {
         code: ''
       },
       component: KakaoLoginView,

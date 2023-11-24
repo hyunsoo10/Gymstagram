@@ -5,7 +5,7 @@ import axios from "axios";
 export const useYoutubeStore = defineStore("youtube", () => {
   const videos = ref([]);
 
-  const avtyMusicList=[
+  const avtyMusicList = [
     "Baddie-IVE(아이브) ",
     "음악의 신-세븐틴(SEVENTEEN)",
     "Seven(feat.Latto)-정국",
@@ -33,7 +33,7 @@ export const useYoutubeStore = defineStore("youtube", () => {
       .then((response) => {
         videos.value = response.data.items;
       })
-      .catch(() => {});
+      .catch(() => { });
   };
   const youtubeSearchByKeyword = function (keyword) {
     const URL = "https://www.googleapis.com/youtube/v3/search";
@@ -52,7 +52,7 @@ export const useYoutubeStore = defineStore("youtube", () => {
       .then((response) => {
         videos.value = response.data.items;
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   return { videos, youtubeSearch, youtubeSearchByKeyword };

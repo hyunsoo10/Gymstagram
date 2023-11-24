@@ -143,19 +143,42 @@
 
 # 🎬 프로젝트 OVERVIEW
 
-#### 회원가입 
-#### 로그인
-#### 카카오로그인
-#### AVTY 테스트
-#### 마이페이지
-#### 회원 정보 수정(비활성화, 탈퇴)
-#### 다이어리 작성
-#### 다이어리 조회
-#### 다이어리 수정
-#### 다이어리 삭제
-#### 댓글 작성, 수정, 삭제
-#### 답글 작성, 수정, 삭제
+#### 회원가입 (파일 Drag & Drop)
+<img src="README_IMG/회원가입.gif">
 
+#### 로그인 / 로그아웃
+<img src="README_IMG/홈_로그인_로그아웃.gif">
+
+#### 카카오로그인
+<img src="README_IMG/카카오로그인.gif">
+
+#### AVTY 테스트
+<img src="README_IMG/AVTY테스트.gif">
+
+#### 회원 정보 수정(비활성화, 탈퇴)
+<img src="README_IMG/회원정보수정.gif">
+
+#### 다이어리 작성
+<img src="README_IMG/다이어리작성.gif">
+
+#### 다이어리 조회
+<img src="README_IMG/다이어리조회.gif">
+
+#### 다이어리 수정
+<img src="README_IMG/다이어리수정.gif">
+
+#### 다이어리 삭제
+<img src="README_IMG/다이어리삭제.gif">
+
+#### 댓글 작성, 수정, 삭제
+<img src="README_IMG/댓글.gif">
+
+#### 답글 작성, 수정, 삭제
+<img src="README_IMG/답글.gif">
+
+
+<br>
+<br>
 
 # 소스코드 및 DB 스크립트
 

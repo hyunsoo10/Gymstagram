@@ -16,7 +16,6 @@
         </div>
 
         <div class="home-img-box" v-show="show">
-          <!-- <img src="@/assets/home-quiz.png" /> -->
           <template v-if="userStore.loginUser != null">
             <RouterLink to="/quiz"> <img src="@/assets/home-quiz.png" /></RouterLink>
           </template>

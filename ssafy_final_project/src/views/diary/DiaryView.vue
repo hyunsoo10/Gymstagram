@@ -36,46 +36,19 @@
       <DiaryList v-for="diary in currentPageDiaryList" :key="diary.diaryId" :diary="diary" />
     </div>
 
-   <!--vuetify pagination-->
-      <div class="text-center vuetify-page" >
-        <v-container  class="vuetify-page">
-          <v-row justify="center"  class="vuetify-page">
-            <v-col cols="7" class="vuetify-page">
-              <v-container class="max-width vuetify-page" >
-                <v-pagination
-                  v-model="currentPage"
-                  class="my-4"
-                  :length="pageCount"
-                ></v-pagination>
-              </v-container>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-  
-      <!-- 기존 pagination -->
-    <!-- <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center"> -->
-        <!-- <li class="page-item js-previous-button" >
-          <a class="page-link" :class="{ disabled: currentPage <= 1 }" href="#" @click.prevent="currentPage--">&lt;</a>
-        </li> -->
-        <!-- 원본 -->
-        <!-- <li :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
-          <a class="page-link" href="#" @click.prevent="clickPage(page)">{{ page }}</a>
-        </li> -->
+    <!--vuetify pagination-->
+    <div class="text-center vuetify-page">
+      <v-container class="vuetify-page">
+        <v-row justify="center" class="vuetify-page">
+          <v-col cols="5" class="vuetify-page">
+            <v-container class="max-width vuetify-page">
+              <v-pagination v-model="currentPage" class="my-4" :length="pageCount"></v-pagination>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
 
-        <!-- 제한된 페이지만 보여주기 -->
-        <!-- <li :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
-          <template v-if="(page > currentPage-5) && (page <currentPage+5)">
-            <a class="page-link" href="#" @click.prevent="clickPage(page)">{{ page }}</a>
-          </template>
-        </li> -->
-
-        <!-- <li class="page-item"><a class="page-link" :class="{ disabled: currentPage >= pageCount }" href="#"
-                @click.prevent="currentPage++">&gt;</a>
-        </li> -->
-      <!-- </ul>
-    </nav> -->
   </div>
 </template>
   
@@ -99,24 +72,24 @@ onMounted(() => {
 const isActive = ref(false)
 const perPage = 8;
 
-  const currentPage = ref(1)
+const currentPage = ref(1)
 
 
-  
-  const pageCount = computed(() => {
-    return Math.ceil(diaryStore.avtyDiary.length / perPage)
-  })
-  const clickPage = function (page) {
-    currentPage.value = page
-  }
-  
-  const currentPageDiaryList = computed(() => {
-    return diaryStore.avtyDiary.slice(
-      (currentPage.value - 1) * perPage,
-      currentPage.value * perPage
-      )
-    })
-    
+
+const pageCount = computed(() => {
+  return Math.ceil(diaryStore.avtyDiary.length / perPage)
+})
+const clickPage = function (page) {
+  currentPage.value = page
+}
+
+const currentPageDiaryList = computed(() => {
+  return diaryStore.avtyDiary.slice(
+    (currentPage.value - 1) * perPage,
+    currentPage.value * perPage
+  )
+})
+
 
 // avty다이어리 가져오기
 const avtyDiary = function (e) {
@@ -133,8 +106,7 @@ const changeBtn = function (e) {
       btn.classList.remove("active");
     }
   });
-    // console.log(e.currentTarget.value);
-  }
+}
 
 </script>
   
@@ -166,9 +138,11 @@ h3 {
   font-family: "Poppins", sans-serif;
   color: #897bff;
 }
-.vuetify-page{
+
+.vuetify-page {
   margin: 0.1em auto !important;
 }
+
 .button-container {
   padding: 16px;
   display: flex;
@@ -434,5 +408,6 @@ h3 {
   color: #000;
   background-color: #ffffff;
   border: 1px solid #ccc;
-}</style>
+}
+</style>
   
