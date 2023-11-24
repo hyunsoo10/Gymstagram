@@ -43,14 +43,14 @@
 	
 	<!-- 다이어리 1개 상세 조회 -->
 	<select id="selectOneDiary" parameterType="int" resultMap="diaryMap">
-			SELECT * 
+		SELECT * 
 			FROM diary
 			WHERE diary_id = #{diaryId}
 	</select>
 	
 	<!-- my diary 조회 -->
 	<select id="selectMyDiary" parameterType="String" resultMap="diaryMap">
-			SELECT * 
+		SELECT * 
 			FROM diary
 			WHERE user_id = #{userId}
 	</select>
@@ -58,92 +58,93 @@
 	<!-- weekly 다이어리 조회 -->
 	<select id="selectMyWeeklyDiary" parameterType="String" resultMap="diaryMap">
 		SELECT * 
-		FROM diary
-		WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )
-	    AND user_id = #{userId}
-	    GROUP BY create_date
-	    ORDER BY create_date ASC;
+			FROM diary
+			WHERE diary.create_date BETWEEN ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 0 ) AND ADDDATE( CURDATE(), - WEEKDAY(CURDATE()) + 6 )
+		    AND user_id = #{userId}
+		    GROUP BY create_date
+		    ORDER BY create_date ASC;
 	</select>
 	<!-- 다이어리 등록 -->
 	<insert id="insertDiary" parameterType="Diary">
 		INSERT INTO diary (user_id, original_image, save_image, title, content, view_count, like_count)
-		VALUE (#{userId}, #{originalImage}, #{saveImage},  #{title}, #{content}, #{viewCount}, #{likeCount})
+			VALUE (#{userId}, #{originalImage}, #{saveImage},  #{title}, #{content}, #{viewCount}, #{likeCount})
 	</insert>
 	
 	<!-- 다이어리 수정 -->
 	<update id="updateDiary" parameterType="Diary">
-			UPDATE diary
+		UPDATE diary
 			SET original_image = #{originalImage}, save_image = #{saveImage}, title = #{title}, content = #{content}, update_date = #{updateDate}
 			WHERE diary_id = #{diaryId}
 	</update>
 	
 	<!-- 다이어리 삭제 -->
 	<delete id="deleteDiary" parameterType="int">
-			DELETE 
+		DELETE 
 			FROM diary
 			WHERE diary_id = #{diaryId}
 	</delete>
 	
 	<!-- 다이어리 조회수 업데이트 -->
 	<update id="updateDiaryViewCount" parameterType="int">
-			UPDATE diary
-				SET view_count = view_count + 1
-				WHERE diary_id = #{diaryId}
+		UPDATE diary
+			SET view_count = view_count + 1
+			WHERE diary_id = #{diaryId}
 	</update>
 	
 	<!-- 좋아요 수 증가 -->
 	<update id="increaseLikeCount" parameterType="int">
-			UPDATE diary
-				SET like_count = like_count + 1
-				WHERE diary_id = #{diaryId}
+		UPDATE diary
+			SET like_count = like_count + 1
+			WHERE diary_id = #{diaryId}
 	</update>
 	
 		<!-- 좋아요 수 감소 -->
 	<update id="decreaseLikeCount" parameterType="int">
-			UPDATE diary
+		UPDATE diary
 			SET like_count = like_count - 1
 			WHERE diary_id = #{diaryId}
 	</update>
 	
 	<!-- 다이어리 좋아요 -->
 	<insert id="like" parameterType="LikeDiary">
-			INSERT INTO likediary (user_id, diary_id)
+		INSERT INTO likediary (user_id, diary_id)
 			VALUES (#{userId}, #{diaryId})
 	</insert>
 	<!-- 다이어리 좋아요 해제 -->
 	<delete id="unLike" parameterType="LikeDiary">
-			DELETE 
+		DELETE 
 			FROM likediary
 			WHERE user_id = #{userId} AND diary_id = #{diaryId}
 	</delete>
 	<!-- 다이어리 좋아요 테이블  조회 -->
 	<select id="selectLike" resultType="int" parameterType="LikeDiary">
-			SELECT count(*)
+		SELECT count(*)
 			FROM likediary
 			WHERE user_id = #{userId} AND diary_id = #{diaryId}
 	</select>
 	<!-- 다이어리 전체 조회 -->
 	<select id="selectAllLike" resultType="LikeDiary" >
-			SELECT user_id AS userID, diary_id AS diaryID
+		SELECT user_id AS userID, diary_id AS diaryID
 			FROM likediary
 	</select>
 	
 	<!--  댓글 등록 -->
 	<insert id="insertComment" parameterType="Comment">
-			INSERT INTO comment (diary_id, user_id, parent_comment, content)
+		INSERT INTO comment (diary_id, user_id, parent_comment, content)
 			VALUE (#{diaryId}, #{userId}, #{parentComment}, #{content})
 	</insert>
 
 	<!-- Diary의 댓글 조회 -->	
 	<select id="selectDiaryComments" parameterType="int" resultMap="commentMap">
-			SELECT * 
-			FROM comment
-			WHERE diary_id = #{diaryId}
+		SELECT c.comment_id, c.diary_id, c.user_id, u.nickname, c.content, c.write_date, c.update_date, c.is_deleted, c.parent_comment
+			FROM comment c
+			LEFT JOIN user u ON c.user_id = u.user_id
+			WHERE diary_id = #{diaryId};
 	</select>
 	
 	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="Comment">
-			UPDATE comment
+		UPDATE comment
 			SET content = #{content}, is_deleted = #{isDeleted}, parent_comment = #{parentComment},
 			update_date = #{updateDate}
 			WHERE comment_id = #{commentId}
@@ -152,7 +153,7 @@
 	<!-- 댓글 삭제 -->
 	
 	<delete id="deleteComment" parameterType="int">
-			DELETE 
+		DELETE 
 			FROM comment
 			WHERE comment_id = #{commentId}
 	</delete>
@@ -160,12 +161,12 @@
 	<!-- 전체 댓글 조회 -->	
 	<select id="selectAllComment" resultMap="commentMap">
 		SELECT * 
-		FROM comment
+			FROM comment
 	</select>
 	
 	<!-- 대댓글 조회 -->
 	<select id="selectSubComment" resultMap="commentMap">
-			SELECT * 
+		SELECT * 
 			FROM comment
 			WHERE parent_comment = #{commentId}
 	</select>
